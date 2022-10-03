@@ -1,0 +1,172 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20220708143505
+Username: KHUSMENO\khusmeno
+RunAs User: KHUSMENO\khusmeno
+Machine: SMSC2019 (Microsoft Windows NT 10.0.14393.0)
+Host Application: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -Command if((Get-ExecutionPolicy ) -ne 'AllSigned') { Set-ExecutionPolicy -Scope Process Bypass }; & 'C:\Users\khusmeno\Desktop\SCSM-Diagnostic-Tool\BuildDeploy\BuildSingleScriptFile.ps1'
+Process ID: 7836
+PSVersion: 5.1.14393.5127
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.14393.5127
+BuildVersion: 10.0.14393.5127
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Build started for Version 1.9.0.49
+Source folder: C:\Users\khusmeno\Desktop\SCSM-Diagnostic-Tool\SourceCode
+--------------------------------
+\main.ps1
+\_0_Initializing\Eula.ps1
+\_0_Initializing\Initialize.ps1
+\_0_Initializing\SelfElevate.ps1
+\_0_Initializing\SelfUpdate.ps1
+\_1_Collecting\Collect.ps1
+\_1_Collecting\Collect_Info.ps1
+\_1_Collecting\Helper_Functions.ps1
+\_1_Collecting\Collect_NonScsmSpecificInfo\Collect_DateTime.ps1
+\_1_Collecting\Collect_NonScsmSpecificInfo\Collect_DotNetFWInfo_35.ps1
+\_1_Collecting\Collect_NonScsmSpecificInfo\Collect_DotNetFWInfo_4.ps1
+\_1_Collecting\Collect_NonScsmSpecificInfo\Collect_EnvironmentVariables.ps1
+\_1_Collecting\Collect_NonScsmSpecificInfo\Collect_HostFqdn.ps1
+\_1_Collecting\Collect_NonScsmSpecificInfo\Collect_Hotfix.ps1
+\_1_Collecting\Collect_NonScsmSpecificInfo\Collect_LanguageInfo.ps1
+\_1_Collecting\Collect_NonScsmSpecificInfo\Collect_LocalSecurityPolicy.ps1
+\_1_Collecting\Collect_NonScsmSpecificInfo\Collect_MSINFO32.ps1
+\_1_Collecting\Collect_NonScsmSpecificInfo\Collect_Netstat.ps1
+\_1_Collecting\Collect_NonScsmSpecificInfo\Collect_NonSMEventLogs.ps1
+\_1_Collecting\Collect_NonScsmSpecificInfo\Collect_OSRegionSettings.ps1
+\_1_Collecting\Collect_NonScsmSpecificInfo\Collect_PowerShellInfo.ps1
+\_1_Collecting\Collect_NonScsmSpecificInfo\Collect_Processes.ps1
+\_1_Collecting\Collect_NonScsmSpecificInfo\Collect_ProgramsInfo.ps1
+\_1_Collecting\Collect_NonScsmSpecificInfo\Collect_RAMInfo.ps1
+\_1_Collecting\Collect_NonScsmSpecificInfo\Collect_ServiceInfo.ps1
+\_1_Collecting\Collect_NonScsmSpecificInfo\Collect_TimeDiffBetweenDC.ps1
+\_1_Collecting\Collect_NonScsmSpecificInfo\Collect_TLS.ps1
+\_1_Collecting\Collect_NonScsmSpecificInfo\_Collect_NonScsmSpecificMachineInfo.ps1
+\_1_Collecting\Collect_OnlyConsoleSpecificInfo\_Collect_OnlyConsoleSpecificInfo.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_OnlyMgmtServerSpecificInfo.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDW\Collect_DWEnvironmentInfo.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDW\Collect_DWJobs.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDW\Collect_DWJobSchedules.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDW\Collect_DWJobs_Last5.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDW\Collect_DW_MPs.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDW\Collect_SetDWRoleFound.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDW\Collect_SqlErrorLogFiles_DW.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDW\Collect_SQL_CMDWDataMart.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDW\Collect_SQL_DWDataMart.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDW\Collect_SQL_DWRepository.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDW\Collect_SQL_DWStagingAndConfig.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDW\Collect_SQL_DW_Shared.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDW\Collect_SQL_OMDWDataMart.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDW\Collect_Test_BetweenDWMSandSQL.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDW\Collect_TimeDiffBetweenDWMSandSQL.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDW\_Collect_FromDW.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDW\Collect_FromSMSide\Collect_ForExtractJob.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDW\Collect_FromSMSide\Collect_ForMPSyncJob.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDW\Collect_FromSMSide\Collect_SMDBInfo.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDW\Collect_FromSMSide\Collect_SQL_SMDB.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDW\Collect_FromSMSide\_Collect_FromSMSide.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDW\Collect_FromSSAS\Collect_SsasCubes.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDW\Collect_FromSSAS\Collect_SsasDataSources.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDW\Collect_FromSSAS\Collect_SsasDataSourceViews.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDW\Collect_FromSSAS\Collect_SsasDB.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDW\Collect_FromSSAS\Collect_SsasDimensions.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDW\Collect_FromSSAS\_Collect_FromSSAS.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDW\Collect_FromSSRS\Collect_SsrsObjectsInfo.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDW\Collect_FromSSRS\Collect_SsrsVersion.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDW\Collect_FromSSRS\Collect_Test_SsrsWebService.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDW\Collect_FromSSRS\_Collect_FromSSRS.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDWAndWFAndSecondary\Collect_ConnectedSDKUsersCount.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDWAndWFAndSecondary\Collect_HealthServiceStateFolder.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDWAndWFAndSecondary\Collect_MGRegistryValues.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDWAndWFAndSecondary\Collect_OMEventLog.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDWAndWFAndSecondary\Collect_OMTraceFiles.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDWAndWFAndSecondary\Collect_ScomAgent.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDWAndWFAndSecondary\Collect_SCSMInstallationFilesInfo.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDWAndWFAndSecondary\Collect_SCSMRunAsAccounts.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDWAndWFAndSecondary\Collect_SCSMSetupLogFiles.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDWAndWFAndSecondary\Collect_SCSMUserRoles.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDWAndWFAndSecondary\Collect_SCSMVersion.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDWAndWFAndSecondary\Collect_SMTraceFiles.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDWAndWFAndSecondary\Collect_SPNs.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDWAndWFAndSecondary\Collect_SystemCenterRegPermissions.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDWAndWFAndSecondary\Collect_SystemCenterRegValues.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDWAndWFAndSecondary\Collect_Test_LocalOMSDK.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDWAndWFAndSecondary\Collect_WindowsErrorReporting.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromDWAndWFAndSecondary\_Collect_FromDWAndWFAndSecondary.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromSecondary\_Collect_FromSecondary.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromWF\_Collect_FromWF.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromWFAndDW\_Collect_FromWFAndDW.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromWFAndSecondary\Collect_ConnectorEclLogSettings.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromWFAndSecondary\Collect_Connectors.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromWFAndSecondary\Collect_EmailSendingRules.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromWFAndSecondary\Collect_EmailTemplates.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromWFAndSecondary\Collect_MPs.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromWFAndSecondary\Collect_NotificationChannel.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromWFAndSecondary\Collect_RegisteredDWEnvironmentInfo.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromWFAndSecondary\Collect_SCOMCIConnectorAllowList.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromWFAndSecondary\Collect_SCSMRolesFound.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromWFAndSecondary\Collect_SCSMSettings.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromWFAndSecondary\Collect_SqlErrorLogFiles.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromWFAndSecondary\Collect_SQL_MS_Shared.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromWFAndSecondary\Collect_SQL_MS_Specific.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromWFAndSecondary\Collect_Test_BetweenMSandDWMS.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromWFAndSecondary\Collect_Test_BetweenMSandSQL.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromWFAndSecondary\Collect_TimeDiffBetweenMSandSQL.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromWFAndSecondary\Collect_Workflows.ps1
+\_1_Collecting\Collect_OnlyMgmtServerSpecificInfo\Collect_FromWFAndSecondary\_Collect_FromWFAndSecondary.ps1
+\_1_Collecting\Collect_OnlyPortalSpecificInfo\_Collect_OnlyPortalSpecificInfo.ps1
+\_2_Analyzing\Analyze.ps1
+\_2_Analyzing\Analyzer_Functions.ps1
+\_2_Analyzing\Analyze_Rules.ps1
+\_2_Analyzing\Analyze_ForALL\Check_TimeDiffWithDC.ps1
+\_2_Analyzing\Analyze_ForALL\_Analyze_ForALL.ps1
+\_2_Analyzing\Analyze_ForConsole\_Analyze_ForConsole.ps1
+\_2_Analyzing\Analyze_ForDW\Check_CubeJobsStatusAndSchedule.ps1
+\_2_Analyzing\Analyze_ForDW\Check_DateFormatOfExtractJobsSQLAccount.ps1
+\_2_Analyzing\Analyze_ForDW\Check_DWData_IsUpTodate.ps1
+\_2_Analyzing\Analyze_ForDW\Check_DWJobSchedules_ExcludingCubes.ps1
+\_2_Analyzing\Analyze_ForDW\Check_DWJobStatus_ExcludingCubes.ps1
+\_2_Analyzing\Analyze_ForDW\Check_DWMPDeploymentStatus.ps1
+\_2_Analyzing\Analyze_ForDW\Check_MPSyncJobConnectivity.ps1
+\_2_Analyzing\Analyze_ForDW\Check_MPSyncJob_Progress.ps1
+\_2_Analyzing\Analyze_ForDW\_Analyze_ForDW.ps1
+\_2_Analyzing\Analyze_ForDWAndWF\Check_HealthService.ps1
+\_2_Analyzing\Analyze_ForDWAndWF\Check_OMCFG_Service.ps1
+\_2_Analyzing\Analyze_ForDWAndWF\Check_ScomAgent.ps1
+\_2_Analyzing\Analyze_ForDWAndWF\_Analyze_ForDWAndWF.ps1
+\_2_Analyzing\Analyze_ForDWAndWFAndSecondary\Check_CollectorsSqlPermission.ps1
+\_2_Analyzing\Analyze_ForDWAndWFAndSecondary\Check_ConnectedSDKUsers.ps1
+\_2_Analyzing\Analyze_ForDWAndWFAndSecondary\Check_MgmtServerHW.ps1
+\_2_Analyzing\Analyze_ForDWAndWFAndSecondary\Check_OMSDK_Service.ps1
+\_2_Analyzing\Analyze_ForDWAndWFAndSecondary\Check_SPNs.ps1
+\_2_Analyzing\Analyze_ForDWAndWFAndSecondary\Check_SqlBroker.ps1
+\_2_Analyzing\Analyze_ForDWAndWFAndSecondary\Check_SqlCLR.ps1
+\_2_Analyzing\Analyze_ForDWAndWFAndSecondary\Check_SQLServerHW.ps1
+\_2_Analyzing\Analyze_ForDWAndWFAndSecondary\Check_TimeDiffBetweenMSAndSQL.ps1
+\_2_Analyzing\Analyze_ForDWAndWFAndSecondary\_Analyze_ForDWAndWFAndSecondary.ps1
+\_2_Analyzing\Analyze_ForPortal\_Analyze_ForPortal.ps1
+\_2_Analyzing\Analyze_ForSecondary\_Analyze_ForSecondary.ps1
+\_2_Analyzing\Analyze_ForWF\_Analyze_ForWF.ps1
+\_2_Analyzing\Analyze_ForWFAndSecondary\Check_ConnectorStatus.ps1
+\_2_Analyzing\Analyze_ForWFAndSecondary\Check_CustomRelationshipTypes.ps1
+\_2_Analyzing\Analyze_ForWFAndSecondary\Check_DelayedWorkflows_2019UR2Only.ps1
+\_2_Analyzing\Analyze_ForWFAndSecondary\Check_ECLRowCount.ps1
+\_2_Analyzing\Analyze_ForWFAndSecondary\Check_GroomingAndPurging.ps1
+\_2_Analyzing\Analyze_ForWFAndSecondary\Check_SqlCLRonRegisteredDWSql.ps1
+\_2_Analyzing\Analyze_ForWFAndSecondary\Check_WorkflowsMinutesBehind.ps1
+\_2_Analyzing\Analyze_ForWFAndSecondary\_Analyze_ForWFAndSecondary.ps1
+\_3_Finishing\Finish.ps1
+
+Post-Build
+--------------------------------
+Validating: PASS
+
+Build SUCCEEDED for Version 1.9.0.49. Result is C:\Users\khusmeno\Desktop\SCSM-Diagnostic-Tool\LastBuild\SCSM-Diagnostic-Tool.ps1
+**********************
+Windows PowerShell transcript end
+End time: 20220708143511
+**********************
