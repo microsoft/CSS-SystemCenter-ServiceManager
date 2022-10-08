@@ -1,11 +1,11 @@
 ﻿**********************
 Windows PowerShell transcript start
-Start time: 20220708143505
+Start time: 20221008112951
 Username: KHUSMENO\khusmeno
 RunAs User: KHUSMENO\khusmeno
 Machine: SMSC2019 (Microsoft Windows NT 10.0.14393.0)
-Host Application: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -Command if((Get-ExecutionPolicy ) -ne 'AllSigned') { Set-ExecutionPolicy -Scope Process Bypass }; & 'C:\Users\khusmeno\Desktop\SCSM-Diagnostic-Tool\BuildDeploy\BuildSingleScriptFile.ps1'
-Process ID: 7836
+Host Application: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -Command if((Get-ExecutionPolicy ) -ne 'AllSigned') { Set-ExecutionPolicy -Scope Process Bypass }; & 'C:\GitHub\khusmeno-MS\CSS-SystemCenter-ServiceManager\scsm-diagnostic-tool\Build\BuildSingleScriptFile.ps1'
+Process ID: 11456
 PSVersion: 5.1.14393.5127
 PSEdition: Desktop
 PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.14393.5127
@@ -15,8 +15,8 @@ WSManStackVersion: 3.0
 PSRemotingProtocolVersion: 2.3
 SerializationVersion: 1.1.0.1
 **********************
-Build started for Version 1.9.0.49
-Source folder: C:\Users\khusmeno\Desktop\SCSM-Diagnostic-Tool\SourceCode
+Build started for Version 1.9.0.52
+Source folder: C:\GitHub\khusmeno-MS\CSS-SystemCenter-ServiceManager\scsm-diagnostic-tool\SourceCode
 --------------------------------
 \main.ps1
 \_0_Initializing\Eula.ps1
@@ -165,8 +165,8 @@ Post-Build
 --------------------------------
 Validating: PASS
 
-Build SUCCEEDED for Version 1.9.0.49. Result is C:\Users\khusmeno\Desktop\SCSM-Diagnostic-Tool\LastBuild\SCSM-Diagnostic-Tool.ps1
+Build SUCCEEDED for Version 1.9.0.52. Result is C:\GitHub\khusmeno-MS\CSS-SystemCenter-ServiceManager\scsm-diagnostic-tool\LastBuild\SCSM-Diagnostic-Tool.ps1
 **********************
 Windows PowerShell transcript end
-End time: 20220708143511
+End time: 20221008112957
 **********************

@@ -53,7 +53,7 @@ try {
     $parentPath = Split-Path -Path (Get-Location) -Parent
     $sourceStartingFolderPath = Join-Path -Path $parentPath -ChildPath $sourceStartingScriptFolderName 
     $sourceStartingScriptFilePath = $sourceStartingFolderPath| Join-Path -ChildPath $sourceStartingScriptFileName
-    $versionFilePath = Join-Path -Path $parentPath -ChildPath $sourceStartingScriptFolderName | Join-Path -ChildPath $versionFileName
+    $versionFilePath = Join-Path -Path (Get-Location) -ChildPath $versionFileName
     $successFilePath = Join-Path -Path $parentPath -ChildPath $targetBuildFolderName | Join-Path -ChildPath $targetScriptFileName
     $invalidFilePath = Join-Path -Path $PSScriptRoot -ChildPath $invalidBuildScriptFileName
 
@@ -128,7 +128,7 @@ try {
         Move-Item -Path $invalidFilePath -Destination $successFilePath -Force #endregion
         
         #region duplicate as .TXT to easily share via email, until the .PS1 gets directly published on internet
-        Copy-Item -Path $successFilePath -Destination ($successFilePath.Replace('.ps1','.txt')) -Force #endregion
+#        Copy-Item -Path $successFilePath -Destination ($successFilePath.Replace('.ps1','.txt')) -Force #endregion
 
         #region Increasing Version in Dev.
         [System.Version]$currentVersion = [System.Version]::Parse($currentVersionStr)   
