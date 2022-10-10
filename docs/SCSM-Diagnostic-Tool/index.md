@@ -19,3 +19,6 @@ Set-ExecutionPolicy RemoteSigned
 - Windows Server 2016 or later
 - Service Manager 2019 or later
 - Windows Powershell version 4.0 or 5.1
+
+## Do you want to contribute to this tool?
+Navigate to the GitHub repo: https://github.com/khusmeno-MS/CSS-SystemCenter-ServiceManager/tree/main/(scsm-diagnostic-tool#how-to-contribute)
