@@ -1,6 +1,9 @@
-# Microsoft System Center **Service Manager** Support Scripts
+# Microsoft System Center - Service Manager Support Scripts
 
-This repository contains several scripts for supporting and troubleshooting Microsoft Service Manager (SCSM).
+## The Repository
+
+This repository is the home of several scripts for Microsoft System Center - Service Manager (SCSM).
+The scripts are intended for identifying and resolving a wide range of issues regarding SCSM.
 
 For more information, see the documentation for individual scripts:
 
