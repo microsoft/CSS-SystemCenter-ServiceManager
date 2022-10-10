@@ -27,3 +27,9 @@ Set-ExecutionPolicy RemoteSigned
 - Windows Server 2016 or later
 - Service Manager 2019 or later
 - Windows Powershell version 4.0 or 5.1
+
+## How to contribute?
+
+- Small changes: Directly edit a file. Changes will be submitted as a pull request.
+- Making changes locally & debugging: Clone this repo, open "DebuggingAndDevelopment/Start-In-Elevated-ISE-Here.ps1" in an elevated PowerShell ISE, make your changes and F5. If you want, run "BuildDeploy/BuildSingleScriptFile.ps1" to create the resulting "LastBuild\SCSM-Diagnostic-Tool.ps1" for testing locally. Then push your changes and create a pull request.
+
