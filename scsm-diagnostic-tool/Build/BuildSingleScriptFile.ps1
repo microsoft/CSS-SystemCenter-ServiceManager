@@ -39,6 +39,7 @@ $targetScriptFileName = 'SCSM-Diagnostic-Tool.ps1'
 $Output_BuildFolderName = "Output_Build"
 $invalidBuildScriptFileName = "$Output_BuildFolderName\InvalidBuild_$sourceStartingScriptFileName"
 $transcriptFileName = "$Output_BuildFolderName\Build_Transcript.txt"
+$targetVersionFolderName = '..'
 $versionFileName = "version.txt"
 #endregion
 
@@ -53,7 +54,7 @@ try {
     $parentPath = Split-Path -Path (Get-Location) -Parent
     $sourceStartingFolderPath = Join-Path -Path $parentPath -ChildPath $sourceStartingScriptFolderName 
     $sourceStartingScriptFilePath = $sourceStartingFolderPath| Join-Path -ChildPath $sourceStartingScriptFileName
-    $versionFilePath = Join-Path -Path (Get-Location) -ChildPath $versionFileName
+    $versionFilePath = Join-Path -Path $parentPath -ChildPath $versionFileName
     $successFilePath = Join-Path -Path $parentPath -ChildPath $targetBuildFolderName | Join-Path -ChildPath $targetScriptFileName
     $invalidFilePath = Join-Path -Path $PSScriptRoot -ChildPath $invalidBuildScriptFileName
 
