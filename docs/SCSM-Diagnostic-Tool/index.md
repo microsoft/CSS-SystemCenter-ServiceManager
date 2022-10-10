@@ -1,6 +1,6 @@
 # How to run the the SCSM Diagnostic Tool?
 
-- **Download** the latest version of SCSM Diagnostic Tool at [https://aka.ms/get-SCSM-Diagnostic-Tool](https://aka.ms/get-SCSM-Diagnostic-Tool)
+- **Download** the latest version of SCSM Diagnostic Tool from [here](https://aka.ms/download-SCSM-Diagnostic-Tool)
 - **Log on** to the Primary SCSM mgmt. server and Data Warehouse mgmt. server with an admin account, preferably with the service account of "System Center Data Access Service"
 - Create a new folder, **save** the downloaded file SCSM-Diagnostic-Tool.ps1
 - Right click the .PS1 file and select "**Run with PowerShell**"
