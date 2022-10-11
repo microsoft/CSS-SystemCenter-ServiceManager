@@ -6,6 +6,7 @@ This repository is the home of several scripts for Microsoft System Center - Ser
 The scripts are intended for identifying and resolving a wide range of issues regarding SCSM.
 
 For more information, see the documentation for individual scripts: 
+
 https://khusmeno-ms.github.io/CSS-SystemCenter-ServiceManager/
 
 # Contributing
@@ -23,7 +24,6 @@ For more information see the [Code of Conduct FAQ](https://opensource.microsoft.
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
 See the documentation of individual scripts to learn how to contribute:
-
 https://khusmeno-ms.github.io/CSS-SystemCenter-ServiceManager/
 
 # Trademarks
