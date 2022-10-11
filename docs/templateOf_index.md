@@ -1,4 +1,4 @@
-# <NameOfScript>
+# NameOfTheScript
   
 ## Purpose
   <...>
