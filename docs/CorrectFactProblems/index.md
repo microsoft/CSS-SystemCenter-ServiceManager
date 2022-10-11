@@ -63,4 +63,4 @@ It's OK to run the script many times, just for verification. If no issues exist,
 
 ## Do you want to contribute to this tool?
 
-[Here](https://github.com/khusmeno-MS/CSS-SystemCenter-ServiceManager/tree/main/Verify_SSRS_for_SCSM) is the GitHub repo.
+[Here](https://github.com/khusmeno-MS/CSS-SystemCenter-ServiceManager/tree/main/CorrectFactProblems) is the GitHub repo.
