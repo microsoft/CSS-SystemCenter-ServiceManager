@@ -9,10 +9,10 @@ SCSM Diagnostic Tool is developed and maintained by members of the Microsoft Sys
 # How to run the SCSM Diagnostic Tool?
 
 - **Download** the latest version of SCSM Diagnostic Tool from [here](https://aka.ms/download-SCSM-Diagnostic-Tool)
-- **Log on** to the Primary SCSM mgmt. server and Data Warehouse mgmt. server with an admin account, preferably with the service account of "System Center Data Access Service"
-- Create a new folder, **save** the downloaded file SCSM-Diagnostic-Tool.ps1
-- Right click the .PS1 file and select "**Run with PowerShell**"
-- Wait till finished and then **upload** the resulting zip file to Microsoft CSS
+- **Log on** to the Primary SCSM mgmt. server and Data Warehouse mgmt. server with an admin account, preferably with the service account of the "System Center Data Access Service"
+- **Save** the downloaded file into a folder
+- Right click SCSM-Diagnostic-Tool.ps1 and select "**Run with PowerShell**"
+- Wait until finished and then **upload** the resulting zip file to Microsoft CSS
 
 If you want, you can open *Findings.html* included in the resulting zip file.
  
@@ -26,7 +26,7 @@ Set-ExecutionPolicy RemoteSigned
 
 - Windows Server 2016 or later
 - Service Manager 2019 or later
-- Windows Powershell version 4.0 or 5.1
+- Windows Powershell version 4.0 or later
 
 ## Do you want to contribute to this tool?
 
