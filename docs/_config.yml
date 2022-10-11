@@ -1,4 +1,4 @@
 remote_theme: pages-themes/dinky@v0.2.0
 title: [The title of your site]
 description: [A short description of your site's purpose]
-show_downloads: ["true" or "false" (unquoted) to indicate whether to provide a download URL]
+show_downloads: false
