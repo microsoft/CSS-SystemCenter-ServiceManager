@@ -1,4 +1,4 @@
 remote_theme: pages-themes/modernist@v0.2.0
 title: Microsoft System Center - Service Manager Support Scripts
 description: 
-show_downloads: true
+show_downloads: false
