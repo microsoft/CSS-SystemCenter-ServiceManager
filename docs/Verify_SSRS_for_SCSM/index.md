@@ -17,3 +17,7 @@ If SQL Server Reporting Services (SSRS) is running *locally* on the Data Warehou
 The script can be executed before or after a SCSM Data Warehouse installation.
 The script can be executed several times. 
 The script won't make any change.
+
+## Do you want to contribute to this tool?
+
+[Here](https://github.com/khusmeno-MS/CSS-SystemCenter-ServiceManager/tree/main/Verify_SSRS_for_SCSM) is the GitHub repo.
