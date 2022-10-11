@@ -2,11 +2,11 @@
 Download the latest release:  [SCSM-Diagnostic-Tool.ps1](https://github.com/microsoft/CSS-SystemCenter-ServiceManager/releases/latest/download/SCSM-Diagnostic-Tool.ps1)
 
 ## Description
-The *SCSM Diagnostic Tool* allows you to collect diagnostic logs from your Service Manager environment to help you and Microsoft technical support engineers to resolve Service Manager technical incidents faster. It is a light, script-based, open-source tool. SCSM Diagnostic Tool discovers the SCSM components installed locally on the system (like Primary/Secondary Management Server, Data Warehouse Management Server, Portal, Console) and collects information accordingly.
+The *SCSM Diagnostic Tool* allows you to collect diagnostic logs from your Service Manager environment to help you and Microsoft technical support engineers to resolve Service Manager technical incidents faster. It is a light, script-based, open-source tool.  
 
-In addition, it runs predefined "rules" against the collected info and generates a file named *Findings.html*. Customers can open this file and can implement the suggested actions prior to open a ticket with Microsoft Customer Support Services (CSS).
+SCSM Diagnostic Tool discovers the SCSM components installed locally on the system (like Primary/Secondary Management Server, Data Warehouse Management Server, Portal, Console) and collects information accordingly.  
 
-SCSM Diagnostic Tool is developed and maintained by members of the Microsoft System Center technical support team in CSS.
+Afterwards, it runs predefined "rules" against the collected info and generates a file named `Findings.html`. Customers can open this file and can implement the suggested actions prior to open a ticket with Microsoft Customer Support Services (CSS).
 
 # How to run
 
@@ -16,7 +16,7 @@ SCSM Diagnostic Tool is developed and maintained by members of the Microsoft Sys
 2. Follow the instructions.
 3. **Upload** the resulting zip file to Microsoft CSS
 
-If you want, you can open *Findings.html* included in the resulting zip file.
+If you want, you can open `Findings.html` included in the resulting zip file.
  
 #### Note: If PowerShell starts and quits immediately, then you need to run the following command in a RunAsAdmin PowerShell window:
 
@@ -31,10 +31,8 @@ Set-ExecutionPolicy RemoteSigned
 - Windows Powershell version 4.0 or later
 
 ## Notes:
+- The script won't make any change in the SCSM environment.
 - The script can be also used as a Health Checker. 
-- The script won't make any change.
-
 
 ## Do you want to contribute to this tool?
-
 [Here](https://github.com/khusmeno-MS/CSS-SystemCenter-ServiceManager/tree/main/scsm-diagnostic-tool) is the GitHub repo.
