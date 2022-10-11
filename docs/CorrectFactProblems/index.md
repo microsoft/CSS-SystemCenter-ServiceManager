@@ -6,7 +6,7 @@ This issue is applicable for Service Manager versions 2010, 2010 SP1, 2012, 2012
 
 # Symptom
 
-DW Jobs fail and the Operations Manager event log contains entries like below in bold. (Please note that some parts in error messages like Job name, Table, or View names can have different values.)
+DW Jobs fail and the Operations Manager event log contains entries like below in bold. Please note that some parts in error messages like Job name, Table, or View names can have different values.
 
 <pre> 
 Log Name: Operations Manager
