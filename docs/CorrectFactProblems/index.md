@@ -48,7 +48,7 @@ This caused discrepancies between check constraints on Fact tables and some othe
 
 ## Resolution
 
-The solution is to fix the corrupted partitions. The script [CorrectFactProblemsV7.3.sql](https://github.com/microsoft/CSS-SystemCenter-ServiceManager/releases/latest/download/Verify_SSRS_for_SCSM.ps1) is written for this purpose. Run it against the DWRepository + 3 DataMart databases and then Resume the Failed jobs. 
+The solution is to fix the corrupted partitions. The script [CorrectFactProblemsV7.3.sql](https://github.com/microsoft/CSS-SystemCenter-ServiceManager/releases/latest/download/CorrectFactProblems.sql) is written for this purpose. Run it against the DWRepository + 3 DataMart databases and then Resume the Failed jobs. 
 
 You may run the same script the 2nd time for verification. This time it should end with "-- No issues found."
 
