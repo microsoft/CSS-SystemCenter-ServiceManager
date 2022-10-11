@@ -6,4 +6,5 @@ They are developed and maintained by members of the Microsoft System Center tech
 | ----------------------------------------  | ------------------------------------------------------------------------------------------------------------------- |
 | [SCSM Diagnostic Tool](SCSM-Diagnostic-Tool)                                         | [SCSM-Diagnostic-Tool.ps1](https://github.com/microsoft/CSS-SystemCenter-ServiceManager/releases/latest/download/SCSM-Diagnostic-Tool.ps1)                        |
 | [Verify SSRS installation](Verify_SSRS_for_SCSM)  | [Verify_SSRS_for_SCSM.ps1](https://github.com/microsoft/CSS-SystemCenter-ServiceManager/releases/latest/download/Verify_SSRS_for_SCSM.ps1) |
+| [Correct Fact Problems](CorrectFactProblems)  | [CorrectFactProblemsV7.3.sql](https://github.com/microsoft/CSS-SystemCenter-ServiceManager/releases/latest/download/CorrectFactProblemsV7.3.sql) |
 
