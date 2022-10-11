@@ -186,7 +186,7 @@ else {
     Write-Host "The selected SSRS instance is " -NoNewline
     Write-Host "*NOT* configured correctly." -ForegroundColor Yellow
     Write-Host "Please follow the steps at  " -NoNewline
-    Write-Host "https://docs.microsoft.com/en-us/system-center/scsm/config-remote-ssrs" -ForegroundColor Yellow
+    Write-Host "https://learn.microsoft.com/en-us/system-center/scsm/config-remote-ssrs" -ForegroundColor Yellow
 }
 EndScriptExecution
 #endregion
