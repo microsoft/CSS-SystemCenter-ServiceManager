@@ -1,4 +1,4 @@
-Below you find technical info how to contribute to this script.
+Below you find some info how to contribute to this script.
 
 ###### You landed here by mistake? Here is the [documentation](https://khusmeno-ms.github.io/CSS-SystemCenter-ServiceManager/SCSM-Diagnostic-Tool/) of this script.
 
