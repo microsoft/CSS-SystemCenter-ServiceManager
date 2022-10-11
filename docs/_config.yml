@@ -1,4 +1,4 @@
 theme: minima
 title: Microsoft System Center - Service Manager Support Scripts
 show_downloads: false
-show_excerpts: true
+show_excerpts: false
