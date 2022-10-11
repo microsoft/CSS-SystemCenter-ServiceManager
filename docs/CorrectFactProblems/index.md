@@ -8,7 +8,7 @@ This issue is applicable for Service Manager versions 2010, 2010 SP1, 2012, 2012
 
 DW Jobs fail and the Operations Manager event log contains entries like below in bold. (Please note that some parts in error messages like Job name, Table, or View names can have different values.)
 
- 
+<pre> 
 Log Name: Operations Manager
 Source: Data Warehouse
 Event ID: 33502
@@ -18,8 +18,9 @@ ETL process type: Transform
 Batch ID: …
 Module name: TransformSLAInstanceInformationFact
 Message: UNION ALL view 'DWRepository.dbo.SLAInstanceInformationFactvw' is not updatable because a partitioning column was not found.
- 
+</pre>
 
+<pre>
 Log Name: Operations Manager
 Source: Data Warehouse
 Event ID: 33503
@@ -29,7 +30,9 @@ ETL process type: Load
 Batch ID: …
 Module name: LoadEntityManagedTypeFact
 Message: UNION ALL view 'DWDatamart.dbo.EntityManagedTypeFactvw' is not updatable because a partitioning column was not found.
+</pre>
 
+<pre>
 Log Name: Operations Manager
 Source: Data Warehouse
 Event ID: 33522
@@ -39,6 +42,7 @@ Unhandled exception in data warehouse maintenance:
 Work item: …
 Maintenance action: PerformWarehouseGrooming Exception details:
 Exception message: ErrorNumber="50000" Message="ErrorNumber="50000" Message="ErrorNumber="547" Message="The ALTER TABLE statement conflicted with the CHECK constraint "ChangeRequestStatusDurationFact_2020_Dec_Chk". The conflict occurred in database "DWRepository", table "dbo.ChangeRequestStatusDurationFact_2020_Dec", column 'DateKey'." Severity="16" State="0" ProcedureName="(null)" LineNumber="1" Task="Executing CHKScriptTemplate"" Severity="18" State="0" ProcedureName="DropCheckConstraintForTable" LineNumber="145" Task="Opening MIN Check constraint for the next Partition"" Severity="18" State="0" ProcedureName="DropPartition" LineNumber="108" Task="Executing groomingStoredProcedure: EXEC etl.DropPartition @WarehouseEntityId=@WarehouseEntityId, @WarehouseEntityType=@WarehouseEntityType, @EntityGuid=@EntityGuid, @PartitionId=@PartitionId, @GroomActiveRelationship=1"
+</pre>
 
 ## Cause
 
@@ -50,16 +54,16 @@ This caused discrepancies between check constraints on Fact tables and some othe
 
 The solution is to fix the corrupted partitions. The script [CorrectFactProblemsV7.3.sql](https://github.com/microsoft/CSS-SystemCenter-ServiceManager/releases/latest/download/CorrectFactProblems.sql) is written for this purpose. Run it against the DWRepository + 3 DataMart databases and then Resume the Failed jobs. 
 
-You may run the same script the 2nd time for verification. This time it should end with "-- No issues found."
+You can re-run the same script for verification. This time it should end with "-- No issues found."
 
 If jobs still fail with the errors mentioned above, then please contact Microsoft Support.
 
 ## More information
 	
 It's OK to run the script many times, just for verification. If no issues exist, the script won't make any changes in the DW databases.
-	SCSM 2019 installations already have the correct values in DateDim table. Therefore, SCSM DW installations with version 2019 do not face this issue.
-	To prevent this issue to happen, the values in DateDim tables were proactively extended with SCSM 2016 Update Rollup 5. Therefore, SCSM DW 2016 installations on which UR5 was applied before Dec 1st, 2020, do not face this issue.
-	Applying 2016 UR5 now, will not help.
+	SCSM 2019+ installations already have the correct values in DateDim table. Therefore, SCSM DW installations with version 2019 do not face this issue.
+	To prevent this issue to happen, the values in DateDim tables were proactively extended with SCSM 2016 Update Rollup 5. Therefore, SCSM DW 2016 installations on which UR5 was applied before Dec 1st 2020, do not face this issue.
+	Applying 2016 UR5 after Dec 1st 2020, will not help.
 
 ## Do you want to contribute to this tool?
 
