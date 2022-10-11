@@ -1,4 +1,4 @@
-theme: minimal
+remote_theme: pages-themes/minimal@v0.2.0
 title: Microsoft System Center - Service Manager Support Scripts
 show_downloads: false
 show_excerpts: false
