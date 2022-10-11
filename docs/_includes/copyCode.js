@@ -6,6 +6,9 @@ copyCodeButtons.forEach((copyCodeButton, index) => {
   const code = codeBlocks[index].innerText;
 
   copyCodeButton.addEventListener('click', () => {
+    
+    debugger;
+    
     // Copy the code to the user's clipboard
     window.navigator.clipboard.writeText(code);
 
