@@ -8,6 +8,12 @@ If SQL Server Reporting Services (SSRS) is running *locally* on the Data Warehou
 - if the LOCAL SSRS installation is configured correctly
 - and if SSRS can be used with the Service Manager Data Warehouse.
 
- Note
+## Instructions to run this script:
 
-This PowerShell script can be executed after a Service Manager Data Warehouse installation. The script won't make any changes to the configuration but verifies it. You can run the script as many times as required.
+1. Execute the script with right/click + "Run with PowerShell".
+1. Follow the instructions.    
+
+## Notes:
+The script can be executed before or after a SCSM Data Warehouse installation.
+The script can be executed several times. 
+The script won't make any change.
