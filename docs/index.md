@@ -1,6 +1,6 @@
 # Microsoft System Center - Service Manager Support Scripts
 
-This project contains scripts for supporting and troubleshooting Microsoft Service Manager.
+This site contains scripts for supporting and troubleshooting Microsoft Service Manager.
 
 | Script                               | Docs                                                   | Download                                                                                                            |
 | ---------------------------------------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------- |
