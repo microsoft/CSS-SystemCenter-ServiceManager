@@ -1,7 +1,6 @@
 # SCSM Diagnostic Tool
 
 Download the latest release:  [SCSM-Diagnostic-Tool.ps1]({{ site.latestDownloadLink }}/SCSM-Diagnostic-Tool.ps1)
-Download the latest release:  [SCSM-Diagnostic-Tool.ps1]({{site.latestDownloadLink}}/SCSM-Diagnostic-Tool.ps1)
 
 ## Description
 
