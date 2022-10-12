@@ -12,13 +12,13 @@ Afterwards, it runs predefined "rules" against the collected info and generates 
 
 1. **Log on** to the Primary SCSM mgmt. server and Data Warehouse mgmt. server with an admin account, preferably with the service account of the "System Center Data Access Service"
 1. **Save** the script into a folder.
-1. Execute the script with right/click + "Run with PowerShell".
+1. Execute the script with right/click + **"Run with PowerShell"**.
 2. Follow the instructions.
 3. **Upload** the resulting zip file to Microsoft CSS
 
 If you want, you can open `Findings.html` included in the resulting zip file.
  
-#### Note: If PowerShell starts and quits immediately, then you need to run the following command in a RunAsAdmin PowerShell window:
+##### Note: If PowerShell starts and quits immediately, then you need to run the following command in a RunAsAdmin PowerShell window:
 
 ```
 Set-ExecutionPolicy RemoteSigned
