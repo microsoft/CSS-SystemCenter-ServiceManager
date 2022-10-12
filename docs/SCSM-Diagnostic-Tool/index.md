@@ -1,8 +1,10 @@
 # SCSM Diagnostic Tool
-Download the latest release:  [SCSM-Diagnostic-Tool.ps1](https://github.com/microsoft/CSS-SystemCenter-ServiceManager/releases/latest/download/SCSM-Diagnostic-Tool.ps1)
+
 Download the latest release:  [SCSM-Diagnostic-Tool.ps1]({{ site.latestDownloadLink }}/SCSM-Diagnostic-Tool.ps1)
+Download the latest release:  [SCSM-Diagnostic-Tool.ps1]({{site.latestDownloadLink}}/SCSM-Diagnostic-Tool.ps1)
 
 ## Description
+
 The *SCSM Diagnostic Tool* allows you to collect diagnostic logs from your Service Manager environment to help you and Microsoft technical support engineers to resolve Service Manager technical incidents faster. It is a light, script-based, open-source tool.  
 
 SCSM Diagnostic Tool discovers the SCSM components installed locally on the system (like Primary/Secondary Management Server, Data Warehouse Management Server, Portal, Console) and collects information accordingly.  
@@ -32,9 +34,10 @@ Set-ExecutionPolicy RemoteSigned
 - Windows Powershell version 4.0 or later
 
 ## Notes:
+
 - The script won't make any change in the SCSM environment.
 - The script can be also used as a Health Checker. 
 
 ## Do you want to contribute to this tool?
-[Here](https://github.com/khusmeno-MS/CSS-SystemCenter-ServiceManager/tree/main/scsm-diagnostic-tool) is the GitHub repo.
-[Here](GitHubRepoLink/scsm-diagnostic-tool) is the GitHub repo.
+
+[Here]({{ site.GitHubRepoLink }}/scsm-diagnostic-tool) is the GitHub repo.
