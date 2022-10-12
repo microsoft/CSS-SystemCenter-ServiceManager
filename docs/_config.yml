@@ -4,5 +4,5 @@ title: Microsoft System Center<br/>Service Manager Support Scripts
 #show_excerpts: false
 
 #IMPORTANT: do NOT end the links below with a slash !
-latestDownloadLink: https://github.com/microsoft/CSS-SystemCenter-ServiceManager/releases/latest/download
+latestDownloadLink: https://github.com/{{userid}}/CSS-SystemCenter-ServiceManager/releases/latest/download
 GitHubRepoLink: https://github.com/microsoft/CSS-SystemCenter-ServiceManager/tree/main
