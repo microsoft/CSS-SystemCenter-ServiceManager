@@ -1,6 +1,6 @@
 Below you find some info how to contribute to this script.
 
-###### You landed here by mistake? Here is the [documentation](https://khusmeno-ms.github.io/CSS-SystemCenter-ServiceManager/Verify_SSRS_for_SCSM/) of this script.
+###### You landed here by mistake? Here is the [documentation](https://microsoft.github.io/CSS-SystemCenter-ServiceManager/Verify_SSRS_for_SCSM/) of this script.
 
 ## How to contribute?
 
