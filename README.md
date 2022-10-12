@@ -9,6 +9,8 @@ For more information, see the documentation for individual scripts:
 
 https://khusmeno-ms.github.io/CSS-SystemCenter-ServiceManager/
 
+[docs](https://{userid}.github.io/{reponame})
+
 # Contributing
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
