@@ -8,7 +8,7 @@ Download the latest release:  [NameOfFile.ps1](https://.../NameOfFile.ps1)
 <...> 
 
 ## How to run
-1. Save the script to ... .
+1. Save the script into a folder.
 1. Execute the script with right/click + "Run with PowerShell".
 1. Follow the instructions.    
 
