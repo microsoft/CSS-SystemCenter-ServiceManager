@@ -1,5 +1,5 @@
 # Verify SSRS for SCSM
-Download the latest release: [Verify_SSRS_for_SCSM.ps1](https://github.com/microsoft/CSS-SystemCenter-ServiceManager/releases/latest/download/Verify_SSRS_for_SCSM.ps1)   
+Download the latest release: [Verify_SSRS_for_SCSM.ps1]({{ site.latestDownloadLink }}/Verify_SSRS_for_SCSM.ps1)   
 
 ## Description
 The SCSM Data Warehouse Setup normally configures the specified SQL Server Reporting Services (SSRS) instance, but only if SSRS is running locally.  
@@ -21,4 +21,4 @@ To verify if the *LOCAL* SSRS installation has been configured correctly by the 
 - The script is NOT applicable if SSRS instance is running remotely. In this case, the steps in this article needs to be done manually: https://learn.microsoft.com/en-us/system-center/scsm/config-remote-ssrs
 
 ## Do you want to contribute to this script?
-[Here](https://github.com/khusmeno-MS/CSS-SystemCenter-ServiceManager/tree/main/Verify_SSRS_for_SCSM) is the GitHub repo.
+[Here]({{ site.GitHubRepoLink }}/Verify_SSRS_for_SCSM) is the GitHub repo.
