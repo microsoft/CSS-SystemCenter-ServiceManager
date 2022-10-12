@@ -20,7 +20,8 @@ Afterwards, it runs predefined "rules" against the collected info and generates 
 
 If you want, you can open `Findings.html` included in the resulting zip file.
  
-##### Note: If PowerShell starts and quits immediately, then you need to run the following command in a RunAsAdmin PowerShell window:
+##### Note: 
+If PowerShell starts and quits immediately, then you need to run the following command in a RunAsAdmin PowerShell window:
 
 ```
 Set-ExecutionPolicy RemoteSigned
