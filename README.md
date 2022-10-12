@@ -5,11 +5,9 @@
 This repository is the home of several scripts for Microsoft System Center - Service Manager (SCSM).
 The scripts are intended for identifying and resolving a wide range of issues regarding SCSM.
 
-For more information, see the documentation for individual scripts: 
+For more information, see the documentation of individual scripts: 
 
-https://khusmeno-ms.github.io/CSS-SystemCenter-ServiceManager/
-
-[docs](https://{userid}.github.io/{reponame})
+https://microsoft.github.io/CSS-SystemCenter-ServiceManager/
 
 # Contributing
 
