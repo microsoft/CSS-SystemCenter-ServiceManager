@@ -2,5 +2,7 @@ remote_theme: pages-themes/cayman@v0.2.0
 title: Microsoft System Center<br/>Service Manager Support Scripts
 #show_downloads: false
 #show_excerpts: false
+
+#IMPORTANT: do NOT end the links below with a slash !
 latestDownloadLink: https://github.com/microsoft/CSS-SystemCenter-ServiceManager/releases/latest/download
-GitHubRepoLink: https://github.com/microsoft/CSS-SystemCenter-ServiceManager/tree/main/
+GitHubRepoLink: https://github.com/microsoft/CSS-SystemCenter-ServiceManager/tree/main
