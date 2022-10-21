@@ -8,4 +8,4 @@ feature request as a new Issue.
 
 ## Microsoft Support Policy  
 
-Support for the SCSM Diagnostic Tool is limited to the resources listed above.
+Support for the repo is limited to the resources listed above.
