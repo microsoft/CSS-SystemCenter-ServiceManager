@@ -1,16 +1,33 @@
 ﻿function main() {
-#region Setting the Script Scope vars (if not set already by debugger starting script)
-if ($MyInvocation.PSCommandPath -eq $PSCommandPath) { #script was NOT started by debugger starting script
-    [string]$scriptFilePath = $MyInvocation.PSCommandPath 
+
+#region Setting the Script Scope vars
+    [string]$scriptFilePath = ""
+    [string]$toolVersion = "0.0.0.1"
     [bool]$debugmode = $false
-    [string]$toolVersion = GetToolVersion
-}
+
+    if ( (dir function:).Name -contains "GetToolVersion" ) { 
+        $scriptFilePath = $MyInvocation.PSCommandPath 
+        $toolVersion = GetToolVersion
+    }
+    else {
+        # this means, we are starting debug in main.ps1 instead of a single big ps1 and therefore ALL functions are NOT loaded yet.
+
+        $toolVersion = Get-Content -Path (Join-Path -Path (Split-Path $PSScriptRoot -Parent) -ChildPath version.txt)
+
+        #We want to Debug/Develop in a location other than the Source Code. That's not to clutter within the development folder.
+        $localDebugFolder = (Join-Path (Split-Path $PSScriptRoot -Parent) -ChildPath LocalDebug) 
+        $scriptFilePath = Join-Path $localDebugFolder (Split-Path $PSCommandPath -Leaf)
+        Copy-Item -Path $PSCommandPath -Destination $scriptFilePath -Force
+
+        # We need to "load" all other function definitions in order be called        
+        Get-ChildItem -Path $PSScriptRoot -Filter *.ps1 -Recurse -Exclude main.ps1 | % { . $_.FullName }
+    }
 #endregion
 
 #region resetting the PS environment
     Remove-Variable * -ErrorAction SilentlyContinue -Exclude PSDefaultParameterValues, debugmode, scriptFilePath, toolVersion
     Remove-Module *; 
-    $error.Clear(); 
+    $Error.Clear(); 
     Get-job | Remove-Job -Force
     $host.privatedata.ErrorForegroundColor ="DarkGray"  # For accessibility
     $global:ProgressPreference = 'SilentlyContinue'
@@ -36,3 +53,5 @@ if ($MyInvocation.PSCommandPath -eq $PSCommandPath) { #script was NOT started by
         Read-Host " "
     }
 }
+
+main;
