@@ -1,3 +1,6 @@
+# publish the file below:
+#    "..\LocalDebug\SignedScript\SCSM-Diagnostic-Tool.ps1"
+
 #todo: git push ?
 
 
