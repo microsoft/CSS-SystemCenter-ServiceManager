@@ -1,6 +1,16 @@
-﻿Set-PSDebug -Strict # from now on, all variables must be explicitly declared before they are used  
+Set-PSDebug -Strict # from now on, all variables must be explicitly declared before they are used  
 $Error.Clear();
-Set-Location $PSScriptRoot 
+Set-Location $PSScriptRoot
+
+# ---- Create new Release ----
+
+# create a new Release in GitHub repo of the file below:
+#    "..\LocalDebug\SignedScript\SCSM-Diagnostic-Tool.ps1"
+
+#todo: create new Release in GitHub repo
+ 
+
+# ---- Increase version ----
 
 #region Commit next Version
 $parentPath = Split-Path -Path (Get-Location) -Parent
@@ -17,3 +27,4 @@ $currentVersionStr = (Get-Content -Path $versionFilePath | Out-String).Trim()
 #endregion
 
 #todo: commit version.txt?
+#todo: git push ?
