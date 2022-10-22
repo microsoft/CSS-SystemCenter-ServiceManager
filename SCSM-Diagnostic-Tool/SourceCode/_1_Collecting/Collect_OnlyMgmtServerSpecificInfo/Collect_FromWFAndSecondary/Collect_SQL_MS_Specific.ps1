@@ -484,6 +484,32 @@ and usr.Domain_UserName NOT IN ('')
 order by 1,2
 '@
 
+   $SQL_SCSM_MS['SQL_CmdbInstanceSubscriptionState']=@'
+select * 
+from CmdbInstanceSubscriptionState cmdb
+left join rules r on cmdb.RuleId = r.RuleId
+left join ManagedType mt on cmdb.TypeId = mt.ManagedTypeId
+left join LocalizedText lt on cmdb.RuleId = lt.LTStringId and lt.LanguageCode='ENU' and lt.LTStringType=1
+left join RelationshipType rst on cmdb.RelationshipTypeId = rst.RelationshipTypeId
+left join ManagedType mt_rel on cmdb.RelatedTypeId = mt_rel.ManagedTypeId
+'@
+
+   $SQL_SCSM_MS['SQL_EntityTransactionLog_stats']=@'
+Select count(*) as cnt,
+MIN(EntityTransactionLogId) as min_EntityTransactionLogId, MAX(EntityTransactionLogId) as max_EntityTransactionLogId,
+MIN(LastModified) as min_LastModified, MAX(LastModified) as max_LastModified,
+MIN(TimeAdded) as min_TimeAdded, MAX(TimeAdded) as max_TimeAdded
+FROM dbo.EntityTransactionLog
+'@
+
+   $SQL_SCSM_MS['SQL_EntityTransactionLog_stats_by_DiscoverySource']=@'
+Select DiscoverySourceId, count(*) as cnt,
+MIN(EntityTransactionLogId) as min_EntityTransactionLogId, MAX(EntityTransactionLogId) as max_EntityTransactionLogId,
+MIN(LastModified) as min_LastModified, MAX(LastModified) as max_LastModified,
+MIN(TimeAdded) as min_TimeAdded, MAX(TimeAdded) as max_TimeAdded
+FROM dbo.[EntityTransactionLog]
+group by DiscoverySourceId
+'@
 
     foreach($SQL_SCSM_MS_Text in $SQL_SCSM_MS.Keys) {
         SaveSQLResultSetsToFiles $SQLInstance_SCSM $SQLDatabase_SCSM ($SQL_SCSM_MS[$SQL_SCSM_MS_Text]) "$SQL_SCSM_MS_Text.csv"    
