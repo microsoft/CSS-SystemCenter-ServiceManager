@@ -2,6 +2,9 @@ Set-PSDebug -Strict # from now on, all variables must be explicitly declared bef
 $Error.Clear();
 Set-Location $PSScriptRoot
 
+# --  Verify ??? ----
+# git status 
+
 # ---- Create new Release ----
 
 # create a new Release in GitHub repo of the file below:
@@ -11,6 +14,10 @@ Set-Location $PSScriptRoot
  
 
 # ---- Increase version ----
+
+$tag = "v$((Get-Date).ToString(`"yy.MM.dd.HHmm`"))"
+
+
 
 #region Commit next Version
 $parentPath = Split-Path -Path (Get-Location) -Parent
