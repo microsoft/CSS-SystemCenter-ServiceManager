@@ -24,7 +24,7 @@ For more information see the [Code of Conduct FAQ](https://opensource.microsoft.
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
 See the documentation of individual scripts to learn how to contribute:
-https://khusmeno-ms.github.io/CSS-SystemCenter-ServiceManager/
+https://microsoft.github.io/CSS-SystemCenter-ServiceManager/
 
 # Trademarks
 
