@@ -1,0 +1,1 @@
+﻿function GetToolVersion() {'0.0.0.0'}

@@ -1,0 +1,3 @@
+﻿function Collect_SCSMInstallationFilesInfo() {
+    AppendOutputToFileInTargetFolder (Get-ChildItem -Path ((Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\System Center\2010\Service Manager\Setup').InstallDirectory) -Recurse -Force | Select-Object Length, lastwritetimeutc, @{Name="Version";Expression={$_.VersionInfo.ProductVersion}}, FullName | ConvertTo-Csv -NoTypeInformation ) "SCSM_Files.csv"
+}
