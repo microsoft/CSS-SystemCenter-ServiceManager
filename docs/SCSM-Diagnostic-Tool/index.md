@@ -38,4 +38,4 @@ If you want, you can open `Findings.html` which is included in the resulting zip
 
 ## Do you want to contribute to this tool?
 
-[Here]({{ site.GitHubRepoLink }}/scsm-diagnostic-tool) is the GitHub repo.
+[Here]({{ site.GitHubRepoLink }}/SCSM-Diagnostic-Tool) is the GitHub repo.
