@@ -23,8 +23,7 @@ $findingsPS1_FileName = "ShowTheFindings.ps1"
 #getting the result zip path of the Collector (even though the zip file does not exist!)
 $collectorResultZipPath = $resultingZipFile_FullPath
 
-$analyzerVersion = $toolVersion # "1.0.0.9"   
-$minRequiredInputVersion = $toolVersion # "1.0.5.20"
+$analyzerVersion = GetToolVersion
 
 # For accessibility
 $errorForegroundColor="DarkGray"

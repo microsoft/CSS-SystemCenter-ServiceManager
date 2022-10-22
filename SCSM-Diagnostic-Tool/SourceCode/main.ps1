@@ -2,17 +2,13 @@
 
 #region Setting the Script Scope vars
     [string]$scriptFilePath = ""
-    [string]$toolVersion = "0.0.0.1"
     [bool]$debugmode = $false
 
     if ( (dir function:).Name -contains "GetToolVersion" ) { 
         $scriptFilePath = $MyInvocation.PSCommandPath 
-        $toolVersion = GetToolVersion
     }
     else {
-        # this means, we are starting debug in main.ps1 instead of a single big ps1 and therefore ALL functions are NOT loaded yet.
-
-        $toolVersion = Get-Content -Path (Join-Path -Path (Split-Path $PSScriptRoot -Parent) -ChildPath version.txt)
+        # this means, we are starting debug in main.ps1 (typically in elevated ISE) instead of a single big ps1 and therefore ALL functions are NOT loaded yet.
 
         #We want to Debug/Develop in a location other than the Source Code. That's not to clutter within the development folder.
         $localDebugFolder = (Join-Path (Split-Path $PSScriptRoot -Parent) -ChildPath LocalDebug) 

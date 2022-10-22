@@ -2,7 +2,7 @@
 
 #region Collector Initial tasks
 $resultPrefix = "SCSM_DIAG"
-$collectorVersion = $toolVersion #"1.0.5.24"   
+$collectorVersion = GetToolVersion  
 
 $resultFolderPath = Split-Path $scriptFilePath
 $resultDateTime = (Get-Date).ToString("yyyy-MM-dd__HH.mm.ss.fff")
