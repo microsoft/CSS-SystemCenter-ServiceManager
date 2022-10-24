@@ -485,7 +485,13 @@ order by 1,2
 '@
 
    $SQL_SCSM_MS['SQL_CmdbInstanceSubscriptionState']=@'
-select * 
+select 
+ '->CmdbInstanceSubscriptionState cmdb',cmdb.*
+,'->rules r',r.*
+,'->ManagedType mt',mt.*
+,'->LocalizedText lt',lt.*
+,'->RelationshipType rst',rst.*
+,'->ManagedType mt_rel',mt_rel.*
 from CmdbInstanceSubscriptionState cmdb
 left join rules r on cmdb.RuleId = r.RuleId
 left join ManagedType mt on cmdb.TypeId = mt.ManagedTypeId
@@ -503,12 +509,43 @@ FROM dbo.EntityTransactionLog
 '@
 
    $SQL_SCSM_MS['SQL_EntityTransactionLog_stats_by_DiscoverySource']=@'
-Select DiscoverySourceId, count(*) as cnt,
-MIN(EntityTransactionLogId) as min_EntityTransactionLogId, MAX(EntityTransactionLogId) as max_EntityTransactionLogId,
-MIN(LastModified) as min_LastModified, MAX(LastModified) as max_LastModified,
-MIN(TimeAdded) as min_TimeAdded, MAX(TimeAdded) as max_TimeAdded
-FROM dbo.[EntityTransactionLog]
-group by DiscoverySourceId
+select 
+case ds.DiscoverySourceType
+when 0 then 'Workflow'
+when 1 then 'Connector'
+when 2 then 'User'
+when 3 then 'System'
+when 4 then 'ConfigService '
+end "Discover ySource Type"
+,case 
+when ds.DiscoveryRuleId is not null then d.DiscoveryName
+when ds.DiscoverySourceType = 1 then cBME.DisplayName
+when ds.DiscoverySourceType = 2 then '[User]'
+when ds.DiscoverySourceType = 3 then '[System]'
+when ds.DiscoverySourceType = 4 then '[ConfigService]'
+end as "Discovery Source"
+,'->Stats',etlStats.*
+,'->DiscoverySource ds', ds.*
+,'->Discovery d', d.*
+--,'->ManagedType mt', mt.*
+,'->BaseManagedEntity boundBME', boundBME.*
+,'->Connector c', c.*
+,'->BaseManagedEntity cBME', cBME.*
+--,'->*',* 
+from (
+	Select etl.DiscoverySourceId, count(*) as cnt,
+	MIN(etl.EntityTransactionLogId) as min_EntityTransactionLogId, MAX(etl.EntityTransactionLogId) as max_EntityTransactionLogId,
+	MIN(etl.LastModified) as min_LastModified, MAX(etl.LastModified) as max_LastModified,
+	MIN(etl.TimeAdded) as min_TimeAdded, MAX(etl.TimeAdded) as max_TimeAdded
+	FROM EntityTransactionLog etl
+	group by etl.DiscoverySourceId
+) as etlStats
+left join DiscoverySource ds on etlStats.DiscoverySourceId = ds.DiscoverySourceId
+left join Discovery d on ds.DiscoveryRuleId = d.DiscoveryId
+--left join ManagedType mt on ds.DiscoverySourceId = mt.ManagedTypeId
+left join BaseManagedEntity boundBME on ds.BoundManagedEntityId = boundBME.BaseManagedEntityId
+left join Connector c on ds.ConnectorId = c.ConnectorId
+left join BaseManagedEntity cBME on c.BaseManagedEntityId = cBME.BaseManagedEntityId
 '@
 
     foreach($SQL_SCSM_MS_Text in $SQL_SCSM_MS.Keys) {
