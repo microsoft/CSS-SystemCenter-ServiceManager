@@ -1,4 +1,4 @@
-﻿<# TODO: TESTS: 
+<# TODO: TESTS: 
 all files should only have function DECLARATIONS
 Write-Output  should never appear
 Exit should never appear other than in SelfElevate and comments
@@ -85,8 +85,10 @@ function BuildScript($targetBuildFolderName) {
             if (Test-Path $successFilePath) {Remove-Item -Path $successFilePath}        
             Move-Item -Path $invalidFilePath -Destination $successFilePath -Force
 
-            Write-Host "Build SUCCEEDED for Version $currentVersionStr. Result is $successFilePath" -ForegroundColor Yellow
-        }
+            Write-Host "Build SUCCEEDED for Version $currentVersionStr. Result is $successFilePath" -ForegroundColor Yellow           
+            
+            Write-Host "##vso[task.setvariable variable=ReleaseTagValue]v$currentVersionStr"
+        }    
         else {    
             throw "Something wrong happened. Error(s): $Error"
         }
@@ -210,4 +212,4 @@ Set-Location $PSScriptRoot
 
 BuildScript -targetBuildFolderName 'LocalDebug'
 
-Read-Host " "
+# Read-Host " "
