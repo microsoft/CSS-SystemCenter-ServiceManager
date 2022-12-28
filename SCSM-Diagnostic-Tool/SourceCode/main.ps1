@@ -12,6 +12,9 @@
 
         #We want to Debug/Develop in a location other than the Source Code. That's not to clutter within the development folder.
         $localDebugFolder = (Join-Path (Split-Path $PSScriptRoot -Parent) -ChildPath LocalDebug) 
+        if (!(Test-Path $localDebugFolder -PathType Container)) {
+            New-Item -ItemType Directory -Force -Path $localDebugFolder
+        }
         $scriptFilePath = Join-Path $localDebugFolder (Split-Path $PSCommandPath -Leaf)
         Copy-Item -Path $PSCommandPath -Destination $scriptFilePath -Force
 
