@@ -32,10 +32,12 @@ GO
     $SQL_SCSM_MS['SQL_PatchInfo']=@'
      select '__PatchInfo__' tableName,* from [__PatchInfo__]  order by AppliedOn  desc
 '@
-    $SQL_SCSM_MS['SQL_NotificationTemplate']=@'
-SELECT LTValue as "Notification Template Display Name",ot.*
+    $SQL_SCSM_MS['SQL_ObjectTemplate']=@'
+--LTValue is null if no ENU exists
+SELECT LTValue as "Template Display Name",ot.*
 FROM ObjectTemplate ot
 inner join localizedtext lt on ot.ObjectTemplateId=lt.LTStringId and LTStringType=1 and LanguageCode='ENU'
+order by ot.ObjectTemplateName
 '@
     $SQL_SCSM_MS['SQL_WorkflowMinutesBehind_Original'] = @'
 DECLARE @MaxState INT, @MaxStateDate Datetime, @Delta INT, @Language nvarchar(3)
