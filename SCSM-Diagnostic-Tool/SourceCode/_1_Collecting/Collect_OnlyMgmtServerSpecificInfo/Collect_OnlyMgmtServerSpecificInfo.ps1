@@ -331,6 +331,9 @@ select * from RelationshipType order by RelationshipTypeName
 $SQL_SCSM_Shared['SQL_EnumType'] = @'
 select * from EnumType order by EnumTypeName
 '@
+$SQL_SCSM_Shared['SQL_ObjectTemplate'] = @'
+select * from ObjectTemplate order by ObjectTemplateName
+'@
 #endregion 
 #endregion
 
