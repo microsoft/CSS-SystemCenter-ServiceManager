@@ -328,6 +328,9 @@ order by 1,2
 $SQL_SCSM_Shared['SQL_RelationshipType'] = @'
 select * from RelationshipType order by RelationshipTypeName
 '@
+$SQL_SCSM_Shared['SQL_EnumType'] = @'
+select * from EnumType order by EnumTypeName
+'@
 #endregion 
 #endregion
 
