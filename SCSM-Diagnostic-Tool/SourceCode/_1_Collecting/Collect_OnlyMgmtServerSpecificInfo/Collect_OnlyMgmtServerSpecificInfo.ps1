@@ -325,6 +325,9 @@ select LocalizedText.LTValue as UserRoleName,  SUSER_Sname(MemberSID) as Members
 	inner join AzMan_Role_SIDMember rsidm on ara.ID = rsidm.RoleID
 order by 1,2
 '@
+$SQL_SCSM_Shared['SQL_RelationshipType'] = @'
+select * from RelationshipType order by RelationshipTypeName
+'@
 #endregion 
 #endregion
 
