@@ -34,9 +34,9 @@ GO
 '@
     $SQL_SCSM_MS['SQL_ObjectTemplate']=@'
 --LTValue is null if no ENU exists
-SELECT LTValue as "Template Display Name",ot.*
+SELECT LTValue as "Notification Template Display Name",ot.*
 FROM ObjectTemplate ot
-inner join localizedtext lt on ot.ObjectTemplateId=lt.LTStringId and LTStringType=1 and LanguageCode='ENU'
+left join localizedtext lt on ot.ObjectTemplateId=lt.LTStringId and LTStringType=1 and LanguageCode='ENU'
 order by ot.ObjectTemplateName
 '@
     $SQL_SCSM_MS['SQL_WorkflowMinutesBehind_Original'] = @'
