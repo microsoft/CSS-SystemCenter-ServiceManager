@@ -331,6 +331,17 @@ select * from RelationshipType order by RelationshipTypeName
 $SQL_SCSM_Shared['SQL_EnumType'] = @'
 select * from EnumType order by EnumTypeName
 '@
+$SQL_SCSM_Shared['SQL_OnlyNonEnuLocalizedStrings'] = @'
+--find localized strings that have no ENU strings, but have for other languages
+select * from LocalizedText where LTStringId in (
+    select LTStringId
+    from LocalizedText 
+    where LTStringType=1
+    group by LTStringId
+    having sum(case LanguageCode when 'ENU' then 1 else 0 end) = 0
+)
+order by LTValue
+'@
 #endregion 
 #endregion
 
