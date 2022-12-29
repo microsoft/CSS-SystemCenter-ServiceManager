@@ -550,6 +550,12 @@ left join Connector c on ds.ConnectorId = c.ConnectorId
 left join BaseManagedEntity cBME on c.BaseManagedEntityId = cBME.BaseManagedEntityId
 '@
 
+   $SQL_SCSM_MS['SQL_ObjectTemplates_WithMissingLocalizations']=@'
+--show Templates which do not have any localized string which would cause Connector (e.g. Exchange Connector) Wizard to crash (Bug 936430)
+select * from ObjectTemplate ot
+where not exists (select * from LocalizedText lt where ot.ObjectTemplateId = lt.LTStringId and LTStringType=1)
+'@
+
     foreach($SQL_SCSM_MS_Text in $SQL_SCSM_MS.Keys) {
         SaveSQLResultSetsToFiles $SQLInstance_SCSM $SQLDatabase_SCSM ($SQL_SCSM_MS[$SQL_SCSM_MS_Text]) "$SQL_SCSM_MS_Text.csv"    
     }
