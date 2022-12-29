@@ -16,4 +16,5 @@ if (-not (IsSourceScsmMgmtServer) ) {
     Check_GroomingAndPurging
     if ( $SCSM_Version -eq '10.19.1035.101' ) { Check_DelayedWorkflows_2019UR2Only }
     Check_SqlCLRonRegisteredDWSql
+    Check_ObjectTemplates_WithNoLocalizations
 }
