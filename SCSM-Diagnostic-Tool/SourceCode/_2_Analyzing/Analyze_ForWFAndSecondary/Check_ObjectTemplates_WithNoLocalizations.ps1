@@ -9,6 +9,8 @@ This rule checks if Templates exist that do not have any localized string. This 
     $dataRow.SAPCategories = "Console" 
     $dataRow.ProblemSeverity=[ProblemSeverity]::Error
 
+    $WfMinutesBehindIsHigh = $true
+
     $linesIn_SQL_ObjectTemplates_WithMissingLocalizations = ConvertFrom-Csv (GetSanitizedCsv ( GetFileContentInSourceFolder SQL_ObjectTemplates_WithMissingLocalizations.csv ) ) 
 
     if ( $linesIn_SQL_ObjectTemplates_WithMissingLocalizations -eq $null) { 
