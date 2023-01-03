@@ -7,6 +7,11 @@
         return
     }
 
+    if (-not (RulePassed "DW availability") ) {
+        #no need to go further, bcz we couldn't fetch the registered DW/SQL location
+        return
+    }
+
     $linesIn_SQL_sp_configure_FromRegisteredDwSQL = ConvertFrom-Csv  ( GetSanitizedCsv  ( GetFileContentInSourceFolder SQL_sp_configure_FromRegisteredDwSQL.csv ) '"xp_cmdshell' ) 
     [int]$clrEnabledOnRegisteredDwSQL = GetValueFromImportedCsv $linesIn_SQL_sp_configure_FromRegisteredDwSQL "name" "clr enabled" "run_value"
 

@@ -15,5 +15,7 @@ if (-not (IsSourceScsmMgmtServer) ) {
     Check_ConnectorStatus
     Check_GroomingAndPurging
     if ( $SCSM_Version -eq '10.19.1035.101' ) { Check_DelayedWorkflows_2019UR2Only }
-    Check_SqlCLRonRegisteredDWSql
+    
+    Check_RegisteredDW_Availability
+    Check_SqlCLRonRegisteredDWSql  # This rule depends on the outcome of Check_RegisteredDW_Availability, therefore must be called after.
 }
