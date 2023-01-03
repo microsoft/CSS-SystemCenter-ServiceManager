@@ -23,6 +23,7 @@ if (-not (IsSourceAnyScsmMgmtServer)) {
     Check_SqlCLR
     Check_SPNs
     Check_OMSDK_Service
+    Check_LocalOMSDK_Availability
     Check_ConnectedSDKUsers
     Check_TimeDiffBetweenMSAndSQL
 } 
