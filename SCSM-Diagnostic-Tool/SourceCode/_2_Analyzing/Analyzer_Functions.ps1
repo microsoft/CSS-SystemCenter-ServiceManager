@@ -370,7 +370,6 @@ function ParseSqlDate([string]$dateString) {
     [datetime]$result = [datetime]::ParseExact($dateString, "$($sourceDateTimeFormat.ShortDatePattern) $($sourceDateTimeFormat.LongTimePattern)" ,$null)
     $result
 }
-
 function Is4PartVersionValid([string]$inputStr) {
 $result = $true
     try {
@@ -387,4 +386,36 @@ $result = $true
     }
 $result
 }
+
+function GetRuleFromArray([string]$ruleName, [cData[]]$dataRows) {
+    foreach($dataRow in $dataRows) {
+        if ($dataRow.RuleName -eq $ruleName) {
+            return $dataRow
+        }
+    }
+    return $null;
+}
+
+function GetRuleFromPassedRules([string]$ruleName) {
+    GetRuleFromArray $ruleName $Result_OKs
+}
+function GetRuleFromFailedRules([string]$ruleName) {
+    GetRuleFromArray $ruleName $Result_Problems
+}
+
+function RulePassed([string]$ruleName) {
+    if ( (GetRuleFromPassedRules $ruleName) ) {
+        return $true
+    }
+    elseif ( (GetRuleFromFailedRules $ruleName) ) {
+        return $false
+    }
+    else {
+        return $null # Rule has not run yet or such rule is not defined
+    }
+}
+
+
+
+
 #endregion

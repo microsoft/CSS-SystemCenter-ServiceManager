@@ -879,4 +879,16 @@ function Abs($value) {
 function WithThousandSeparators($numValue) {
     "{0:#,##0.##########}" -f $numValue
 }
+function InvokeCommand_AlwaysReturnOutput_ButOnlyWriteErrorToConsole([scriptblock]$scriptBlock) {
+    $vNonSuccess=$null; 
+    $vSuccess=$null; 
+    Invoke-Command -ScriptBlock $scriptBlock -OutVariable vSuccess -ErrorVariable vNonSuccess | Out-Null; 
+    if ($vNonSuccess.Count -eq 0) {
+        $vSuccess
+    } 
+    else {
+        $vNonSuccess
+    };
+}
+ 
  #endregion

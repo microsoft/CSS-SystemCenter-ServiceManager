@@ -15,6 +15,7 @@ if (-not (IsThisAnyScsmMgmtServer)) {
     Collect_ScomAgent
     Collect_SPNs
     Collect_Test_LocalOMSDK
+    Collect_Test_LocalOMSDK_Response
     Collect_ConnectedSDKUsersCount
     Collect_WindowsErrorReporting
 
