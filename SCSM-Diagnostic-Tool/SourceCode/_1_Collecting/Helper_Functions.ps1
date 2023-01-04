@@ -821,8 +821,12 @@ if (-not $noneWording) { $noneWording = "(none)" }
          #}
 
         ForEach ($item in $collection)
-        {            
-            $result +=  $separator + "$($item.DisplayName)"
+        {
+            $valueToDisplay = $item.DisplayName
+            if( $valueToDisplay.Trim().Length -eq 0 ) {
+                $valueToDisplay = $item.Id.ToString()
+            }
+            $result +=  $separator + $valueToDisplay
         }        
     }
     
