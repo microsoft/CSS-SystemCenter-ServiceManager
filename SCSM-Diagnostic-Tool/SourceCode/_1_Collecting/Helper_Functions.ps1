@@ -890,5 +890,44 @@ function InvokeCommand_AlwaysReturnOutput_ButOnlyWriteErrorToConsole([scriptbloc
         $vNonSuccess
     };
 }
- 
+function CalculateCollectorTimings($collectorFolder) {
+    $firstFile = "CollectorVersion.txt"
+    $firstFileFound = $false
+    [datetime]$prevDateTime = [datetime]::MinValue
+
+    $tbl = New-Object System.Data.DataTable "CollectorTimings"
+    $col1 = New-Object System.Data.DataColumn Duration  # This is NOT calculated as File.LastWriteTime-CreationTime. It is the LastWriteTime diff between the current and previous file
+    $col2 = New-Object System.Data.DataColumn EndTime
+    $col3 = New-Object System.Data.DataColumn CreationTime
+    $col4 = New-Object System.Data.DataColumn FileName
+    $tbl.Columns.Add($col1)
+    $tbl.Columns.Add($col2)
+    $tbl.Columns.Add($col3)
+    $tbl.Columns.Add($col4)
+
+    $files = Get-ChildItem -Path $collectorFolder  -Recurse | Sort-Object -Property LastWriteTime 
+    foreach($file in $files) {
+        if ($file.Mode -like 'd*') {continue}
+        if (!$firstFileFound) {
+            if ($file.Name -eq $firstFile) {
+                $firstFileFound = $true
+                $prevDateTime = $file.LastWriteTime
+            }
+            else {
+                continue;
+            }
+        }
+        [timespan]$duration = $file.LastWriteTime - $prevDateTime
+        $prevDateTime = $file.LastWriteTime
+
+        $row = $tbl.NewRow()
+        $row.Duration = $duration.ToString("dd\:hh\:mm\.ss\.fff")
+        $row.CreationTime = $file.CreationTime.ToString("yyyy\-MM\-dd\_\_hh\:mm\.ss\.fff")
+        $row.EndTime = $file.LastWriteTime.ToString("yyyy\-MM\-dd\_\_hh\:mm\.ss\.fff")
+        $row.FileName = $file.Name
+
+         $tbl.Rows.Add($row)
+    }
+    $tbl
+} 
  #endregion
