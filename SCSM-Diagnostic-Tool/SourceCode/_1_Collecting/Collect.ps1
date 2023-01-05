@@ -22,6 +22,7 @@ AppendOutputToFileInTargetFolder ( $collectorVersion ) CollectorVersion.txt
 $PSDefaultParameterValues['out-file:width'] = 2000
 $FormatEnumerationLimit = -1 #prevents truncation of column values if no fit
 $ProgressPreference = 'SilentlyContinue'
+$preFix_SaveTo = "SaveTo_"  # used as a prefix in psJob.Name to indicate that Job Output should be saved to a file name
 #endregion
 
 #region Start Collecting
@@ -32,7 +33,11 @@ Collect_Info
 foreach($psJob in Get-Job) {
     while ( $psJob.State -eq [System.Management.Automation.JobState]::Running ) {
         Start-Sleep -Seconds 1 
-    } 
+    }
+    if ( $psJob.Name.StartsWith($preFix_SaveTo) ) {
+        $saveToFileName = $psJob.Name.Replace($preFix_SaveTo,"")
+        AppendOutputToFileInTargetFolder ( Receive-Job -Job $psJob ) $saveToFileName
+    }
 }
 #endregion
 
