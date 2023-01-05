@@ -969,4 +969,20 @@ function StartProcessAsync($processFileName, $argsToProcess, $outputFileName="")
 
     } -Name $outputFileName -InputObject $jobParams | Out-Null
 }
+
+function StartScriptBlock_Async([scriptblock]$code, $inputObject, [scriptblock]$initializationScript, $outputFileName="") {
+
+    $outputFileName = $outputFileName.Trim()
+    if ($outputFileName.Length -gt 0) {
+        $outputFileName = $preFix_SaveTo + $outputFileName
+    }
+
+    Start-Job -ScriptBlock $code -InputObject $inputObject -Name $outputFileName -InitializationScript $initializationScript | Out-Null
+}
+function GetFunctionDeclaration($functionName) {
+    $result = "function $functionName {`n"
+    $result += ( Get-Command -Name $functionName ).Definition
+    $result += "}`n"
+    $result
+}
  #endregion
