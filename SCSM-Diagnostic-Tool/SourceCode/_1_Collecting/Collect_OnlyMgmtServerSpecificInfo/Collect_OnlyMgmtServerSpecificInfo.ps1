@@ -323,6 +323,8 @@ select LocalizedText.LTValue as UserRoleName,  SUSER_Sname(MemberSID) as Members
 	inner join LocalizedText on Name=LTStringId and LTStringType=1 and LanguageCode='ENU'
 	inner join userrole on Name=UserRoleId
 	inner join AzMan_Role_SIDMember rsidm on ara.ID = rsidm.RoleID
+	inner join Profile p on userrole.ProfileId = p.ProfileId
+where p.IsImplicitProfile = 0
 order by 1,2
 '@
 $SQL_SCSM_Shared['SQL_RelationshipType'] = @'
