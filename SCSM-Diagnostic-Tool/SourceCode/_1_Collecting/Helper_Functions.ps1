@@ -934,4 +934,39 @@ function CalculateCollectorTimings($collectorFolder) {
     }
     $tbl
 } 
+function StartProcessAsync($processFileName, $argsToProcess, $outputFileName="") {
+
+    $outputFileName = $outputFileName.Trim()
+    if ($outputFileName.Length -gt 0) {
+        $outputFileName = $preFix_SaveTo + $outputFileName
+    }
+
+    $jobParams = @($processFileName, $argsToProcess)
+
+    Start-Job -ScriptBlock {
+
+        #region Getting input params
+        #because of:  https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_automatic_variables?view=powershell-5.1#input
+        #and https://docs.microsoft.com/en-us/dotnet/api/system.collections.ienumerator?view=netframework-4.8#remarks
+        if ($input.MoveNext()) { $inputs = $input.Current } else { return }  
+        #endregion
+
+        $processFileName, $argsToProcess = $inputs 
+
+        $pinfo = New-Object System.Diagnostics.ProcessStartInfo
+        $pinfo.FileName = $processFileName
+        $pinfo.Arguments = $argsToProcess
+        $pinfo.RedirectStandardError = $true
+        $pinfo.RedirectStandardOutput = $true
+        $pinfo.UseShellExecute = $false
+        $p = New-Object System.Diagnostics.Process
+        $p.StartInfo = $pinfo
+        $p.Start() | Out-Null
+        $p.WaitForExit()
+        $output = $p.StandardOutput.ReadToEnd()
+        $output += $p.StandardError.ReadToEnd()
+        $output 
+
+    } -Name $outputFileName -InputObject $jobParams | Out-Null
+}
  #endregion
