@@ -36,7 +36,10 @@ foreach($psJob in Get-Job) {
     }
     if ( $psJob.Name.StartsWith($preFix_SaveTo) ) {
         $saveToFileName = $psJob.Name.Replace($preFix_SaveTo,"")
-        AppendOutputToFileInTargetFolder ( Receive-Job -Job $psJob ) $saveToFileName
+
+        $vNonSuccess=""; $vSuccess="";
+        Receive-Job -Job $psJob -OutVariable vSuccess -ErrorVariable vNonSuccess | Out-Null
+        AppendOutputToFileInTargetFolder ($vSuccess + "`n" + $vNonSuccess) $saveToFileName
     }
 }
 #endregion

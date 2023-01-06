@@ -14,7 +14,7 @@
         $initializationScript += GetFunctionDeclaration Invoke-AlternativeSqlCmd_WithTimeout
     $initializationScript += GetFunctionDeclaration AppendOutputToFileInTargetFolder
 
-    $initializationScript = ConvertTo-Scriptblock $initializationScript
+#   $initializationScript = ConvertTo-Scriptblock $initializationScript
     $code = {
 
         if ($input.MoveNext()) { $inputs = $input.Current } else { return }  
@@ -25,7 +25,8 @@
 
     $inputObject = @($SQLInstance_SCSM, $SQLDatabase_SCSM, $resultFolder)
 
-    StartScriptBlock_Async -code $code -initializationScript $initializationScript -inputObject $inputObject
+#    StartScriptBlock_Async -code $code -initializationScript $initializationScript -inputObject $inputObject
+Start_Async -code $code -inputObject $inputObject -initializationScript $initializationScript
 }
 
 function Collect_SCSMUserRoles() {
