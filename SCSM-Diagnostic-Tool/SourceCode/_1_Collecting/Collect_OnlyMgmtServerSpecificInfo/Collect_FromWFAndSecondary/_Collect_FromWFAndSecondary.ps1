@@ -18,7 +18,7 @@ if (-not (IsThisScsmMgmtServer)) {
     Collect_ConnectorEclLogSettings
     Collect_TimeDiffBetweenMSandSQL
     Collect_MPs    
-    Collect_SqlErrorLogFiles
+#    Collect_SqlErrorLogFiles   # can take very long time. 
     Collect_Test_BetweenMSandSQL 
     Collect_Test_BetweenMSandDWMS
 

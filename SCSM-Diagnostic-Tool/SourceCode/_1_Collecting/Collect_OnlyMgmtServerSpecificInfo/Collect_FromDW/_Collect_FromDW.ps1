@@ -15,7 +15,7 @@ if (-not (IsThisScsmDwMgmtServer)) {
     Collect_TimeDiffBetweenDWMSandSQL
     Collect_DW_MPs
     Collect_Test_BetweenDWMSandSQL 
-    Collect_SqlErrorLogFiles_DW
+#    Collect_SqlErrorLogFiles_DW   # can take very long time. 
 
     Collect_SQL_DW_Shared
     Collect_SQL_DWStagingAndConfig
