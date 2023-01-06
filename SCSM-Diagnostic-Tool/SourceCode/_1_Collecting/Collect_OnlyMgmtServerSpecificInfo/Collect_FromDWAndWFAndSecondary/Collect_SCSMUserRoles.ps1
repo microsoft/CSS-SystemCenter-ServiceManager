@@ -1,4 +1,35 @@
-﻿function Collect_SCSMUserRoles() {
+﻿function Collect_SCSMUserRoles_Async() {
+    
+    $initializationScript = ""    
+
+    $initializationScript += GetFunctionDeclaration Collect_SCSMUserRoles
+    $initializationScript += GetFunctionDeclaration Show-AllSelectedNone
+        $initializationScript += @"
+    if (!(Get-Module System.Center.Service.Manager)) {    
+            Import-Module ((Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\System Center\2010\Service Manager\Setup').InstallDirectory +'PowerShell\' +'System.Center.Service.Manager.psd1') -force 
+    }
+"@
+    $initializationScript += GetFunctionDeclaration Try-Invoke-SqlCmd
+        $initializationScript += GetFunctionDeclaration Invoke-AlternativeSqlCmd_WithoutTimeout
+        $initializationScript += GetFunctionDeclaration Invoke-AlternativeSqlCmd_WithTimeout
+    $initializationScript += GetFunctionDeclaration AppendOutputToFileInTargetFolder
+
+#   $initializationScript = ConvertTo-Scriptblock $initializationScript
+    $code = {
+
+        if ($input.MoveNext()) { $inputs = $input.Current } else { return }  
+        $SQLInstance_SCSM, $SQLDatabase_SCSM, $resultFolder = $inputs 
+     
+        Collect_SCSMUserRoles 
+     }
+
+    $inputObject = @($SQLInstance_SCSM, $SQLDatabase_SCSM, $resultFolder)
+
+#    StartScriptBlock_Async -code $code -initializationScript $initializationScript -inputObject $inputObject
+Start_Async -code $code -inputObject $inputObject -initializationScript $initializationScript
+}
+
+function Collect_SCSMUserRoles() {
 # SCSM User Roles  with ALL Details
     $roles = Get-SCSMUserRole | Sort-Object -Property DisplayName
     $tbl = New-Object System.Data.DataTable "UserRoles"

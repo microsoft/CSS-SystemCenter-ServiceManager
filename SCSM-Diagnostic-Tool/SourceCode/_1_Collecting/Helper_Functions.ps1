@@ -840,7 +840,7 @@ Param(
     Mandatory = $true,
     ParameterSetName = '',
     ValueFromPipeline = $true)]
-    [string]$string
+    [string]$string=" "
 )
     $scriptBlock = [scriptblock]::Create($string)
     return $scriptBlock
@@ -934,7 +934,38 @@ function CalculateCollectorTimings($collectorFolder) {
     }
     $tbl
 } 
+
 function StartProcessAsync($processFileName, $argsToProcess, $outputFileName="") {
+
+#Start_Async -processFileName $processFileName -argsToProcess $argsToProcess -outputFileName $outputFileName
+
+    $code = {
+        #region Getting input params
+        #because of:  https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_automatic_variables?view=powershell-5.1#input
+        #and https://docs.microsoft.com/en-us/dotnet/api/system.collections.ienumerator?view=netframework-4.8#remarks
+        if ($input.MoveNext()) { $inputs = $input.Current } else { return }  
+        #endregion
+
+        $processFileName, $argsToProcess = $inputs 
+
+        $pinfo = New-Object System.Diagnostics.ProcessStartInfo
+        $pinfo.FileName = $processFileName
+        $pinfo.Arguments = $argsToProcess
+        $pinfo.RedirectStandardError = $true
+        $pinfo.RedirectStandardOutput = $true
+        $pinfo.UseShellExecute = $false
+        $p = New-Object System.Diagnostics.Process
+        $p.StartInfo = $pinfo
+        $p.Start() | Out-Null
+        $p.WaitForExit()
+        $output = $p.StandardOutput.ReadToEnd()
+        $output += $p.StandardError.ReadToEnd()
+        $output 
+    }
+    $jobParams = @($processFileName, $argsToProcess)
+    Start_Async -code $code -inputObject $jobParams -outputFileName $outputFileName
+
+return
 
     $outputFileName = $outputFileName.Trim()
     if ($outputFileName.Length -gt 0) {
@@ -969,4 +1000,126 @@ function StartProcessAsync($processFileName, $argsToProcess, $outputFileName="")
 
     } -Name $outputFileName -InputObject $jobParams | Out-Null
 }
+function StartScriptBlock_Async([scriptblock]$code, $inputObject, [scriptblock]$initializationScript, $outputFileName="") {
+
+Start_Async -code $code -inputObject $inputObject -initializationScript $initializationScript -outputFileName $outputFileName
+return
+
+    $outputFileName = $outputFileName.Trim()
+    if ($outputFileName.Length -gt 0) {
+        $outputFileName = $preFix_SaveTo + $outputFileName
+    }
+
+    Start-Job -ScriptBlock $code -InputObject $inputObject -Name $outputFileName -InitializationScript $initializationScript | Out-Null
+}
+
+function GetFunctionDeclaration($functionName) {
+    $result = "function $functionName {`n"
+    $result += ( Get-Command -Name $functionName ).Definition
+    $result += "}`n"
+    $result
+}
+
+function Start_Async {
+    [CmdletBinding()]
+    param (
+
+        [Parameter(
+            Mandatory = $true,
+            ParameterSetName = 'Program',
+            HelpMessage = 'Enter the path to the Program executable')
+        ]
+        [string]$processFileName,
+
+        [Parameter(
+            Mandatory = $false,
+            ParameterSetName = 'Program',
+            HelpMessage = 'Enter arguments (as a string array) to pass to the Program')
+        ]
+        [string[]]$argsToProcess,
+
+
+        [Parameter(
+            Mandatory = $true,
+            ParameterSetName = 'ScriptBlock',
+            HelpMessage = 'Enter the PS script block to run')
+        ]
+        [scriptblock]$code,
+
+        [Parameter(
+            Mandatory = $false,
+            ParameterSetName = 'ScriptBlock',
+            HelpMessage = 'Enter an array (usually of strings) to be used inside the Script Block')
+        ]
+        $inputObject,
+
+        [Parameter(
+            Mandatory = $false,
+            ParameterSetName = 'ScriptBlock',
+            HelpMessage = 'Enter the function names refered in the script block')
+        ]
+        [string[]]$initializationScript=@(),
+
+        [Parameter(
+            Mandatory = $false,
+            ParameterSetName = 'Program',
+            HelpMessage = 'Enter the file name into which the outputs will be appended')
+        ]
+        [Parameter(
+            Mandatory = $false,
+            ParameterSetName = 'ScriptBlock',
+            HelpMessage = 'Enter the file name into which the outputs will be appended')
+        ]
+        [string]$outputFileName=""
+    )
+
+    $outputFileName = $outputFileName.Trim()
+    if ($outputFileName.Length -gt 0) {
+        $outputFileName = $preFix_SaveTo + $outputFileName
+    }
+
+    if ($processFileName) {
+
+        $jobParams = @($processFileName, $argsToProcess)
+
+        Start-Job -ScriptBlock {
+
+            #region Getting input params
+            #because of:  https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_automatic_variables?view=powershell-5.1#input
+            #and https://docs.microsoft.com/en-us/dotnet/api/system.collections.ienumerator?view=netframework-4.8#remarks
+            if ($input.MoveNext()) { $inputs = $input.Current } else { return }  
+            #endregion
+
+            $processFileName, $argsToProcess = $inputs 
+
+            $pinfo = New-Object System.Diagnostics.ProcessStartInfo
+            $pinfo.FileName = $processFileName
+            $pinfo.Arguments = $argsToProcess
+            $pinfo.RedirectStandardError = $true
+            $pinfo.RedirectStandardOutput = $true
+            $pinfo.UseShellExecute = $false
+            $p = New-Object System.Diagnostics.Process
+            $p.StartInfo = $pinfo
+            $p.Start() | Out-Null
+            $p.WaitForExit()
+            $output = $p.StandardOutput.ReadToEnd()
+            $output += $p.StandardError.ReadToEnd()
+            $output 
+
+        } -Name $outputFileName -InputObject $jobParams | Out-Null
+    }
+    else {
+        [string]$initializationScriptAsString = if ($initializationScript) {
+            [string]::Join("", $initializationScript)
+        }
+        else {
+            " "
+        }
+        [scriptblock]$initializationScriptAsScriptBlock = ConvertTo-Scriptblock ( $initializationScriptAsString )
+        Start-Job -ScriptBlock $code -InputObject $inputObject -Name $outputFileName -InitializationScript $initializationScriptAsScriptBlock | Out-Null
+    
+    }
+
+}
+
  #endregion

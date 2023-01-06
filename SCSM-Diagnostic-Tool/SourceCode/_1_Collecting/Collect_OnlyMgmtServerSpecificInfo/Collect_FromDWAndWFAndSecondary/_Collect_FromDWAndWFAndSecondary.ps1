@@ -27,5 +27,5 @@ if (-not (IsThisAnyScsmMgmtServer)) {
     Collect_OMTraceFiles
 
     Collect_SCSMRunAsAccounts
-    Collect_SCSMUserRoles
+    Collect_SCSMUserRoles_Async
 }
