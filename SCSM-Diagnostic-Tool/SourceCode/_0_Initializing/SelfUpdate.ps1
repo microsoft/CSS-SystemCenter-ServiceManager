@@ -5,33 +5,15 @@ function SelfUpdate() {
 
         if ($sgn.Status -ne [System.Management.Automation.SignatureStatus]::Valid) { return; }
         if ($sgn.SignerCertificate.Subject -notlike 'CN=Microsoft Corporation, *') { return; }
-
-        $tmpContentFile = $scriptFilePath + ".tmp"
-        $source = 'https://github.com/microsoft/CSS-SystemCenter-ServiceManager/releases/latest/download/SCSM-Diagnostic-Tool.ps1'       
-        $rsp = Invoke-WebRequest -Uri $source -UseBasicParsing -TimeoutSec 5 -OutFile $tmpContentFile -PassThru -ErrorAction Stop
-        if ($rsp.StatusCode -ne 200) { return }
-
-        $reader = [System.IO.File]::OpenText($tmpContentFile)
-        $newVersionStr =  while($null -ne ($line = $reader.ReadLine())) { 
-            if ( $line.Trim() -like 'function GetToolVersion()*' ) {
-                $line 
-                break
-            }   
-        }
-        $reader.Close()
         
-        $newVersionStr = $newVersionStr.Trim().Replace("function GetToolVersion() {'","").Replace("'}","").Trim()
-
+        $uriApi = "https://api.github.com/repos/microsoft/css-systemcenter-servicemanager/releases/latest"
+        $newVersionStr = (Invoke-WebRequest -Uri $uriApi -UseBasicParsing -TimeoutSec 3 -ErrorAction Stop | ConvertFrom-Json).tag_name.Replace("v","")
         $newVersion = New-Object version -ArgumentList $newVersionStr
+
         $currentVersion = New-Object version -ArgumentList (GetToolVersion)
         if ($newVersion -le $currentVersion) { return }
 
-        Copy-Item -Path $tmpContentFile -Destination $scriptFilePath -Force | Out-Null
-        
-    } catch {}
-    finally {
-        try { 
-            if (Test-Path -Path ($scriptFilePath + ".tmp") ) { Remove-Item -Path ($scriptFilePath + ".tmp") -Force }  
-        } catch {}   
-    }
+        $uriRelease = 'https://github.com/microsoft/CSS-SystemCenter-ServiceManager/releases/latest/download/SCSM-Diagnostic-Tool.ps1'
+        Invoke-WebRequest -Uri $uriRelease -UseBasicParsing -TimeoutSec 5 -OutFile $scriptFilePath -PassThru -ErrorAction Stop        
+    } catch {}    
 }
