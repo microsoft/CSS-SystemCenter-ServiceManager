@@ -7,18 +7,8 @@ function SelfUpdate() {
         if ($sgn.SignerCertificate.Subject -notlike 'CN=Microsoft Corporation, *') { return; }
 
         $tmpContentFile = $scriptFilePath + ".tmp"
-        $rsp = $null
-        try {
-            $source = 'https://github.com/microsoft/CSS-SystemCenter-ServiceManager/releases/latest/download/SCSM-Diagnostic-Tool.ps1'       
-            $rsp = Invoke-WebRequest -Uri $source -UseBasicParsing -TimeoutSec 5 -OutFile $tmpContentFile -PassThru -ErrorAction Stop
-        }
-        catch {
-            try { 
-                if (Test-Path -Path $tmpContentFile) { Remove-Item -Path $tmpContentFile -Force } 
-            } catch {}
-            return
-        }
-
+        $source = 'https://github.com/microsoft/CSS-SystemCenter-ServiceManager/releases/latest/download/SCSM-Diagnostic-Tool.ps1'       
+        $rsp = Invoke-WebRequest -Uri $source -UseBasicParsing -TimeoutSec 5 -OutFile $tmpContentFile -PassThru -ErrorAction Stop
         if ($rsp.StatusCode -ne 200) { return }
 
         $reader = [System.IO.File]::OpenText($tmpContentFile)
@@ -37,7 +27,11 @@ function SelfUpdate() {
         if ($newVersion -le $currentVersion) { return }
 
         Copy-Item -Path $tmpContentFile -Destination $scriptFilePath -Force | Out-Null
-
-        if (Test-Path -Path $tmpContentFile) { Remove-Item -Path $tmpContentFile -Force } 
+        
     } catch {}
+    finally {
+        try { 
+            if (Test-Path -Path ($scriptFilePath + ".tmp") ) { Remove-Item -Path ($scriptFilePath + ".tmp") -Force }  
+        } catch {}   
+    }
 }
