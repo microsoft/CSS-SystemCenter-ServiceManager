@@ -1,6 +1,6 @@
 ﻿function Collect_Processes() {
     if ( $PSVersionTable.PSVersion.Major -ge 3 ) { 
-        $processWithAllInfo = Get-Process -IncludeUserName | ? {$_.Id -ne 0 }| select *,CurrentCPU 
+        $processWithAllInfo = Get-Process -IncludeUserName | ? {$_.Id -ne 0 } | Select-Object -Property *,CurrentCPU -ExcludeProperty Modules 
     }
     else {
         $processWithAllInfo = Get-Process | ? {$_.Id -ne 0 }| select *,CurrentCPU 
