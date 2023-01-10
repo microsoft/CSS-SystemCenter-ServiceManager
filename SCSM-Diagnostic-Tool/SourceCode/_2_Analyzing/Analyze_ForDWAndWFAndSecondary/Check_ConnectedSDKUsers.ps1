@@ -15,7 +15,7 @@
 
     if ( $actualSDKClientConnections -le $maxAllowedSDKClientConnectionsPerSDKService ) { $Result_OKs += $dataRow }
     else {        
-        $dataRow.RuleResult += "<br/>Can be investigated further in $(CollectorLink netstat_abof.txt).<br/>$(IgnoreRuleIfText) if Performance of the SDK Service is NOT the main issue."
+        $dataRow.RuleResult += "<br/>Can be investigated further in $(CollectorLink netstat_abof.txt).<br/>$(IgnoreRuleIfText) Performance of the SDK Service is NOT the main issue."
         $Result_Problems += $dataRow
     }
 }

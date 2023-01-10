@@ -24,7 +24,7 @@ This rule checks if workflows are lagging for more than $tolerance_MinutesBehind
     }   
     else {        
         $dataRow.RuleResult = @" 
-        Looks like workflows are lagging for more than $max_MinutesBehind minutes. $(IgnoreRuleIfText) if a same 'lagging' rule exists in $(CollectorLink SQL_WorkflowMinutesBehind_Original.csv) with a lower Minutes Behind value.
+        Looks like workflows are lagging for more than $max_MinutesBehind minutes. $(IgnoreRuleIfText) a same 'lagging' rule exists in $(CollectorLink SQL_WorkflowMinutesBehind_Original.csv) with a lower Minutes Behind value.
 "@
         $Result_Problems += $dataRow
     } 
