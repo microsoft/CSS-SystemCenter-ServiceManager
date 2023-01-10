@@ -1,8 +1,8 @@
 function SelfUpdate() {
-
     try {
-        $sgn = Get-AuthenticodeSignature $scriptFilePath
+        if (IsRunningAsElevated) { return; }
 
+        $sgn = Get-AuthenticodeSignature $scriptFilePath
         if ($sgn.Status -ne [System.Management.Automation.SignatureStatus]::Valid) { return; }
         if ($sgn.SignerCertificate.Subject -notlike 'CN=Microsoft Corporation, *') { return; }
         
@@ -14,6 +14,6 @@ function SelfUpdate() {
         if ($newVersion -le $currentVersion) { return }
 
         $uriRelease = 'https://github.com/microsoft/CSS-SystemCenter-ServiceManager/releases/latest/download/SCSM-Diagnostic-Tool.ps1'
-        Invoke-WebRequest -Uri $uriRelease -UseBasicParsing -TimeoutSec 5 -OutFile $scriptFilePath -PassThru -ErrorAction Stop        
+        Invoke-WebRequest -Uri $uriRelease -UseBasicParsing -TimeoutSec 5 -OutFile $scriptFilePath -ErrorAction Stop        
     } catch {}    
 }

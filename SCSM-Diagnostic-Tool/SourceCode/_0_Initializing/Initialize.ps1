@@ -1,6 +1,6 @@
 ﻿function Initialize() {
 
-    SelfUpdate #TODO
+    SelfUpdate 
 
     SelfElevate
     
