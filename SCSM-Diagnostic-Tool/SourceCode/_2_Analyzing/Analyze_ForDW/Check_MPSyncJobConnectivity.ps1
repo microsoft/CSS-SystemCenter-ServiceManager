@@ -11,7 +11,7 @@ $linesIn_ForMPSyncJob_Telnet_FromDW_ToSMSDK = GetFileContentInSourceFolder ForMP
 
     if ( $canMPSyncJobConnect ) { $Result_OKs += $dataRow }   
     else {        
-        $dataRow.RuleResult = "Looks like TCP port 5724 test failed. Check in $(CollectorLink 'ForMPSyncJob_Telnet_FromDW_ToSMSDK.txt'). $(IgnoreRuleIfText) if MPSyncJob is not needed, maybe like in FIM/MIM."
+        $dataRow.RuleResult = "Looks like TCP port 5724 test failed. Check in $(CollectorLink 'ForMPSyncJob_Telnet_FromDW_ToSMSDK.txt'). $(IgnoreRuleIfText) MPSyncJob is not needed, maybe like in FIM/MIM."
         $Result_Problems += $dataRow
     }    
 }
