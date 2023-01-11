@@ -1,3 +1,3 @@
 ﻿function Collect_ProgramsInfo() {
-    AppendOutputToFileInTargetFolder (Get-WmiObject -Class Win32_Product | Select-Object Version, Name, InstallDate ) "ProgramVersions.txt"
+    Start_Async -code { Get-WmiObject -Class Win32_Product | Select-Object Version, Name, InstallDate | ft } -outputFileName "ProgramVersions.txt" 
 }
