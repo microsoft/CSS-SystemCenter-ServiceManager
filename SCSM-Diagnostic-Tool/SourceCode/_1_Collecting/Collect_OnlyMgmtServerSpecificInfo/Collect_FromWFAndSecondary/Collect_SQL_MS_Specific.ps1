@@ -556,6 +556,9 @@ select * from ObjectTemplate ot
 where not exists (select * from LocalizedText lt where ot.ObjectTemplateId = lt.LTStringId and LTStringType=1)
 '@
 
+   $SQL_SCSM_MS['SQL_fn_GetEntityChangeLogGroomingWatermark']=@'
+select dbo.fn_GetEntityChangeLogGroomingWatermark()
+'@
     foreach($SQL_SCSM_MS_Text in $SQL_SCSM_MS.Keys) {
         SaveSQLResultSetsToFiles $SQLInstance_SCSM $SQLDatabase_SCSM ($SQL_SCSM_MS[$SQL_SCSM_MS_Text]) "$SQL_SCSM_MS_Text.csv"    
     }
