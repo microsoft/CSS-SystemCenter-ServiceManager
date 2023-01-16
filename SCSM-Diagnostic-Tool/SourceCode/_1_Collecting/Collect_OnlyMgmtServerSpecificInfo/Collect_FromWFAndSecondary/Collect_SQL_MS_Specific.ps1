@@ -130,7 +130,7 @@ max(Delta) as Delta,min([Minutes Behind]) as [Minutes Behind],
 [MP Rule Name], [Source Class Name], RuleId 
 from #tmp
 group by [Display Name], [MP Rule Name], [Source Class Name], RuleId
-order by 4
+order by 4 desc
 '@
     $SQL_SCSM_MS['SQL_Queues'] = @'     
 select dsv.DisplayName
