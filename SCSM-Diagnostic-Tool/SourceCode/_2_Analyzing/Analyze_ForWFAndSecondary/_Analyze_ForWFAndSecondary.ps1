@@ -14,7 +14,7 @@ if (-not (IsSourceScsmMgmtServer) ) {
     Check_WorkflowsMinutesBehind
     Check_ConnectorStatus
     Check_GroomingAndPurging
-    if ( $SCSM_Version -eq '10.19.1035.101' ) { Check_DelayedWorkflows_2019UR2Only }
+    if ( $SCSM_Version -eq '10.19.1035.101' -or $SCSM_Version -eq '7.5.7487.231') { Check_DelayedWorkflows_2019UR2Only_2016UR10Only }
     Check_RegisteredDW_Availability
     Check_SqlCLRonRegisteredDWSql  # This rule depends on the outcome of Check_RegisteredDW_Availability, therefore must be called after.
     Check_ObjectTemplates_WithNoLocalizations
