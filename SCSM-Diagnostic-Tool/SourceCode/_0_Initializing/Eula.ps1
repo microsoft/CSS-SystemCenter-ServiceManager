@@ -119,6 +119,8 @@ Microsoft Diagnostic Scripts and Utilities\par
 
 function ShowEULAIfNeeded()
 {
+    if ($Script:MyInvocation.UnboundArguments.Contains("-acceptEula")) { return $true }
+
 	$eulaRegPath = "HKCU:Software\Microsoft\SCSM-Diagnostic-Tool\"
 	$eulaValue = "EulaAcceptDate"
 
