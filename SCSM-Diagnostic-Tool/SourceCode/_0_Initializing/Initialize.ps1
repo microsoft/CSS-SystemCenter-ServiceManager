@@ -1,8 +1,8 @@
 ﻿function Initialize() {
 
-    SelfUpdate 
+    $versionUpdated = SelfUpdate 
 
-    SelfElevate
+    SelfElevate $versionUpdated
     
     #region EULA
     if (-not (IsEulaAccepted)) {
