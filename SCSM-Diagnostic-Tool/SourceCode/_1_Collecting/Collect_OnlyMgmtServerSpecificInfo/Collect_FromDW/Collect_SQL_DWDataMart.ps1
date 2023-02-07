@@ -5,7 +5,7 @@
     select etl.GetConfigurationInfo('dwmaintenance.grooming', 'RetentionPeriodInMinutes.Default')/60/24 as "DWDatamart data retention in days",etl.GetConfigurationInfo('dwmaintenance.grooming', 'RetentionPeriodInMinutes.Default')/60/24/365 as "DWDatamart data retention in years"
 '@
     $SQL_SCSM_DWDM['SQL_DWFactConstraintsIssue_DWDatamart']=$SQL_DWFactConstraintsIssue
-    $SQL_SCSM_DWDM['SQL_DWFactConstraintsIssue_DWDatamart_ForDebugging']=$SQL_DWFactConstraintsIssue_ForDebugging
+#    $SQL_SCSM_DWDM['SQL_DWFactConstraintsIssue_DWDatamart_ForDebugging']=$SQL_DWFactConstraintsIssue_ForDebugging
     $SQL_SCSM_DWDM['SQL_FKIssuesInDW_DWDatamart']=$SQL_DWFKIssues
     $SQL_SCSM_DWDM['SQL_DWFactEntityUpgradeIssue_DWDataMart']=$SQL_DWFactEntityUpgradeIssue
     $SQL_SCSM_DWDM['SQL_DWEtlConfiguration_DWDataMart']=$SQL_DWEtlConfiguration

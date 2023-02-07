@@ -3,7 +3,7 @@
         $SQL_SCSM_DWCMDM =@{}
         $SQL_SCSM_DWCMDM['SQL_TableSizeInfo_CMDWDataMart']=$SQL_SCSM_Shared['SQL_TableSizeInfo']
         $SQL_SCSM_DWCMDM['SQL_DWFactConstraintsIssue_CMDWDatamart']=$SQL_DWFactConstraintsIssue
-        $SQL_SCSM_DWCMDM['SQL_DWFactConstraintsIssue_CMDWDatamart_ForDebugging']=$SQL_DWFactConstraintsIssue_ForDebugging
+#        $SQL_SCSM_DWCMDM['SQL_DWFactConstraintsIssue_CMDWDatamart_ForDebugging']=$SQL_DWFactConstraintsIssue_ForDebugging
         $SQL_SCSM_DWCMDM['SQL_FKIssuesInDW_CMDWDatamart']=$SQL_DWFKIssues
         $SQL_SCSM_DWCMDM['SQL_DWFactEntityUpgradeIssue_CMDWDataMart']=$SQL_DWFactEntityUpgradeIssue
         $SQL_SCSM_DWCMDM['SQL_DWEtlConfiguration_CMDWDataMart']=$SQL_DWEtlConfiguration
