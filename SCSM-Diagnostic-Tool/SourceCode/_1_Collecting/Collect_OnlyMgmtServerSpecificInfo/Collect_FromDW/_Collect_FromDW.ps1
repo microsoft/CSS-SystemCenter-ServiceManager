@@ -10,7 +10,7 @@ if (-not (IsThisScsmDwMgmtServer)) {
     Collect_SetDWRoleFound
     Collect_DWJobs    
     Collect_DWJobs_Last5   
-    Collect_DWJobSchedules
+    Collect_DWJobSchedules_Async
     Collect_DWEnvironmentInfo
     Collect_TimeDiffBetweenDWMSandSQL
     Collect_DW_MPs
