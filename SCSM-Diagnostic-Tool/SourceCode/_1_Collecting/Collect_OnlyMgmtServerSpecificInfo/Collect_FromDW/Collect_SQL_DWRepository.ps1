@@ -2,7 +2,7 @@
     $SQL_SCSM_DWRep =@{}
     $SQL_SCSM_DWRep['SQL_TableSizeInfo_DWRepository']=$SQL_SCSM_Shared['SQL_TableSizeInfo']
     $SQL_SCSM_DWRep['SQL_DWFactConstraintsIssue_DWRep']=$SQL_DWFactConstraintsIssue
-    $SQL_SCSM_DWRep['SQL_DWFactConstraintsIssue_DWRep_ForDebugging']=$SQL_DWFactConstraintsIssue_ForDebugging
+#    $SQL_SCSM_DWRep['SQL_DWFactConstraintsIssue_DWRep_ForDebugging']=$SQL_DWFactConstraintsIssue_ForDebugging
     $SQL_SCSM_DWRep['SQL_DWFactEntityUpgradeIssue_DWRep']=$SQL_DWFactEntityUpgradeIssue
     $SQL_SCSM_DWRep['SQL_DWEtlConfiguration_DWRep']=$SQL_DWEtlConfiguration
     $SQL_SCSM_DWRep['SQL_DWEtlWarehouseEntityGroomingHistory_DWRep']=$SQL_DWEtlWarehouseEntityGroomingHistory
