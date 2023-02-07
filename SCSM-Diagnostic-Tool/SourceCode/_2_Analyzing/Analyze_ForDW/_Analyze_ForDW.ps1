@@ -32,11 +32,12 @@ if (-not (IsSourceScsmDwMgmtServer)) {
     #endregion
 
     Check_DWJobStatus_ExcludingCubes
-    Check_DWJobSchedules_ExcludingCubes
+    Check_DWJobSchedules_ExcludingCubesAndMPSync
     Check_CubeJobsStatusAndSchedule
     Check_MPSyncJob_Progress
     Check_DWMPDeploymentStatus
     Check_DWData_IsUpTodate
     Check_DateFormatOfExtractJobsSQLAccount
     Check_MPSyncJobConnectivity
+    Check_MPSyncJobSchedule
 }
