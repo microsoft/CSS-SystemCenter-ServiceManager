@@ -298,24 +298,12 @@ ORDER BY table_name
     ,index_name;
 '@
 $SQL_SCSM_Shared['SQL_BackupInfo'] = @'
-SELECT 
-    database_name
-    , case type
-	when 'D' then 'Database'
-	when 'I' then 'Differential database'
-	when 'L' then 'Log'
-	when 'F' then 'File or filegroup'
-	when 'G' then 'Differential file'
-	when 'P' then 'Partial'
-	when 'Q' then 'Differential partial'
-	else '(unknown)'
-	 end AS BackupType
-    , MAX(backup_start_date) AS LastBackupDate
-    , GETDATE() AS CurrentDate
-    , DATEDIFF(DD,MAX(backup_start_date),GETDATE()) AS DaysSinceBackup
-FROM msdb.dbo.backupset BS JOIN master.dbo.sysdatabases SD ON BS.database_name = SD.[name]
-GROUP BY database_name, type 
-ORDER BY database_name, type
+SELECT d.[name] as database_name, MAX(backup_start_date) AS LastBackupDate, DATEDIFF(HOUR, MAX(backup_start_date), GETDATE())/24 AS DaysSinceBackup
+FROM sys.databases d
+	inner join msdb.dbo.backupset bs ON BS.database_name = d.[name] 
+where type='D' 	
+GROUP BY d.[name]
+ORDER BY 1
 '@
 $SQL_SCSM_Shared['SQL_Get-SCSMUserRole'] = @'
 select LocalizedText.LTValue as UserRoleName,  SUSER_Sname(MemberSID) as MembersInRole
