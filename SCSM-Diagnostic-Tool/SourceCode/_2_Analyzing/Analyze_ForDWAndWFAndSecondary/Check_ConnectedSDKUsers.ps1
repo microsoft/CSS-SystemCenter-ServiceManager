@@ -5,7 +5,7 @@
     $maxAllowedSDKClientConnectionsPerSDKService = 30
 
     $dataRow = GetEmptyResultRow
-    $dataRow.RuleName="Client connections to SDK Service"
+    $dataRow.RuleName="Client connections count to SDK Service"
     $dataRow.RuleDesc="Ideally the OMSDK service should not handle more than $maxAllowedSDKClientConnectionsPerSDKService SDK Client connections. An SDK Client can be Console, Portal, PowerShell, Runbook etc. $(CollectorLink ConnectedSDKUsers.txt)"
     $dataRow.RuleResult="Actual SDK Client connections count: $($actualSDKClientConnections.ToString())"
     if (IsSourceScsmMgmtServer) { $dataRow.SAPCategories = "s*\*perf*" , "wf*\*perf*" }
