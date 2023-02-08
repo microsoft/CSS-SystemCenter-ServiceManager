@@ -30,7 +30,7 @@ $(CollectorLink OperationsManager.evtx 'OperationsManager event log')</pre>
             $Result_OKs += $dataRow 
         }
         else {    
-            $dataRow.RuleResult = "The 'Schedule' of MPSyncJob is disabled. $(IgnoreRuleIfText) MPSyncJob has been disabled intentionally according to the first bullet listed at $(GetAnchorForExternal 'https://techcommunity.microsoft.com/t5/system-center-blog/system-center-service-manager-scsm-authoring-management-pack/ba-p/351868' 'this article')"
+            $dataRow.RuleResult = "The 'Schedule' of MPSyncJob is disabled. $(IgnoreRuleIfText) MPSyncJob has been disabled intentionally according to the first bullet listed at $(GetAnchorForExternal 'https://techcommunity.microsoft.com/t5/system-center-blog/system-center-service-manager-scsm-authoring-management-pack/ba-p/351868' 'this article'). Otherwise, MP changes won't be synced to the DW until MPSyncJob is manually started."
             $Result_Problems += $dataRow 
         }
     }
