@@ -25,6 +25,13 @@ from [dbo].[MT_System$WorkItem$ChangeRequest]
 group by datepart(year,CreatedDate_6258638D_B885_AB3C_E316_D00782B8F688),datepart(month,CreatedDate_6258638D_B885_AB3C_E316_D00782B8F688)
 order by 2,3
 '@
+    $SQL_FromSMDB['SQL_FromSMDB_DataRetention']=@'
+SELECT gc.RetentionPeriodInMinutes/60/24 as Days, mt.TypeName
+FROM [dbo].[MT_GroomingConfiguration] gc
+	inner join ManagedType mt on gc.TargetId=mt.ManagedTypeId
+where StoredProcedure='p_GroomManagedEntity'
+order by 1
+'@
     foreach($SQL_FromSMDB_Text in $SQL_FromSMDB.Keys) {        
         SaveSQLResultSetsToFiles $($SMDBInfo.SQLInstance_SMDB) $($SMDBInfo.SQLDatabase_SMDB) ( $SQL_FromSMDB[$SQL_FromSMDB_Text] ) "$SQL_FromSMDB_Text.csv"    
     }
