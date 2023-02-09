@@ -20,7 +20,7 @@ CopyFileToTargetFolder $scriptFilePath
 AppendOutputToFileInTargetFolder ( $collectorVersion ) CollectorVersion.txt
 
 try {
-    $internetAvailable = Invoke-WebRequest -Uri 'https://github.com' -UseBasicParsing -TimeoutSec 5 -ErrorAction Stop
+    $internetAvailable = Invoke-WebRequest -Uri 'https://www.microsoft.com' -UseBasicParsing -TimeoutSec 5 -ErrorAction Stop
     if ($internetAvailable -and $internetAvailable.StatusCode -eq 200) {
         AppendOutputToFileInTargetFolder 'Yes' InternetAvailable.txt
     }

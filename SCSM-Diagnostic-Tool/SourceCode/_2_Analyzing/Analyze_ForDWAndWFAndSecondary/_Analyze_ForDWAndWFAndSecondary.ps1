@@ -7,15 +7,6 @@ if (-not (IsSourceAnyScsmMgmtServer)) {
 
  #Rules for All SCSM mgmt servers => WF + Secondary + DW
 
-#region Not a rule: Get DB info to be used in subsequent rules. This applies to ServiceManager and DWStagingAndConfig as well.
-    $linesIn_regValues = GetFileContentInSourceFolder SystemCenter.regValues.txt
-
-    $MainSQL_InstanceName = GetFirstLineThatStartsWith $linesIn_regValues '"DatabaseServerName"="'    
-    $MainSQL_InstanceName = $MainSQL_InstanceName.Split("=")[1].Replace('"','')
-    $MainSQL_DbName = GetFirstLineThatStartsWith $linesIn_regValues '"DatabaseName"="'
-    $MainSQL_DbName = $MainSQL_DbName.Split("=")[1].Replace('"','')
-#endregion
-
     Check_CollectorsSqlPermission
     Check_MgmtServerHW
     Check_SQLServerHW

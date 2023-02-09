@@ -498,6 +498,49 @@ New-Variable -Name Result_OKs -Value @() -Force -Option AllScope
     #endregion 
 [cSAPCategoryHelper]::SAPCategoryList = $SAPCategories
 
+    #region setting vars to be used in all rules
+    if (IsSourceAnyScsmMgmtServer) {
+        #region This applies to ServiceManager and DWStagingAndConfig as well.
+        $linesIn_regValues = GetFileContentInSourceFolder SystemCenter.regValues.txt
+
+        $MainSQL_InstanceName = GetFirstLineThatStartsWith $linesIn_regValues '"DatabaseServerName"="'    
+        $MainSQL_InstanceName = $MainSQL_InstanceName.Split("=")[1].Replace('"','')
+        $MainSQL_DbName = GetFirstLineThatStartsWith $linesIn_regValues '"DatabaseName"="'
+        $MainSQL_DbName = $MainSQL_DbName.Split("=")[1].Replace('"','')
+        #endregion
+    }
+    if (IsSourceScsmDwMgmtServer) {
+        #region To be used by subsequent DW rules
+        $linesIn_regValues = GetFileContentInSourceFolder SystemCenter.regValues.txt
+
+        $DW_Rep_SQL_InstanceName = GetFirstLineThatStartsWith $linesIn_regValues '"RepositorySQLInstance"="'    
+        $DW_Rep_SQL_InstanceName = $DW_Rep_SQL_InstanceName.Split("=")[1].Replace('"','')
+        $DW_Rep_SQL_DbName = GetFirstLineThatStartsWith $linesIn_regValues '"RepositoryDatabaseName"="'
+        $DW_Rep_SQL_DbName = $DW_Rep_SQL_DbName.Split("=")[1].Replace('"','')
+
+        $DW_DM_SQL_InstanceName = GetFirstLineThatStartsWith $linesIn_regValues '"DataMartSQLInstance"="'    
+        $DW_DM_SQL_InstanceName = $DW_DM_SQL_InstanceName.Split("=")[1].Replace('"','')
+        $DW_DM_SQL_DbName = GetFirstLineThatStartsWith $linesIn_regValues '"DataMartDatabaseName"="'
+        $DW_DM_SQL_DbName = $DW_DM_SQL_DbName.Split("=")[1].Replace('"','')
+
+        $DW_CM_SQL_InstanceName = GetFirstLineThatStartsWith $linesIn_regValues '"CMDataMartSQLInstance"="'    
+        $DW_CM_SQL_InstanceName = $DW_CM_SQL_InstanceName.Split("=")[1].Replace('"','')
+        $DW_CM_SQL_DbName = GetFirstLineThatStartsWith $linesIn_regValues '"CMDataMartDatabaseName"="'
+        $DW_CM_SQL_DbName = $DW_CM_SQL_DbName.Split("=")[1].Replace('"','')
+
+        $DW_OM_SQL_InstanceName = GetFirstLineThatStartsWith $linesIn_regValues '"OMDataMartSQLInstance"="'    
+        $DW_OM_SQL_InstanceName = $DW_OM_SQL_InstanceName.Split("=")[1].Replace('"','')
+        $DW_OM_SQL_DbName = GetFirstLineThatStartsWith $linesIn_regValues '"OMDataMartDatabaseName"="'
+        $DW_OM_SQL_DbName = $DW_OM_SQL_DbName.Split("=")[1].Replace('"','')
+
+        $SMDBInfo = ConvertFrom-Csv ( GetFileContentInSourceFolder SQL_SMDB_Info.csv )
+        $SMDB_SQL_InstanceName = $SMDBInfo.SQLInstance_SMDB
+        $SMDB_SQL_DbName = $SMDBInfo.SQLDatabase_SMDB
+
+        #endregion
+    }
+    #endregion
+
 #endregion
 
     Analyze_Rules

@@ -1,3 +1,3 @@
 ﻿function Collect_SMDBInfo() {
-    AppendOutputToFileInTargetFolder ($SMDBInfo) SQL_SMDB_Info.txt
+    AppendOutputToFileInTargetFolder ($SMDBInfo | ConvertTo-Csv -NoTypeInformation) SQL_SMDB_Info.csv
 }
