@@ -138,31 +138,48 @@ ORDER BY indexstats.avg_fragmentation_in_percent DESC
 '@
 $SQL_SCSM_Shared['SQL_TableSizeInfo']=@'
 declare c cursor local FORWARD_ONLY READ_ONLY for
-select '['+ s.name +'].['+ o.name +']'
-from sys.objects o
-inner join sys.schemas s on o.schema_id=s.schema_id 
-where o.type='U' 
-order by o.name
-declare @fqName nvarchar(max)
+	select '['+ s.name +'].['+ o.name +']', s.name
+	from sys.objects o
+	inner join sys.schemas s on o.schema_id=s.schema_id 
+	where o.type='U' 
+	order by o.name
+declare @fqName nvarchar(max), @schemaName sysname
 declare  @tbl table(
-name nvarchar(max),
-rows bigint,
-reserved varchar(18),
-data varchar(18),
-index_size varchar(18),
-unused varchar(18)
+	name nvarchar(max),
+	rows bigint,
+	reserved varchar(18),
+	data varchar(18),
+	index_size varchar(18),
+	unused varchar(18)
+	, schemaName sysname
+	, fqName sysname
+)
+declare  @tmp table(
+	name nvarchar(max),
+	rows bigint,
+	reserved varchar(18),
+	data varchar(18),
+	index_size varchar(18),
+	unused varchar(18)
 )
 open c
 while 1=1
 begin
-fetch c into @fqName
-if @@FETCH_STATUS<>0 break
+	fetch c into @fqName, @schemaName
+	if @@FETCH_STATUS<>0 break
+
+	delete @tmp
+
+	insert into @tmp
+		exec sp_spaceused @fqName
+
 	insert into @tbl
-	exec sp_spaceused @fqName
+	select tmp.*, @schemaName, @fqName
+	from @tmp tmp
 end
 close c
 deallocate c
-select name,rows,data,index_size,unused from @tbl order by rows desc
+select name,rows,data,index_size,unused,schemaName,fqName from @tbl order by rows desc
 '@
 $SQL_SCSM_Shared['SQL_GroomingConfiguration']=@'
 SELECT mt.TypeName,gc.RetentionPeriodInMinutes/60/24 as Days,gc.*
