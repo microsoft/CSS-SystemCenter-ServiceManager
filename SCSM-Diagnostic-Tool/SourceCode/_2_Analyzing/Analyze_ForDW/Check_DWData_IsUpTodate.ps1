@@ -69,7 +69,22 @@ The Load.Common job brings data into DWDataMart every 60 minutes. We are checkin
         $Result_OKs += $dataRow 
     }
     else { 
-        $dataRow.RuleResult += "<br/>For the root cause, check these files: $(CollectorLink Get-SCDWJobSchedule.txt Get-SCDWJobSchedule), $(CollectorLink Get-SCDWJob.txt Get-SCDWJob), $(CollectorLink Get-SCDWJob_NumberOfBatches_5.txt 'Get-SCDWJob -NumberOfBatches 5'), $(CollectorLink SQL_InfraBatch.csv 'infra.Batch'), $(CollectorLink SQL_InfraWorkItem.csv 'infra.WorkItem'), $(CollectorLink SQL_LockDetails.csv 'LockDetails') and $(CollectorLink OperationsManager.evtx 'OM event log').</br></br>$(IgnoreRuleIfText) DW is used for MIM/FIM because MIM does not use IR, SR, CR, they have their own custom work item types."
+        $dataRow.RuleResult += "<br/>For the root cause, check these files: $(CollectorLink Get-SCDWJobSchedule.txt Get-SCDWJobSchedule), $(CollectorLink Get-SCDWJob.txt Get-SCDWJob), $(CollectorLink Get-SCDWJob_NumberOfBatches_5.txt 'Get-SCDWJob -NumberOfBatches 5'), $(CollectorLink SQL_InfraBatch.csv 'infra.Batch'), $(CollectorLink SQL_InfraWorkItem.csv 'infra.WorkItem'), $(CollectorLink SQL_LockDetails.csv 'LockDetails') and $(CollectorLink OperationsManager.evtx 'OM event log')."
+        
+        $dataRow.RuleResult += "</br></br>As the most stable solution, you may consider to restore all DW databases back to a date that was before the problem had started.<br/>However, in order to prevent data loss in the DW, the backup date should NOT be earlier than the 'Data Retention Days' of Work Items in the SM database"
+        $smDbDataRetentionInfo = ConvertFrom-Csv ( GetSanitizedCsv (GetFileContentInSourceFolder SQL_FromSMDB_DataRetention.csv ) )
+        if ($smDbDataRetentionInfo -and $smDbDataRetentionInfo.Count -gt 0) {
+	        $smDbDataRetentionDays = ($smDbDataRetentionInfo | Select-Object -First 1).Days
+	        [timespan]$ts = [timespan]::new($smDbDataRetentionDays,0,0,0,0)
+	        $smDbDataRetentionDate = (Get-Date).Subtract($ts)	
+	        $dataRow.RuleResult += ", which corresponds to $smDbDataRetentionDate."	
+        }
+        else {
+	        $dataRow.RuleResult += "."
+        } 
+        $dataRow.RuleResult += " Please consult your SQL Server admin team for available backups."
+
+        $dataRow.RuleResult += "</br></br>$(IgnoreRuleIfText) DW is used for MIM/FIM because MIM does not use IR, SR, CR, they have their own custom work item types."
         $Result_Problems += $dataRow 
     }
 }
