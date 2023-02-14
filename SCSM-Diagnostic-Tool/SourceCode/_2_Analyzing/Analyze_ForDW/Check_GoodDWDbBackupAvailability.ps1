@@ -58,7 +58,7 @@
                 $showError = $true
             } 
             else {                
-                [datetime]$lastBackupDate = $dwDBBackupInfo.LastBackupDate
+                [datetime]$lastBackupDate = ParseSqlDate ( $dwDBBackupInfo.LastBackupDate )
                 $dataRow.RuleResult += "<td>$lastBackupDate</td>"
 
                 $remaingDays = $lastBackupDate.Subtract($smDbDataRetentionDate).Days
