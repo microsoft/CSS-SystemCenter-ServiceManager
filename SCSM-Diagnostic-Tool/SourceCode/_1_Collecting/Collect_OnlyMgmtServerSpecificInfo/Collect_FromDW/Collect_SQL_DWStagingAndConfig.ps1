@@ -25,7 +25,12 @@ where b.StatusId not in (3,6)
 order by 14 desc
 '@
     $SQL_SCSM_DW['SQL_InfraWorkItemDAG'] = @'
-select * from Infra.WorkItemDAG order by 1,2,3
+select dag.BatchId, p.ProcessName, b.StatusId as BatchStatus, dag.WorkItemId, wi.StatusId as WIStatus, pm.VertexName, dag.ParentWorkItemId as WaitsForParentWI, wiP.StatusId as ParentWIStatus, pmP.VertexName as WaitsForParentVertexName
+from infra.WorkItemDAG dag
+inner join infra.Batch b on dag.Batchid=b.BatchId inner join infra.Process p on b.ProcessId = p.ProcessId
+inner join infra.WorkItem wi on dag.WorkItemId = wi.WorkItemId inner join infra.ProcessModule pm on wi.ProcessModuleId = pm.ProcessModuleId
+inner join infra.WorkItem wiP on dag.ParentWorkItemId = wiP.WorkItemId inner join infra.ProcessModule pmP on wiP.ProcessModuleId = pmP.ProcessModuleId
+where dag.BatchId in (select BatchId from infra.Batch where StatusId != 3) order by dag.BatchId, pm.ModuleLevel desc
 '@
     $SQL_SCSM_DW['SQL_LockDetails'] = @'
 Select * from lockdetails
