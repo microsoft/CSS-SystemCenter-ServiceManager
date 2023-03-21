@@ -518,7 +518,7 @@ when 1 then 'Connector'
 when 2 then 'User'
 when 3 then 'System'
 when 4 then 'ConfigService '
-end "Discover ySource Type"
+end "Discovery Source Type"
 ,case 
 when ds.DiscoveryRuleId is not null then d.DiscoveryName
 when ds.DiscoverySourceType = 1 then cBME.DisplayName
@@ -548,6 +548,7 @@ left join Discovery d on ds.DiscoveryRuleId = d.DiscoveryId
 left join BaseManagedEntity boundBME on ds.BoundManagedEntityId = boundBME.BaseManagedEntityId
 left join Connector c on ds.ConnectorId = c.ConnectorId
 left join BaseManagedEntity cBME on c.BaseManagedEntityId = cBME.BaseManagedEntityId
+order by 5 desc
 '@
 
    $SQL_SCSM_MS['SQL_ObjectTemplates_WithMissingLocalizations']=@'
