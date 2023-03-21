@@ -9,8 +9,9 @@
     $SQL_SCSM_DWRep['SQL_DWEtlWarehouseEntityGroomingInfo_DWRep']=$SQL_DWEtlWarehouseEntityGroomingInfo
     $SQL_SCSM_DWRep['SQL_information_schema_columns_DWRep']=$SQL_SCSM_Shared['SQL_information_schema_columns']
     $SQL_SCSM_DWRep['SQL_indexes_DWRep']=$SQL_SCSM_Shared['SQL_indexes']
+    $SQL_SCSM_DWRep['SQL_DbUsersInfo_DWRep']=$SQL_SCSM_Shared['SQL_DbUsersInfo']
 
-    foreach($SQL_SCSM_DWRep_Text in $SQL_SCSM_DWRep.Keys) {
+    foreach($SQL_SCSM_DWRep_Text in $SQL_SCSM_DWRep.Keys) { 
         SaveSQLResultSetsToFiles $SQLInstance_SCSMDW_Rep $SQLDatabase_SCSMDW_Rep ($SQL_SCSM_DWRep[$SQL_SCSM_DWRep_Text]) "$SQL_SCSM_DWRep_Text.csv"    
     }
 }
