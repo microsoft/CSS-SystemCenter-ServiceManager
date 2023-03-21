@@ -395,6 +395,12 @@ function GetSqlErrorLogFiles ($SQLInstance, $SQLDatabase){
     }
 }
 function GetEmailSendingRules() {
+
+    if(! (Get-Module -ListAvailable -Name SMLets)) {
+        "N/A because SMLets is not installed." 
+        return 
+    } 
+
     $rules = @()
     $wkfs = Get-SCSMWorkflow  | where {  ($_.EnableNotification -and $_.Notification) -or 
                                         ($_.WorkflowSubscription -is [Microsoft.EnterpriseManagement.Subscriptions.NotificationSubscription]) 
