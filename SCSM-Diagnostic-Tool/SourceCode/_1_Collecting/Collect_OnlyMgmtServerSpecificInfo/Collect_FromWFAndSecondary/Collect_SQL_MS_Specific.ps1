@@ -559,6 +559,20 @@ where not exists (select * from LocalizedText lt where ot.ObjectTemplateId = lt.
    $SQL_SCSM_MS['SQL_fn_GetEntityChangeLogGroomingWatermark']=@'
 select dbo.fn_GetEntityChangeLogGroomingWatermark()
 '@
+
+   $SQL_SCSM_MS['SQL_MgmtServer_Availability']=@'
+select bme.DisplayName as MS_DisplayName, av.IsAvailable, av.LastModified
+from Availability av 
+left join BaseManagedEntity bme on av.BaseManagedEntityId=bme.BaseManagedEntityId
+'@
+
+   $SQL_SCSM_MS['SQL_MgmtServer_AvailabilityHistory']=@'
+select bme.DisplayName as MS_DisplayName,ah.* 
+from AvailabilityHistory ah
+left join BaseManagedEntity bme on ah.BaseManagedEntityId=bme.BaseManagedEntityId
+'@
+
+#---------------------------------------------------------------------------
     foreach($SQL_SCSM_MS_Text in $SQL_SCSM_MS.Keys) {
         SaveSQLResultSetsToFiles $SQLInstance_SCSM $SQLDatabase_SCSM ($SQL_SCSM_MS[$SQL_SCSM_MS_Text]) "$SQL_SCSM_MS_Text.csv"    
     }
