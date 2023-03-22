@@ -20,4 +20,6 @@
     Collect_TLS
     Collect_OSRegionSettings
     Collect_NonSMEventLogs
+
+    Collect_ConfigFilesInSmFolder
 }
