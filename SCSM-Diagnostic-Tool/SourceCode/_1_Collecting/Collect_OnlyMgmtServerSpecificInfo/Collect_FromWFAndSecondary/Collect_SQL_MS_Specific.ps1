@@ -32,12 +32,68 @@ GO
     $SQL_SCSM_MS['SQL_PatchInfo']=@'
      select '__PatchInfo__' tableName,* from [__PatchInfo__]  order by AppliedOn  desc
 '@
+    $SQL_SCSM_MS['SQL_TypeProjection']=@'
+select 
+TypeProjectionName as TypeProjection_Name, ltTP.LTValue as TypeProjection_DisplayName_ENU
+,TypeProjectionSeed as TypeProjection_Seed
+,ltMT.LTValue as BasedOnClass_DisplayName_ENU, mt.TypeName as BasedOnClass_Name
+,*
+from TypeProjection tp
+inner join ManagedType mt on tp.TypeProjectionSeed = mt.ManagedTypeId
+left join LocalizedText ltMT on mt.ManagedTypeId = ltMT.LTStringId and ltMT.LTStringType=1 and ltMT.LanguageCode='ENU' 
+left join LocalizedText ltTP on tp.TypeProjectionId = ltTP.LTStringId and ltTP.LTStringType=1 and ltTP.LanguageCode='ENU'
+order by 1
+'@
     $SQL_SCSM_MS['SQL_ObjectTemplate']=@'
 --LTValue is null if no ENU exists
-SELECT LTValue as "Notification Template Display Name",ot.*
+SELECT LTValue as Template_DisplayName_ENU
+,ot.*
 FROM ObjectTemplate ot
 left join localizedtext lt on ot.ObjectTemplateId=lt.LTStringId and LTStringType=1 and LanguageCode='ENU'
 order by ot.ObjectTemplateName
+'@
+    $SQL_SCSM_MS['SQL_ObjectTemplate_TypeProjection']=@'
+--TypeProjection templates
+select 
+lt.ltvalue as Template_DisplayName_ENU, ObjectTemplateName as Template_Name
+, ltMT.LTValue as BasedOnClass_DisplayName_ENU, mt.TypeName as BasedOnClass_Name
+,ltTP.LTValue as TypeProjection_DisplayName_ENU, TypeProjectionName as TypeProjection_Name
+	,TypeProjectionSeed as TypeProjection_Seed
+,*
+from ObjectTemplate ot 
+inner join TypeProjection tp on  ot.ObjectTemplateTypeId=tp.TypeProjectionId
+inner join ManagedType mt on TypeProjectionSeed=mt.ManagedTypeId
+left join LocalizedText lt on ot.ObjectTemplateId = lt.LTStringId and lt.LTStringType=1 and lt.LanguageCode='ENU' 
+left join LocalizedText ltMT on mt.ManagedTypeId = ltMT.LTStringId and ltMT.LTStringType=1 and ltMT.LanguageCode='ENU' 
+left join LocalizedText ltTP on tp.TypeProjectionId = ltTP.LTStringId and ltTP.LTStringType=1 and ltTP.LanguageCode='ENU' 
+order by 1
+'@
+    $SQL_SCSM_MS['SQL_ObjectTemplate_ObjectProjection']=@'
+--ObjectProjection templates
+select 
+lt.ltvalue as Template_DisplayName_ENU, ObjectTemplateName as Template_Name
+, ltMT.LTValue as BasedOnClass_DisplayName_ENU, mt.TypeName as BasedOnClass_Name
+,*
+from ObjectTemplate ot
+inner join ManagedType mt on  ot.ObjectTemplateTypeId=mt.ManagedTypeId 
+left join LocalizedText lt on ot.ObjectTemplateId = lt.LTStringId and lt.LTStringType=1 and lt.LanguageCode='ENU' 
+left join LocalizedText ltMT on mt.ManagedTypeId = ltMT.LTStringId and ltMT.LTStringType=1 and ltMT.LanguageCode='ENU' 
+where ot.ObjectTemplateTypeId != '0814D9A7-8332-A5DF-2EC8-34D07F3D40DB'  -- != System.Notification.Template.SMTP
+order by 1
+'@
+    $SQL_SCSM_MS['SQL_ObjectTemplate_Notification_SMTP']=@'
+--SMTP templates
+select 
+lt.ltvalue as Template_DisplayName_ENU, ObjectTemplateName as Template_Name
+--, ltMT.LTValue as BasedOnClass_DisplayName_ENU
+,convert(xml,ObjectTemplateSubelementXML).value('( Property[substring(@Path, string-length(@Path)-string-length("!System.Notification.Template'']/SeedClass$")+1) = "!System.Notification.Template'']/SeedClass$"] )[1]','nvarchar(max)') as BasedOnClass
+,*
+from ObjectTemplate ot
+inner join ManagedType mt on  ot.ObjectTemplateTypeId=mt.ManagedTypeId 
+left join LocalizedText lt on ot.ObjectTemplateId = lt.LTStringId and lt.LTStringType=1 and lt.LanguageCode='ENU' 
+left join LocalizedText ltMT on mt.ManagedTypeId = ltMT.LTStringId and ltMT.LTStringType=1 and ltMT.LanguageCode='ENU' 
+where ot.ObjectTemplateTypeId = '0814D9A7-8332-A5DF-2EC8-34D07F3D40DB'  -- = System.Notification.Template.SMTP
+order by 1
 '@
     $SQL_SCSM_MS['SQL_WorkflowMinutesBehind_Original'] = @'
 DECLARE @MaxState INT, @MaxStateDate Datetime, @Delta INT, @Language nvarchar(3)
