@@ -1,4 +1,7 @@
 ﻿#region internal function definitions used by Collector and Analyzer
+function GetCurrentUser() {
+    [System.Security.Principal.WindowsIdentity]::GetCurrent()
+}
 function IsRunningAsElevated() {
     return $(([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator))
 }
@@ -35,6 +38,9 @@ function MoveFileInTargetFolder($fileName, $subFolderName) {
     $fileToMove=GetFileNameInTargetFolder $fileName
     CopyFileToTargetFolder $fileToMove $subFolderName
     DeleteFileInTargetFolder $fileName
+}
+function CopyFileWithNewNameInTargetFolder($sourceFileName, $targetFileName) {  
+    Copy-Item "$resultFolder\$sourceFileName" -Destination "$resultFolder\$targetFileName" 
 }
 function AppendOutputToFileInTargetFolder($obj, $fileName) {
     $resultFilePath = Join-Path -Path $resultFolder -ChildPath $fileName    
@@ -1128,4 +1134,7 @@ function Start_Async {
 
 }
 
+function GetFilesInfoFromDirectory($pStartingPath) {
+   Get-ChildItem -Path $pStartingPath -Recurse -Force | Select-Object Length, lastwritetimeutc, @{Name="Version";Expression={$_.VersionInfo.ProductVersion}}, FullName | ConvertTo-Csv -NoTypeInformation
+}
  #endregion
