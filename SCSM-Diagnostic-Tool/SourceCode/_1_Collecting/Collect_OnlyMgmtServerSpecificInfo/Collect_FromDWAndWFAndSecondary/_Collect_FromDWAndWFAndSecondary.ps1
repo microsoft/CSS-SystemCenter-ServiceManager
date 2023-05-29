@@ -28,4 +28,6 @@ if (-not (IsThisAnyScsmMgmtServer)) {
 
     Collect_SCSMRunAsAccounts
     Collect_SCSMUserRoles_Async
+
+    Collect_SCSMFilesInfoFromSeveralPlaces
 }
