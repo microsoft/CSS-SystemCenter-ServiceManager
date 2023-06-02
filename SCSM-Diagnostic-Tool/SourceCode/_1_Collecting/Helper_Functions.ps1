@@ -1167,8 +1167,9 @@ function Ram([string]$pscriptBlockText, [string]$phase, [string]$outputString) #
 }
 
 function GetInternetAvailability() {
-    try {
-        $internetAvailable = Invoke-WebRequest -Uri 'https://www.microsoft.com' -UseBasicParsing -TimeoutSec 5 -ErrorAction Stop
+    try {        
+        $internetAvailable = InvokeWebRequest_WithProxy -Uri 'https://www.microsoft.com' -timeoutSec 5
+
         if ($internetAvailable -and $internetAvailable.StatusCode -eq 200) {
             AppendOutputToFileInTargetFolder 'Yes' InternetAvailable.txt
         }
@@ -1178,5 +1179,26 @@ function GetInternetAvailability() {
     }
 }
 
+function InvokeWebRequest_WithProxy($uri, $timeoutSec=0, [switch]$useBasicParsing=$true, [switch]$useDefaultCredentials=$true, [string]$outFile=$null) {
+#https://learn.microsoft.com/en-us/dotnet/api/system.net.iwebproxy.getproxy?view=netframework-4.8.1#examples
+    $wpi = [System.Net.WebRequest]::GetSystemWebProxy()
+    $wpi.Credentials = [System.Net.CredentialCache]::DefaultNetworkCredentials
+    
+    $webProxyServer = $null
+
+    if ($wpi.IsBypassed($uri)) {
+        $webProxyServer = $null
+    }
+    else {
+        $webProxyServer = $wpi.GetProxy($uri);
+
+        if ( (!$webProxyServer -or $webProxyServer -ne $null ) -and $webProxyServer -eq $uri) {
+            $webProxyServer = $null
+        }       
+    }
+    [bool]$proxyUseDefaultCredentials = ($webProxyServer -ne $null)
+    
+    Invoke-WebRequest -Uri $uri -UseBasicParsing:$useBasicParsing -TimeoutSec $timeoutSec -UseDefaultCredentials:$useDefaultCredentials -Proxy $webProxyServer -ProxyUseDefaultCredentials:$proxyUseDefaultCredentials -OutFile $outFile
+}
 
  #endregion
