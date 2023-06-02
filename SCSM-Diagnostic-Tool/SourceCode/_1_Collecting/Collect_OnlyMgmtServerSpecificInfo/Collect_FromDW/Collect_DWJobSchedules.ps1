@@ -6,6 +6,7 @@
 function Collect_DWJobSchedules_Async() {
     
     $initializationScript = GetFunctionDeclaration Ram
+    $initializationScript += GetFunctionDeclaration RamSB
     $initializationScript += GetFunctionDeclaration AppendOutputToFileInTargetFolder
 
     $initializationScript += GetFunctionDeclaration Collect_DWJobSchedules
@@ -17,7 +18,7 @@ function Collect_DWJobSchedules_Async() {
         if ($input.MoveNext()) { $inputs = $input.Current } else { return }  
         $resultFolder = $inputs 
      
-        Collect_DWJobSchedules 
+        Ram Collect_DWJobSchedules 
     }
     $inputObject = @($resultFolder)
 

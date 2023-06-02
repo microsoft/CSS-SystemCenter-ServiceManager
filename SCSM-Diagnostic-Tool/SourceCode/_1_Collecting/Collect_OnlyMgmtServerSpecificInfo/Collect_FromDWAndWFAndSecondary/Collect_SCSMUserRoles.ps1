@@ -1,6 +1,7 @@
 ﻿function Collect_SCSMUserRoles_Async() {
     
     $initializationScript = GetFunctionDeclaration Ram
+    $initializationScript += GetFunctionDeclaration RamSB
     $initializationScript += GetFunctionDeclaration AppendOutputToFileInTargetFolder
 
     $initializationScript += GetFunctionDeclaration Collect_SCSMUserRoles
@@ -20,7 +21,7 @@
         if ($input.MoveNext()) { $inputs = $input.Current } else { return }  
         $SQLInstance_SCSM, $SQLDatabase_SCSM, $resultFolder = $inputs 
      
-        Collect_SCSMUserRoles 
+        Ram Collect_SCSMUserRoles 
      }
 
     $inputObject = @($SQLInstance_SCSM, $SQLDatabase_SCSM, $resultFolder)
