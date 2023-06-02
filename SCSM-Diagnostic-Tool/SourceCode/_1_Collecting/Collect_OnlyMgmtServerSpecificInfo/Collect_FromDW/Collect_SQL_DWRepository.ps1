@@ -12,6 +12,9 @@
     $SQL_SCSM_DWRep['SQL_DbUsersInfo_DWRep']=$SQL_SCSM_Shared['SQL_DbUsersInfo']
 
     foreach($SQL_SCSM_DWRep_Text in $SQL_SCSM_DWRep.Keys) { 
-        SaveSQLResultSetsToFiles $SQLInstance_SCSMDW_Rep $SQLDatabase_SCSMDW_Rep ($SQL_SCSM_DWRep[$SQL_SCSM_DWRep_Text]) "$SQL_SCSM_DWRep_Text.csv"    
+
+        RamSB -outputString "$SQL_SCSM_DWRep_Text.csv" -pscriptBlock `        {
+            SaveSQLResultSetsToFiles $SQLInstance_SCSMDW_Rep $SQLDatabase_SCSMDW_Rep ($SQL_SCSM_DWRep[$SQL_SCSM_DWRep_Text]) "$SQL_SCSM_DWRep_Text.csv"    
+        }
     }
 }

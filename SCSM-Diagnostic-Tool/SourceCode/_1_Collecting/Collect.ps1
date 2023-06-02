@@ -18,16 +18,9 @@ Write-Host "(Please ignore any Warning and Errors)"
 
 CopyFileToTargetFolder $scriptFilePath
 AppendOutputToFileInTargetFolder ( $collectorVersion ) CollectorVersion.txt
+AppendOutputToFileInTargetFolder  '"Duration","EndTime","StartTime","ScriptBlockText"'  Collector-MeasuredScriptBlocks.csv
 
-try {
-    $internetAvailable = Invoke-WebRequest -Uri 'https://www.microsoft.com' -UseBasicParsing -TimeoutSec 5 -ErrorAction Stop
-    if ($internetAvailable -and $internetAvailable.StatusCode -eq 200) {
-        AppendOutputToFileInTargetFolder 'Yes' InternetAvailable.txt
-    }
-}
-catch {
-    AppendOutputToFileInTargetFolder 'No' InternetAvailable.txt
-}
+Ram GetInternetAvailability
 
 $PSDefaultParameterValues['out-file:width'] = 2000
 $FormatEnumerationLimit = -1 #prevents truncation of column values if no fit

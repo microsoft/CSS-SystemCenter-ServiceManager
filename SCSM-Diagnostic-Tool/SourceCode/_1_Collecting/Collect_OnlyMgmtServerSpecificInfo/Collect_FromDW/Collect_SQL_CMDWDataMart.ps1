@@ -13,8 +13,11 @@
         $SQL_SCSM_DWCMDM['SQL_indexes_CMDWDataMart']=$SQL_SCSM_Shared['SQL_indexes']
         $SQL_SCSM_DWCMDM['SQL_DbUsersInfo_CMDWDataMart']=$SQL_SCSM_Shared['SQL_DbUsersInfo']
 
-        foreach($SQL_SCSM_DWCMDM_Text in $SQL_SCSM_DWCMDM.Keys) {         
-            SaveSQLResultSetsToFiles $SQLInstance_SCSMDW_CMDM $SQLDatabase_SCSMDW_CMDM ($SQL_SCSM_DWCMDM[$SQL_SCSM_DWCMDM_Text]) "$SQL_SCSM_DWCMDM_Text.csv"    
+        foreach($SQL_SCSM_DWCMDM_Text in $SQL_SCSM_DWCMDM.Keys) { 
+        
+            RamSB -outputString "$SQL_SCSM_DWCMDM_Text.csv" -pscriptBlock `            {        
+                SaveSQLResultSetsToFiles $SQLInstance_SCSMDW_CMDM $SQLDatabase_SCSMDW_CMDM ($SQL_SCSM_DWCMDM[$SQL_SCSM_DWCMDM_Text]) "$SQL_SCSM_DWCMDM_Text.csv"    
+            }
         }
     }
 }
