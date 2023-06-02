@@ -82,6 +82,8 @@ $telemetry = GetEmptyTelemetryRow
     Write-Host ""
     CopyFileToTargetFolder $scriptFilePath # -subFolderName $analyzer_FolderName
 
+   AppendOutputToFileInTargetFolder  '"Duration","EndTime","StartTime","ScriptBlockText"'  Analyzer-MeasuredScriptBlocks.csv
+
     $inputFolder = Join-Path ($resultFolder) "..\$collector_FolderName"
 #endregion    
 
@@ -543,7 +545,7 @@ New-Variable -Name Result_OKs -Value @() -Force -Option AllScope
 
 #endregion
 
-    Analyze_Rules
+    Ram Analyze_Rules -phase Analyzer
 
 #region Writing Findings.html
 
@@ -808,7 +810,7 @@ if ($compressTheResults) {
         Compress-ZipFile  (Split-Path $resultFolder -Parent) $resultingZipFile_FullPath 
     }
     else {
-        MakeNewZipFile (Split-Path $resultFolder -Parent) $resultingZipFile_FullPath 
+        MakeNewZipFile (Split-Path $resultFolder -Parent) $resultingZipFile_FullPath
     } 
    
     Remove-Item -Path (Split-Path $resultFolder -Parent) -Force -Recurse > $null
