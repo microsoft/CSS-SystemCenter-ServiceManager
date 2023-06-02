@@ -631,7 +631,10 @@ left join BaseManagedEntity bme on ah.BaseManagedEntityId=bme.BaseManagedEntityI
 
 #---------------------------------------------------------------------------
     foreach($SQL_SCSM_MS_Text in $SQL_SCSM_MS.Keys) {
-        SaveSQLResultSetsToFiles $SQLInstance_SCSM $SQLDatabase_SCSM ($SQL_SCSM_MS[$SQL_SCSM_MS_Text]) "$SQL_SCSM_MS_Text.csv"    
+
+        RamSB -outputString "$SQL_SCSM_MS_Text.csv" -pscriptBlock `        {
+            SaveSQLResultSetsToFiles $SQLInstance_SCSM $SQLDatabase_SCSM ($SQL_SCSM_MS[$SQL_SCSM_MS_Text]) "$SQL_SCSM_MS_Text.csv"    
+        }
     }
 
 }

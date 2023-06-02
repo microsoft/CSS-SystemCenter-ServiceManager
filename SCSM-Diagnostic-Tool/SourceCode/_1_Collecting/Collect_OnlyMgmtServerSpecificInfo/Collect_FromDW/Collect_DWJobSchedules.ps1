@@ -5,10 +5,11 @@
 }
 function Collect_DWJobSchedules_Async() {
     
-    $initializationScript = ""    
+    $initializationScript = GetFunctionDeclaration Ram
+    $initializationScript += GetFunctionDeclaration AppendOutputToFileInTargetFolder
 
     $initializationScript += GetFunctionDeclaration Collect_DWJobSchedules
-    $initializationScript += GetFunctionDeclaration AppendOutputToFileInTargetFolder
+
     $initializationScript += "if (-not (Get-Module -name Microsoft.EnterpriseManagement.Warehouse.Cmdlets)) { Import-Module ((Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\System Center\2010\Service Manager\Setup').InstallDirectory  +'Microsoft.EnterpriseManagement.Warehouse.Cmdlets.psd1') -Force } "
 
     $code = {
@@ -16,7 +17,7 @@ function Collect_DWJobSchedules_Async() {
         if ($input.MoveNext()) { $inputs = $input.Current } else { return }  
         $resultFolder = $inputs 
      
-        Collect_DWJobSchedules 
+        Ram Collect_DWJobSchedules 
     }
     $inputObject = @($resultFolder)
 

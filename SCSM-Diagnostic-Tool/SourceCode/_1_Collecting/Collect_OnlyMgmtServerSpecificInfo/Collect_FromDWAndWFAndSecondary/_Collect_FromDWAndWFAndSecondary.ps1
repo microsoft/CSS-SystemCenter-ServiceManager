@@ -7,27 +7,28 @@ if (-not (IsThisAnyScsmMgmtServer)) {
 
 # Collects info that is specific to all DW and WF and Secondary Management Servers
 
-    Collect_OMEventLog   
-    Collect_SystemCenterRegValues
-    Collect_SystemCenterRegPermissions
-    Collect_MGRegistryValues
-    Collect_SCSMVersion
-    Collect_ScomAgent
-    Collect_SPNs
-    Collect_Test_LocalOMSDK
-    Collect_Test_LocalOMSDK_Response
-    Collect_ConnectedSDKUsersCount
-    Collect_WindowsErrorReporting
+    Ram Collect_OMEventLog   
+    Ram Collect_SystemCenterRegValues
+    Ram Collect_SystemCenterRegPermissions
+    Ram Collect_MGRegistryValues
+    Ram Collect_SCSMVersion
+    Ram Collect_ScomAgent
+    Ram Collect_SPNs
+    Ram Collect_Test_LocalOMSDK
+    Ram Collect_Test_LocalOMSDK_Response
+    Ram Collect_ConnectedSDKUsersCount
+    Ram Collect_WindowsErrorReporting
 
-    Collect_HealthServiceStateFolder
-    Collect_SCSMInstallationFilesInfo
-    Collect_SCSMSetupLogFiles
+    Ram Collect_HealthServiceStateFolder
+    Ram Collect_SCSMInstallationFilesInfo
+    Ram Collect_SCSMSetupLogFiles
 
-    Collect_SMTraceFiles
-    Collect_OMTraceFiles
+    Ram Collect_SMTraceFiles
+    Ram Collect_OMTraceFiles
 
-    Collect_SCSMRunAsAccounts
+    Ram Collect_SCSMRunAsAccounts
     Collect_SCSMUserRoles_Async
+    
 
-    Collect_SCSMFilesInfoFromSeveralPlaces
+    Ram Collect_SCSMFilesInfoFromSeveralPlaces
 }

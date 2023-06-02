@@ -15,6 +15,9 @@
     $SQL_SCSM_DWDM['SQL_indexes_DWDataMart']=$SQL_SCSM_Shared['SQL_indexes']
 
     foreach($SQL_SCSM_DWDM_Text in $SQL_SCSM_DWDM.Keys) {
-        SaveSQLResultSetsToFiles $SQLInstance_SCSMDW_DM $SQLDatabase_SCSMDW_DM ($SQL_SCSM_DWDM[$SQL_SCSM_DWDM_Text]) "$SQL_SCSM_DWDM_Text.csv"    
+
+        RamSB -outputString "$SQL_SCSM_DWDM_Text.csv" -pscriptBlock `        {
+            SaveSQLResultSetsToFiles $SQLInstance_SCSMDW_DM $SQLDatabase_SCSMDW_DM ($SQL_SCSM_DWDM[$SQL_SCSM_DWDM_Text]) "$SQL_SCSM_DWDM_Text.csv"    
+        }
     }
 }

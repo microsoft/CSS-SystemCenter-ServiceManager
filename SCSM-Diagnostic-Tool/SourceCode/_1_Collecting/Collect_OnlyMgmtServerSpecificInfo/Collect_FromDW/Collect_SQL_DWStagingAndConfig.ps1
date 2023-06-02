@@ -275,7 +275,10 @@ order by coalesce(sub1DwRep.year,sub1DwDm.year), coalesce(sub1DwRep.month,sub1Dw
     }
 
     foreach($SQL_SCSM_DW_Text in $SQL_SCSM_DW.Keys) {        
-        SaveSQLResultSetsToFiles $SQLInstance_SCSMDW $SQLDatabase_SCSMDW ($SQL_SCSM_DW[$SQL_SCSM_DW_Text]) "$SQL_SCSM_DW_Text.csv"    
+        RamSB -outputString "$SQL_SCSM_DW_Text.csv" -pscriptBlock `
+        {  
+            SaveSQLResultSetsToFiles $SQLInstance_SCSMDW $SQLDatabase_SCSMDW ($SQL_SCSM_DW[$SQL_SCSM_DW_Text]) "$SQL_SCSM_DW_Text.csv"
+        }
     }
 
 }

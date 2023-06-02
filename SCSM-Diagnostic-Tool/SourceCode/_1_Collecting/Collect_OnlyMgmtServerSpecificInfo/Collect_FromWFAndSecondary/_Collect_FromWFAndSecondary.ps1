@@ -7,23 +7,23 @@ if (-not (IsThisScsmMgmtServer)) {
 
 # Collects info that is specific to only WF and Secondary Management Servers
 
-    Collect_SCSMRolesFound
-    Collect_SCSMSettings
-    Collect_SCOMCIConnectorAllowList
-    Collect_Connectors
-    Collect_NotificationChannel
-    Collect_EmailTemplates
-    Collect_Workflows
-    Collect_EmailSendingRules
-    Collect_ConnectorEclLogSettings
-    Collect_TimeDiffBetweenMSandSQL
-    Collect_MPs    
+    Ram Collect_SCSMRolesFound
+    Ram Collect_SCSMSettings
+    Ram Collect_SCOMCIConnectorAllowList
+    Ram Collect_Connectors
+    Ram Collect_NotificationChannel
+    Ram Collect_EmailTemplates
+    Ram Collect_Workflows
+    Ram Collect_EmailSendingRules
+    Ram Collect_ConnectorEclLogSettings
+    Ram Collect_TimeDiffBetweenMSandSQL
+    Ram Collect_MPs    
 #    Collect_SqlErrorLogFiles   # can take very long time. 
-    Collect_Test_BetweenMSandSQL 
-    Collect_Test_BetweenMSandDWMS
+    Ram Collect_Test_BetweenMSandSQL 
+    Ram Collect_Test_BetweenMSandDWMS
 
     Collect_SQL_MS_Shared
     Collect_SQL_MS_Specific
 
-    Collect_RegisteredDWEnvironmentInfo
+    Ram Collect_RegisteredDWEnvironmentInfo
 }

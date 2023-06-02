@@ -1,6 +1,7 @@
 ﻿function Collect_SCSMUserRoles_Async() {
     
-    $initializationScript = ""    
+    $initializationScript = GetFunctionDeclaration Ram
+    $initializationScript += GetFunctionDeclaration AppendOutputToFileInTargetFolder
 
     $initializationScript += GetFunctionDeclaration Collect_SCSMUserRoles
     $initializationScript += GetFunctionDeclaration Show-AllSelectedNone
@@ -12,7 +13,6 @@
     $initializationScript += GetFunctionDeclaration Try-Invoke-SqlCmd
         $initializationScript += GetFunctionDeclaration Invoke-AlternativeSqlCmd_WithoutTimeout
         $initializationScript += GetFunctionDeclaration Invoke-AlternativeSqlCmd_WithTimeout
-    $initializationScript += GetFunctionDeclaration AppendOutputToFileInTargetFolder
 
 #   $initializationScript = ConvertTo-Scriptblock $initializationScript
     $code = {
@@ -20,7 +20,7 @@
         if ($input.MoveNext()) { $inputs = $input.Current } else { return }  
         $SQLInstance_SCSM, $SQLDatabase_SCSM, $resultFolder = $inputs 
      
-        Collect_SCSMUserRoles 
+        Ram Collect_SCSMUserRoles 
      }
 
     $inputObject = @($SQLInstance_SCSM, $SQLDatabase_SCSM, $resultFolder)

@@ -7,13 +7,13 @@ if (-not (IsThisScsmDwMgmtServer)) {
 
 # Collects info that is specific to only DW servers
 
-    Collect_SetDWRoleFound
-    Collect_DWJobs    
-    Collect_DWJobs_Last5   
+    Ram Collect_SetDWRoleFound
+    Ram Collect_DWJobs    
+    Ram Collect_DWJobs_Last5   
     Collect_DWJobSchedules_Async
-    Collect_DWEnvironmentInfo
-    Collect_TimeDiffBetweenDWMSandSQL
-    Collect_DW_MPs
+    Ram Collect_DWEnvironmentInfo
+    Ram Collect_TimeDiffBetweenDWMSandSQL
+    Ram Collect_DW_MPs
     Collect_Test_BetweenDWMSandSQL 
 #    Collect_SqlErrorLogFiles_DW   # can take very long time. 
 
@@ -829,9 +829,9 @@ order by 1
     Collect_SQL_CMDWDataMart
     Collect_SQL_OMDWDataMart
 
-    Collect_FromSMSide
+    Ram Collect_FromSMSide
 
-    Collect_FromSSAS
-    Collect_FromSSRS
+    Ram Collect_FromSSAS
+    Ram Collect_FromSSRS
 }
  

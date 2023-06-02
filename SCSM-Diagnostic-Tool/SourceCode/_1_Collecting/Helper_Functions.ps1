@@ -1137,4 +1137,46 @@ function Start_Async {
 function GetFilesInfoFromDirectory($pStartingPath) {
    Get-ChildItem -Path $pStartingPath -Recurse -Force | Select-Object Length, lastwritetimeutc, @{Name="Version";Expression={$_.VersionInfo.ProductVersion}}, FullName | ConvertTo-Csv -NoTypeInformation
 }
+
+function RamSB([scriptblock]$pscriptBlock, [string]$phase, [string]$outputString) # Ram is abbreviation of: Run and measure. Requires script block
+{   
+#IMPORTANT: Do NOT forget to send the $pscriptBlock inside curly brackets {} at the CALLER code    or   with [scriptblock]::Create() as done in Ram()
+
+    if (!$phase -or $phase -eq "") {
+        $phase = "Collector"
+    }
+    $fileName = "$phase-MeasuredScriptBlocks.csv"
+    $startTime = [datetime]::Now.ToString("yyyy\-MM\-dd\_\_hh\:mm\.ss\.fff")
+    $timeElapsed = (Measure-Command -Expression $pscriptBlock).ToString("dd\:hh\:mm\.ss\.fff")
+    if ($outputString -and $outputString -ne "") {
+        $pscriptBlockText = $outputString
+    }
+    else {
+        $pscriptBlockText = $pscriptBlock.ToString()
+    }
+    $EndTime = [datetime]::Now.ToString("yyyy\-MM\-dd\_\_hh\:mm\.ss\.fff")
+
+    $lineToAdd = """$timeElapsed"",""$EndTime"",""$startTime"",""$pscriptBlockText"""
+    AppendOutputToFileInTargetFolder $lineToAdd $fileName
+}
+
+function Ram([string]$pscriptBlockText, [string]$phase, [string]$outputString) #   Ram is abbreviation of: Run and measure. Requires script block as string
+{  
+    [scriptblock]$pscriptBlock = [scriptblock]::Create($pscriptBlockText)
+    RamSB -pscriptBlock $pscriptBlock -phase $phase -outputString $outputString
+}
+
+function GetInternetAvailability() {
+    try {
+        $internetAvailable = Invoke-WebRequest -Uri 'https://www.microsoft.com' -UseBasicParsing -TimeoutSec 5 -ErrorAction Stop
+        if ($internetAvailable -and $internetAvailable.StatusCode -eq 200) {
+            AppendOutputToFileInTargetFolder 'Yes' InternetAvailable.txt
+        }
+    }
+    catch {
+        AppendOutputToFileInTargetFolder 'No' InternetAvailable.txt
+    }
+}
+
+
  #endregion
