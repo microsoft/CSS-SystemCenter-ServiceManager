@@ -20,7 +20,7 @@
         if ($input.MoveNext()) { $inputs = $input.Current } else { return }  
         $SQLInstance_SCSM, $SQLDatabase_SCSM, $resultFolder = $inputs 
      
-        Ram Collect_SCSMUserRoles 
+        Collect_SCSMUserRoles 
      }
 
     $inputObject = @($SQLInstance_SCSM, $SQLDatabase_SCSM, $resultFolder)

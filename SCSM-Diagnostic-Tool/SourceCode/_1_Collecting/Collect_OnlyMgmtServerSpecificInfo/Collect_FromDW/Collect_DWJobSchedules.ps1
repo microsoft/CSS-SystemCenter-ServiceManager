@@ -17,7 +17,7 @@ function Collect_DWJobSchedules_Async() {
         if ($input.MoveNext()) { $inputs = $input.Current } else { return }  
         $resultFolder = $inputs 
      
-        Ram Collect_DWJobSchedules 
+        Collect_DWJobSchedules 
     }
     $inputObject = @($resultFolder)
 
