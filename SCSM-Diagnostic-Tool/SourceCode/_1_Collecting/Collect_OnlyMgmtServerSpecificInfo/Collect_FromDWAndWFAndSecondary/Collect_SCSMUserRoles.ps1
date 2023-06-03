@@ -1,6 +1,7 @@
 ﻿function Collect_SCSMUserRoles_Async() {
     
     $initializationScript = GetFunctionDeclaration Ram
+    $initializationScript += GetFunctionDeclaration RamSB
     $initializationScript += GetFunctionDeclaration AppendOutputToFileInTargetFolder
 
     $initializationScript += GetFunctionDeclaration Collect_SCSMUserRoles

@@ -6,6 +6,7 @@
 function Collect_DWJobSchedules_Async() {
     
     $initializationScript = GetFunctionDeclaration Ram
+    $initializationScript += GetFunctionDeclaration RamSB
     $initializationScript += GetFunctionDeclaration AppendOutputToFileInTargetFolder
 
     $initializationScript += GetFunctionDeclaration Collect_DWJobSchedules
