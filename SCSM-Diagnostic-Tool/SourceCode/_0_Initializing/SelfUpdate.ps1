@@ -7,14 +7,14 @@ function SelfUpdate() {
         if ($sgn.SignerCertificate.Subject -notlike 'CN=Microsoft Corporation, *') { return $false }
         
         $uriApi = "https://api.github.com/repos/microsoft/css-systemcenter-servicemanager/releases/latest"
-        $newVersionStr = (Invoke-WebRequest -Uri $uriApi -UseBasicParsing -TimeoutSec 3 -ErrorAction Stop | ConvertFrom-Json).tag_name.Replace("v","")
+        $newVersionStr = ( (InvokeWebRequest_WithProxy -uri $uriApi -timeoutSec 3) | ConvertFrom-Json).tag_name.Replace("v","")
         $newVersion = New-Object version -ArgumentList $newVersionStr
 
         $currentVersion = New-Object version -ArgumentList (GetToolVersion)
         if ($newVersion -le $currentVersion) { return $false }
 
         $uriRelease = 'https://github.com/microsoft/CSS-SystemCenter-ServiceManager/releases/latest/download/SCSM-Diagnostic-Tool.ps1'
-        Invoke-WebRequest -Uri $uriRelease -UseBasicParsing -TimeoutSec 5 -OutFile $scriptFilePath -ErrorAction Stop
+        InvokeWebRequest_WithProxy -uri $uriRelease -timeoutSec 5 -OutFile $scriptFilePath
         return $true  # only here a $true is returned
 
     } catch { return $false }
