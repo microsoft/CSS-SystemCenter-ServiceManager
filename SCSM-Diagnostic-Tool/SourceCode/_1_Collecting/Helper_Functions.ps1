@@ -1181,15 +1181,13 @@ function GetInternetAvailability() {
 
 function InvokeWebRequest_WithProxy($uri, $timeoutSec=0, [switch]$useBasicParsing=$true, [switch]$useDefaultCredentials=$true, [string]$outFile=$null) {
 #https://learn.microsoft.com/en-us/dotnet/api/system.net.iwebproxy.getproxy?view=netframework-4.8.1#examples
+    
     $wpi = [System.Net.WebRequest]::GetSystemWebProxy()
     $wpi.Credentials = [System.Net.CredentialCache]::DefaultNetworkCredentials
     
     $webProxyServer = $null
 
-    if ($wpi.IsBypassed($uri)) {
-        $webProxyServer = $null
-    }
-    else {
+    if ( !$wpi.IsBypassed($uri) ) {
         $webProxyServer = $wpi.GetProxy($uri);
 
         if ( (!$webProxyServer -or $webProxyServer -ne $null ) -and $webProxyServer -eq $uri) {
