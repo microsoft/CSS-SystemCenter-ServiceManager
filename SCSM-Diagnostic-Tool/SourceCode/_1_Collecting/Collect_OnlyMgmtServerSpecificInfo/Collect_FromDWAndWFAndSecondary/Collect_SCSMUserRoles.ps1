@@ -1,33 +1,20 @@
 ﻿function Collect_SCSMUserRoles_Async() {
-    
-    $initializationScript = GetFunctionDeclaration Ram
-    $initializationScript += GetFunctionDeclaration RamSB
-    $initializationScript += GetFunctionDeclaration AppendOutputToFileInTargetFolder
 
-    $initializationScript += GetFunctionDeclaration Collect_SCSMUserRoles
-    $initializationScript += GetFunctionDeclaration Show-AllSelectedNone
-        $initializationScript += @"
-    if (!(Get-Module System.Center.Service.Manager)) {    
-            Import-Module ((Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\System Center\2010\Service Manager\Setup').InstallDirectory +'PowerShell\' +'System.Center.Service.Manager.psd1') -force 
-    }
-"@
-    $initializationScript += GetFunctionDeclaration Try-Invoke-SqlCmd
-        $initializationScript += GetFunctionDeclaration Invoke-AlternativeSqlCmd_WithoutTimeout
-        $initializationScript += GetFunctionDeclaration Invoke-AlternativeSqlCmd_WithTimeout
+    $vars = @{
+        "SQLInstance_SCSM" = $SQLInstance_SCSM
+        "SQLDatabase_SCSM" = $SQLDatabase_SCSM
+        "resultFolder" = $resultFolder
+    }  
 
-#   $initializationScript = ConvertTo-Scriptblock $initializationScript
     $code = {
+        RamSB -outputString Collect_SCSMUserRoles -pscriptBlock `
+        {
+            ImportSmModule
+            Collect_SCSMUserRoles 
+        }
+    }
 
-        if ($input.MoveNext()) { $inputs = $input.Current } else { return }  
-        $SQLInstance_SCSM, $SQLDatabase_SCSM, $resultFolder = $inputs 
-     
-        Ram Collect_SCSMUserRoles 
-     }
-
-    $inputObject = @($SQLInstance_SCSM, $SQLDatabase_SCSM, $resultFolder)
-
-#    StartScriptBlock_Async -code $code -initializationScript $initializationScript -inputObject $inputObject
-Start_Async -code $code -inputObject $inputObject -initializationScript $initializationScript
+    RunAsync -code $code -vars $vars 
 }
 
 function Collect_SCSMUserRoles() {
