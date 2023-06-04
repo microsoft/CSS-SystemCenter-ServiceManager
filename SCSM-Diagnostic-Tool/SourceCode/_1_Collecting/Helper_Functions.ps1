@@ -1146,7 +1146,7 @@ function RamSB([scriptblock]$pscriptBlock, [string]$phase, [string]$outputString
     }
     $fileName = "$phase-MeasuredScriptBlocks.csv"
     $startTime = [datetime]::Now.ToString("yyyy\-MM\-dd\_\_hh\:mm\.ss\.fff")
-    $timeElapsed = (Measure-Command -Expression $pscriptBlock).ToString("dd\:hh\:mm\.ss\.fff")
+    $timeElapsed = (Measure-Command -Expression $pscriptBlock).ToString("hh\:mm\:ss\.fff")
     if ($outputString -and $outputString -ne "") {
         $pscriptBlockText = $outputString
     }

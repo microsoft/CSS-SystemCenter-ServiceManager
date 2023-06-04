@@ -13,7 +13,7 @@
 
     foreach($SQL_SCSM_DWRep_Text in $SQL_SCSM_DWRep.Keys) { 
 
-        RamSB -outputString "$SQL_SCSM_DWRep_Text.csv" -pscriptBlock `        {
+        RamSB -outputString $SQL_SCSM_DWRep_Text -pscriptBlock `        {
             SaveSQLResultSetsToFiles $SQLInstance_SCSMDW_Rep $SQLDatabase_SCSMDW_Rep ($SQL_SCSM_DWRep[$SQL_SCSM_DWRep_Text]) "$SQL_SCSM_DWRep_Text.csv"    
         }
     }

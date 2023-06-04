@@ -546,6 +546,7 @@ New-Variable -Name Result_OKs -Value @() -Force -Option AllScope
 #endregion
 
     Ram Analyze_Rules -phase Analyzer
+    SendTimings
 
 #region Writing Findings.html
 
