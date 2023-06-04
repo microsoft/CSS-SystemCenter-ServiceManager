@@ -29,7 +29,8 @@
     $Error.Clear(); 
     Get-job | Remove-Job -Force
     $host.privatedata.ErrorForegroundColor ="DarkGray"  # For accessibility
-    $global:ProgressPreference = 'SilentlyContinue'
+    $global:ProgressPreference = 'SilentlyContinue'    
+    $script:allFunctionDeclarations = ""
 #endregion 
 
     Set-PSDebug -Strict # from now on, all variables must be explicitly declared before they are used   

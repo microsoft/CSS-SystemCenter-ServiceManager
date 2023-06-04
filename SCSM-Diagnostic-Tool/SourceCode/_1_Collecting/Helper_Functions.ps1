@@ -1127,9 +1127,8 @@ function Start_Async {
         else {
             " "
         }
-        [scriptblock]$initializationScriptAsScriptBlock = ConvertTo-Scriptblock ( $initializationScriptAsString )
-        Start-Job -ScriptBlock $code -InputObject $inputObject -Name $outputFileName -InitializationScript $initializationScriptAsScriptBlock | Out-Null
-    
+        [scriptblock]$initializationScriptAsScriptBlock = [scriptblock]::Create($initializationScriptAsString)
+        Start-Job -ScriptBlock $code -InputObject $inputObject -Name $outputFileName -InitializationScript $initializationScriptAsScriptBlock | Out-Null    
     }
 
 }
@@ -1197,6 +1196,59 @@ function InvokeWebRequest_WithProxy($uri, $timeoutSec=0, [switch]$useBasicParsin
     [bool]$proxyUseDefaultCredentials = ($webProxyServer -ne $null)
     
     Invoke-WebRequest -Uri $uri -UseBasicParsing:$useBasicParsing -TimeoutSec $timeoutSec -UseDefaultCredentials:$useDefaultCredentials -Proxy $webProxyServer -ProxyUseDefaultCredentials:$proxyUseDefaultCredentials -OutFile $outFile
+}
+
+function ImportSmModule() {
+    if (!(Get-Module System.Center.Service.Manager)) {    
+        Import-Module ((Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\System Center\2010\Service Manager\Setup').InstallDirectory +'PowerShell\' +'System.Center.Service.Manager.psd1') -force 
+    }
+}
+
+function ImportSmDwModule() {
+    if (-not (Get-Module -name Microsoft.EnterpriseManagement.Warehouse.Cmdlets)) {
+        Import-Module ((Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\System Center\2010\Service Manager\Setup').InstallDirectory  +'Microsoft.EnterpriseManagement.Warehouse.Cmdlets.psd1') -Force 
+    }
+}
+
+function GetAllFunctionDeclarations([string[]]$Except) {
+
+    if($script:allFunctionDeclarations -eq "") {
+        [string]$result = ""    
+        $fns = (Get-Command -CommandType Function | ? { !$_.Source } | Select-Object -Property Name)
+
+        foreach($fn in $fns) {
+            if ($Except -contains $fn.Name) { continue }
+            $result += GetFunctionDeclaration -functionName $fn.Name
+        }
+    
+        if($script:allFunctionDeclarations -eq "") { 
+            $script:allFunctionDeclarations = $result
+        }
+    }
+    return $script:allFunctionDeclarations 
+}
+
+function RunAsync($code, $vars) {
+
+    $TempFileName = ([guid]::NewGuid()).ToString() + ".ps1";
+    AppendOutputToFileInTargetFolder (GetAllFunctionDeclarations) $TempFileName
+
+    if ($vars) {
+        AppendOutputToFileInTargetFolder 'if ($input.MoveNext()) { $inputs = $input.Current } else { return }' $TempFileName
+
+        $inputObjectHandler = @'        
+        foreach($v in $inputs.Keys) {
+            New-Variable -Name $v -Value $inputs[$v]
+        }
+'@
+        AppendOutputToFileInTargetFolder $inputObjectHandler $TempFileName
+    }
+
+    AppendOutputToFileInTargetFolder $code $TempFileName
+    $TempFileFullName = (GetFileNameInTargetFolder $TempFileName)
+    AppendOutputToFileInTargetFolder "Remove-Item -Path '$TempFileFullName'" $TempFileName
+
+    Start-Job -FilePath $TempFileFullName -InputObject $vars | Out-Null
 }
 
  #endregion
