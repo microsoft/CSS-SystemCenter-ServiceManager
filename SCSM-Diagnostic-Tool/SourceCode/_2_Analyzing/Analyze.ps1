@@ -546,7 +546,8 @@ New-Variable -Name Result_OKs -Value @() -Force -Option AllScope
 #endregion
 
     Ram Analyze_Rules -phase Analyzer
-    SendTimings
+    AddTimingsToStatInfo
+    
 
 #region Writing Findings.html
 
@@ -771,6 +772,8 @@ $findings_AnalysisInfo = $findings_AnalysisInfo.Replace("|AnalysisDate|",$(Get-D
 #endregion
 
 #region The ENDING Section
+
+LogStatInfo $script:statInfo.OuterXml
 
 #cd (Split-Path $MyInvocation.MyCommand.Definition)
 Write-Host ""
