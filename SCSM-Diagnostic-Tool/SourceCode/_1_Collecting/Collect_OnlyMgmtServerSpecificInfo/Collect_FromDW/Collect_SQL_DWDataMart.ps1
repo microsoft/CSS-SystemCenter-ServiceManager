@@ -16,7 +16,7 @@
 
     foreach($SQL_SCSM_DWDM_Text in $SQL_SCSM_DWDM.Keys) {
 
-        RamSB -outputString "$SQL_SCSM_DWDM_Text.csv" -pscriptBlock `        {
+        RamSB -outputString $SQL_SCSM_DWDM_Text -pscriptBlock `        {
             SaveSQLResultSetsToFiles $SQLInstance_SCSMDW_DM $SQLDatabase_SCSMDW_DM ($SQL_SCSM_DWDM[$SQL_SCSM_DWDM_Text]) "$SQL_SCSM_DWDM_Text.csv"    
         }
     }

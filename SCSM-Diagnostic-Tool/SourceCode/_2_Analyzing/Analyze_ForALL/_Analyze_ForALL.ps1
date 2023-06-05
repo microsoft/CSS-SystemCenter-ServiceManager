@@ -3,5 +3,5 @@
 #Rules for ALL roles including Console and Portal
 
     Check_TimeDiffWithDC
-    Check_ToolOutdated
+    Check_ToolOutdated    
 }
