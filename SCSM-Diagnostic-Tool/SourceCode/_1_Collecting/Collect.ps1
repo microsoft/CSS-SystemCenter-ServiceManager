@@ -20,7 +20,7 @@ CopyFileToTargetFolder $scriptFilePath
 AppendOutputToFileInTargetFolder ( $collectorVersion ) CollectorVersion.txt
 
 AppendOutputToFileInTargetFolder  '"Duration","EndTime","StartTime","ScriptBlockText"'  Collector-MeasuredScriptBlocks.csv
-InitStatInfo
+(GetStatInfoRoot).SetAttribute("SmdtRunStart", $resultDateTime)
 
 Ram GetInternetAvailability
 

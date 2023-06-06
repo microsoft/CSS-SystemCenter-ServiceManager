@@ -189,10 +189,14 @@ AppendOutputToFileInTargetFolder $findings_PartH1 $findingsHtml_FileName
 #region Get SM env info
 #region init for Sm env info
 $smEnvInfoRows = @()
+
+$smEnv = (GetStatInfoRoot).AppendChild( (CreateElementForStatInfo SmEnv)  )
+$smEnv_SM = $smEnv.AppendChild(   (CreateElementForStatInfo SM)   )
+$smEnv_OS = $smEnv.AppendChild(   (CreateElementForStatInfo OS)   )
+$smEnv_SQLSM = $smEnv.AppendChild(   (CreateElementForStatInfo SQLSM)   )
 #endregion
 
 #region Get SM version
-
 #region Populate some known SM versions
 $SCSM_Versions = @{}
 $SCSM_Versions.Add("10.22.1068.0","2022 RTM")
@@ -240,7 +244,6 @@ if ( [string]::IsNullOrWhiteSpace($lineIn_SCSM_Version) ) {
 }
 
 $SCSM_Version = $lineIn_SCSM_Version.Replace($searchStrForSCSMProduct,'').Trim()
-
 if (-not (Is4PartVersionValid $SCSM_Version) ) {
     #region try reading from SCSM_Version.csv, if exists
         if (Test-Path (GetFileNameInSourceFolder SCSM_Version.csv) ) {
@@ -249,13 +252,15 @@ if (-not (Is4PartVersionValid $SCSM_Version) ) {
         }
     #endregion
 }
-
+$smEnv_SM.SetAttribute("Version", $SCSM_Version)
 $SCSM_VersionUserFriendly = $SCSM_Version
 if ( [string]::IsNullOrWhiteSpace( $SCSM_Versions[$SCSM_Version] ) ) {
     $SCSM_VersionUserFriendly += " found in $(CollectorLink SCSM_Version.txt). Check here for old $(GetAnchorForExternal 'https://social.technet.microsoft.com/wiki/contents/articles/4226.system-center-service-manager-list-of-build-numbers.aspx' 'Versions')"
+    $smEnv_SM.SetAttribute("VersionUserFriendly", "?")
 }
 else {
     $SCSM_VersionUserFriendly += " ($($SCSM_Versions[$SCSM_Version]))"
+    $smEnv_SM.SetAttribute("VersionUserFriendly", $SCSM_VersionUserFriendly)
 }
 
 $smEnvRow=GetEmptySmEnvRow
@@ -279,6 +284,7 @@ $smEnvRow=GetEmptySmEnvRow
 $smEnvRow.SmEnvInfo="Component detected"
 $smEnvRow.SMEnvValue=$ScsmRolesFound
 $smEnvInfoRows += $smEnvRow
+$smEnv_SM.SetAttribute("Components", $ScsmRolesFound)
 #endregion
 #region Get Computer Name
 $Scsm_ComputerName = ""
@@ -308,6 +314,7 @@ $smEnvRow=GetEmptySmEnvRow
 $smEnvRow.SmEnvInfo="Computer local Time + TZ"
 $smEnvRow.SMEnvValue= GetLinesFromString (GetFileContentInSourceFolder Get-Date.txt)
 $smEnvInfoRows += $smEnvRow
+$smEnv_OS.SetAttribute("LocalTimeWithTZ", $smEnvRow.SMEnvValue)
 #endregion
 #region Get OS Info + Locale
 $smEnvRow=GetEmptySmEnvRow
@@ -315,22 +322,27 @@ $smEnvRow.SmEnvInfo="OS Info"
 $msinfo32Content = GetFileContentInSourceFolder msinfo32.txt
 [string]$tmp = GetFirstLineThatStartsWith $msinfo32Content "OS Name`t" -doTrim $false
 if ($tmp -eq $null) {
+    $smEnv_OS.SetAttribute("Name", "?")
     $smEnvRow.SMEnvValue = "?"
 }
 else {
+    $smEnv_OS.SetAttribute("Name", $tmp)
     $smEnvRow.SMEnvValue = $tmp.Replace("OS Name`t","")
 }
 $smEnvRow.SMEnvValue += "<br/>Locale: "
 [string]$tmp = GetFirstLineThatStartsWith $msinfo32Content "Locale`t" -doTrim $false
 if ($tmp -eq $null) {
     $smEnvRow.SMEnvValue += "?"
+    $smEnv_OS.SetAttribute("Locale", "?")
 }
 else {
+    $smEnv_OS.SetAttribute("Locale", $tmp)
     $smEnvRow.SMEnvValue += $tmp.Replace("Locale`t","")
 }
 
 $smEnvRow.SMEnvValue += "<br/>More in $(CollectorLink msinfo32.txt)"
 $smEnvInfoRows += $smEnvRow
+
 #endregion
 #region Get SQL Info
 $smEnvRow=GetEmptySmEnvRow
@@ -342,6 +354,7 @@ if ($linesIn_SQL_Info.Count -lt 1) {
 else {
     $smEnvRow.SMEnvValue = $linesIn_SQL_Info[1].Substring(1)
 }
+$smEnv_SQLSM.SetAttribute("Version", $smEnvRow.SMEnvValue)
 $smEnvRow.SMEnvValue += "<br/>More in $(CollectorLink SQL_Info.csv)"
 $smEnvInfoRows += $smEnvRow
 #endregion
@@ -544,10 +557,10 @@ New-Variable -Name Result_OKs -Value @() -Force -Option AllScope
     #endregion
 
 #endregion
-
+    
+    $findings = (GetStatInfoRoot).AppendChild( (CreateElementForStatInfo Findings)  )
     Ram Analyze_Rules -phase Analyzer
     AddTimingsToStatInfo
-    
 
 #region Writing Findings.html
 
@@ -773,13 +786,13 @@ $findings_AnalysisInfo = $findings_AnalysisInfo.Replace("|AnalysisDate|",$(Get-D
 
 #region The ENDING Section
 
-LogStatInfo $script:statInfo.OuterXml
-
 #cd (Split-Path $MyInvocation.MyCommand.Definition)
 Write-Host ""
 $completionDateTime = (Get-Date).ToString("yyyy-MM-dd__HH.mm.ss.fff")  
 Write-Host "$analyzerEndingText $completionDateTime. (local time)"
 $script:SQLResultSetCounter = $null
+
+(GetStatInfoRoot).SetAttribute("SmdtRunFinish", $completionDateTime)
 Stop-Transcript | out-null
 
 #Check AnalyzerIssues
@@ -789,9 +802,11 @@ if (-not [string]::IsNullOrWhiteSpace($analyzerIssuesString)) {
     $telemetry.AnalyzerIssues = 1
    # $findings_AnalysisInfo = $findings_AnalysisInfo.Replace("|AnalyzerIssues|", "<tr><td>Analyzer had issues!</td><td>Check in $(CollectorLink '../Analyzer/Transcript.txt' 'Transcript.txt')</td></tr>")
     $findings_AnalysisInfo = $findings_AnalysisInfo.Replace("|AnalyzerIssues|", "<tr><td>Analyzer had issues!</td><td>Check in $(AnalyzerLink 'Transcript.txt')</td></tr>")
+    $findings.SetAttribute("AnalyzerIssues","1")
 }
 else {
     $findings_AnalysisInfo = $findings_AnalysisInfo.Replace("|AnalyzerIssues|","")
+    $findings.SetAttribute("AnalyzerIssues","0")
 }
 AppendOutputToFileInTargetFolder $findings_AnalysisInfo $findingsHtml_FileName 
 AppendOutputToFileInTargetFolder '</body></html>' $findingsHtml_FileName  
@@ -799,7 +814,8 @@ AppendOutputToFileInTargetFolder '</body></html>' $findingsHtml_FileName
 $findingsPS1_Content = "Start-Process .\$analyzer_FolderName\$findingsHtml_FileName"
 Set-Content -Path (Join-Path -Path (Split-Path $resultFolder -Parent) -ChildPath $findingsPS1_FileName ) -Value $findingsPS1_Content
 
-WriteTelemetry
+#WriteTelemetry
+LogStatInfo (GetStatInfo).OuterXml
 
 #$ProgressPreference = 'Continue'
 if ($removeCollectorResultZipFile) {
