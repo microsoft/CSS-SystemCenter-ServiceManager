@@ -1,18 +1,11 @@
 ﻿function AddTimingsToStatInfo() {
 
+    $rawData =  GetFileContentInSourceFolder Collector-MeasuredScriptBlocks.csv | ConvertFrom-Csv
+    $rawData += GetFileContentInTargetFolder Analyzer-MeasuredScriptBlocks.csv  | ConvertFrom-Csv
+    $rawDataSorted = $rawData | Sort-Object -Property Duration -Descending
+
     [string]$minData = "msec,info`n"
-
-    #Collector
-    $rawData = GetFileContentInSourceFolder Collector-MeasuredScriptBlocks.csv | ConvertFrom-Csv
-    foreach($line in $rawData) {        
-        $msec = [timespan]::Parse($line.Duration).TotalMilliseconds
-        $info = $line.ScriptBlockText
-        $minData += "$msec,$info`n"
-    }
-
-    #Analyzer
-    $rawData = GetFileContentInTargetFolder Analyzer-MeasuredScriptBlocks.csv | ConvertFrom-Csv
-    foreach($line in $rawData) {        
+    foreach($line in $rawDataSorted) {        
         $msec = [timespan]::Parse($line.Duration).TotalMilliseconds
         $info = $line.ScriptBlockText
         $minData += "$msec,$info`n"
