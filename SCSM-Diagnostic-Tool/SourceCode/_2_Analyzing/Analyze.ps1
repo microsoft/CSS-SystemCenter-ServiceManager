@@ -773,13 +773,13 @@ $findings_AnalysisInfo = $findings_AnalysisInfo.Replace("|AnalysisDate|",$(Get-D
 
 #region The ENDING Section
 
-LogStatInfo $script:statInfo.OuterXml
-
 #cd (Split-Path $MyInvocation.MyCommand.Definition)
 Write-Host ""
 $completionDateTime = (Get-Date).ToString("yyyy-MM-dd__HH.mm.ss.fff")  
 Write-Host "$analyzerEndingText $completionDateTime. (local time)"
 $script:SQLResultSetCounter = $null
+
+(GetStatInfoRoot).SetAttribute("SmdtRunFinish", $completionDateTime)
 Stop-Transcript | out-null
 
 #Check AnalyzerIssues
@@ -799,7 +799,8 @@ AppendOutputToFileInTargetFolder '</body></html>' $findingsHtml_FileName
 $findingsPS1_Content = "Start-Process .\$analyzer_FolderName\$findingsHtml_FileName"
 Set-Content -Path (Join-Path -Path (Split-Path $resultFolder -Parent) -ChildPath $findingsPS1_FileName ) -Value $findingsPS1_Content
 
-WriteTelemetry
+#WriteTelemetry
+LogStatInfo (GetStatInfo).OuterXml
 
 #$ProgressPreference = 'Continue'
 if ($removeCollectorResultZipFile) {

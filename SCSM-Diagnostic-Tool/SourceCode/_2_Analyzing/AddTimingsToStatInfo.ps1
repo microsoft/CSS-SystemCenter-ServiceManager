@@ -13,6 +13,6 @@
 
     $timings = $script:statInfo.CreateNode([System.Xml.XmlNodeType]::Element, "Timings", $null)
     $timings.InnerText = $minData  
-    AddToStatInfo $timings
 
+    AddToStatInfoRoot $timings
 }

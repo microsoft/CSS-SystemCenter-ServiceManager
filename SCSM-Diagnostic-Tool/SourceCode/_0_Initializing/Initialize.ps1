@@ -10,6 +10,8 @@
         return $false
     }
     #endregion
+    
+    InitStatInfo
 
     return $true
 }

@@ -1312,13 +1312,24 @@ function LogStatInfo($statInfo) {
         InvokeRestMethod_WithProxy -uri $uri -body $body -timeoutSec 20
     } catch {}
 }
-function AddToStatInfo($newElem) {    
-    $script:statInfo.GetElementsByTagName("StatInfo")[0].AppendChild($newElem) | Out-Null
+function AddToStatInfoRoot($newElem) {    
+    (GetStatInfoRoot).AppendChild($newElem) | Out-Null
 }
 function InitStatInfo() {
     CreateScriptVariableIfNotYet -varName statInfo -initValueIfNotExist ( [xml]::new() )
+
     $script:statInfo = [xml]::new()
-    $root = $script:statInfo.CreateNode([System.Xml.XmlNodeType]::Element, "StatInfo", $null)    
+    $root = $script:statInfo.CreateNode([System.Xml.XmlNodeType]::Element, "StatInfo", $null)
     $script:statInfo.AppendChild($root) | Out-Null
+
+    CreateScriptVariableIfNotYet -varName smdtRunId -initValueIfNotExist ( [guid]::NewGuid().ToString() )
+    $root.SetAttribute("SmdtRunId",      $smdtRunId )
+    $root.SetAttribute("SmdtRunVersion", (GetToolVersion) )       
+}
+function GetStatInfo() { 
+    $script:statInfo
+}
+function GetStatInfoRoot() { 
+    (GetStatInfo).StatInfo
 }
 #endregion
