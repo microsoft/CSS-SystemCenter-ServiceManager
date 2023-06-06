@@ -1312,24 +1312,34 @@ function LogStatInfo($statInfo) {
         InvokeRestMethod_WithProxy -uri $uri -body $body -timeoutSec 20
     } catch {}
 }
-function AddToStatInfoRoot($newElem) {    
-    (GetStatInfoRoot).AppendChild($newElem) | Out-Null
-}
+
 function InitStatInfo() {
-    CreateScriptVariableIfNotYet -varName statInfo -initValueIfNotExist ( [xml]::new() )
-
+    CreateScriptVariableIfNotYet -varName statInfo -initValueIfNotExist ""
     $script:statInfo = [xml]::new()
-    $root = $script:statInfo.CreateNode([System.Xml.XmlNodeType]::Element, "StatInfo", $null)
-    $script:statInfo.AppendChild($root) | Out-Null
-
+    (GetStatInfo).AppendChild(  (CreateElementForStatInfo StatInfo)  )
+    
+    (GetStatInfoRoot).SetAttribute("SmdtRunVersion", (GetToolVersion) )
     CreateScriptVariableIfNotYet -varName smdtRunId -initValueIfNotExist ( [guid]::NewGuid().ToString() )
-    $root.SetAttribute("SmdtRunId",      $smdtRunId )
-    $root.SetAttribute("SmdtRunVersion", (GetToolVersion) )       
+    (GetStatInfoRoot).SetAttribute("SmdtRunId",      $smdtRunId )
 }
+
 function GetStatInfo() { 
     $script:statInfo
 }
 function GetStatInfoRoot() { 
-    (GetStatInfo).StatInfo
+    (GetStatInfo).DocumentElement  #should return StatInfo
+}
+function GetSmEnvInStatInfo() {
+    GetNodeInStatInfo -parentNode (GetStatInfoRoot) -subNodeName SmEnv  # do NOT use (GetStatInfoRoot).SmEnv, if SmEnv has no child - bcz that would return a String! https://stackoverflow.com/questions/19245359/how-to-add-a-child-element-for-xml-in-powershell
+}
+
+function GetNodeInStatInfo($parentNode, $subNodeName) {
+    $parentNode.SelectSingleNode($subNodeName)
+}
+function AddToStatInfoRoot($newElem) {    
+    (GetStatInfoRoot).AppendChild($newElem) | Out-Null
+}
+function CreateElementForStatInfo($elemTagName) {
+    (GetStatInfo).CreateNode([System.Xml.XmlNodeType]::Element, $elemTagName, $null) 
 }
 #endregion

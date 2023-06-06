@@ -11,7 +11,7 @@
         $minData += "$msec,$info`n"
     }
 
-    $timings = $script:statInfo.CreateNode([System.Xml.XmlNodeType]::Element, "Timings", $null)
+    $timings = (GetStatInfo).CreateNode([System.Xml.XmlNodeType]::Element, "Timings", $null)
     $timings.InnerText = $minData  
 
     AddToStatInfoRoot $timings
