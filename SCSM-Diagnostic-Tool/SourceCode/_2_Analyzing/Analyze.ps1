@@ -1,4 +1,4 @@
-﻿function Analyze($resultingZipFile_FullPath) {
+function Analyze($resultingZipFile_FullPath) {
 
 #region Preferences about Analyzer behavior
 
@@ -322,13 +322,15 @@ $smEnvRow.SmEnvInfo="OS Info"
 $msinfo32Content = GetFileContentInSourceFolder msinfo32.txt
 [string]$tmp = GetFirstLineThatStartsWith $msinfo32Content "OS Name`t" -doTrim $false
 if ($tmp -eq $null) {
-    $smEnv_OS.SetAttribute("Name", "?")
+									   
     $smEnvRow.SMEnvValue = "?"
 }
-else {
-    $smEnv_OS.SetAttribute("Name", $tmp)
+else {    
+										
     $smEnvRow.SMEnvValue = $tmp.Replace("OS Name`t","")
 }
+$smEnv_OS.SetAttribute("Name", $smEnvRow.SMEnvValue.Trim())
+
 $smEnvRow.SMEnvValue += "<br/>Locale: "
 [string]$tmp = GetFirstLineThatStartsWith $msinfo32Content "Locale`t" -doTrim $false
 if ($tmp -eq $null) {
@@ -336,8 +338,9 @@ if ($tmp -eq $null) {
     $smEnv_OS.SetAttribute("Locale", "?")
 }
 else {
-    $smEnv_OS.SetAttribute("Locale", $tmp)
+										  
     $smEnvRow.SMEnvValue += $tmp.Replace("Locale`t","")
+    $smEnv_OS.SetAttribute("Locale", $tmp.Replace("Locale`t","").Trim())
 }
 
 $smEnvRow.SMEnvValue += "<br/>More in $(CollectorLink msinfo32.txt)"
@@ -374,6 +377,12 @@ $smEnvInfoRows += $smEnvRow
 #region Init before running rules   
 New-Variable -Name Result_Problems -Value @() -Force -Option AllScope
 New-Variable -Name Result_OKs -Value @() -Force -Option AllScope
+
+    $findings = (GetStatInfoRoot).AppendChild( (CreateElementForStatInfo Findings) )
+    $findings_Critical = $findings.AppendChild( (CreateElementForStatInfo Critical) )
+    $findings_Error = $findings.AppendChild( (CreateElementForStatInfo Error) )
+    $findings_Warning = $findings.AppendChild( (CreateElementForStatInfo Warning) )
+    $findings_Unclassified = $findings.AppendChild( (CreateElementForStatInfo Unclassified) ) 
 
     #region set SAP Categories
     $SAPCategories = @()  
@@ -557,10 +566,10 @@ New-Variable -Name Result_OKs -Value @() -Force -Option AllScope
     #endregion
 
 #endregion
-    
-    $findings = (GetStatInfoRoot).AppendChild( (CreateElementForStatInfo Findings)  )
+
+																					 
     Ram Analyze_Rules -phase Analyzer
-    AddTimingsToStatInfo
+						
 
 #region Writing Findings.html
 
@@ -621,11 +630,14 @@ AppendOutputToFileInTargetFolder $findings_FindingsByProblemCategory_Bottom $fin
 #region write FindingDetails
 
  #region writing Problems into separate sections
+ $findings.SetAttribute("TotalProblems", $Result_Problems.Count)
+ $findings.SetAttribute("TotalPassedRules", $Result_OKs.Count)
+ $findings.SetAttribute("TotalRules", $Result_OKs.Count + $Result_Problems.Count)
  if ($Result_Problems.Count -eq 0) {
     $problemsFoundBanner = @"
         <h2 style='text-align: left'><img style="width:20px; margin-right: 5px" src="$imgThumpsUp"/><span> Good, none of the rules could find any problem. </span><img style="width:20px; margin-right: 5px" src="$imgThumpsUp" /></h2>
 "@ 
-    AppendOutputToFileInTargetFolder $problemsFoundBanner $findingsHtml_FileName
+    AppendOutputToFileInTargetFolder $problemsFoundBanner $findingsHtml_FileName    
  }
  else {    
     foreach( $problemSeverity in [ProblemSeverity]::Critical, [ProblemSeverity]::Error, [ProblemSeverity]::Warning, [ProblemSeverity]::Unclassified ) {
@@ -636,6 +648,7 @@ AppendOutputToFileInTargetFolder $findings_FindingsByProblemCategory_Bottom $fin
                 $problemCountForCurrentSeverity++ 
             }
         }
+        $findings.SelectSingleNode($problemSeverity).SetAttribute("Count", $problemCountForCurrentSeverity)
         if ($problemCountForCurrentSeverity -gt 0) {                
             
             $severityCaption = switch ($problemSeverity) {
@@ -679,7 +692,9 @@ AppendOutputToFileInTargetFolder $findings_FindingsByProblemCategory_Bottom $fin
                     $findings_FindingDetails_Row += "<td>" + $Result_Problem.RuleDesc +"</td>"
                     $findings_FindingDetails_Row += "<td>" + $Result_Problem.RuleResult +"</td>"
                     $findings_FindingDetails_Row += '</tr>'
-                    AppendOutputToFileInTargetFolder $findings_FindingDetails_Row $findingsHtml_FileName 
+                    AppendOutputToFileInTargetFolder $findings_FindingDetails_Row $findingsHtml_FileName
+                    $failedRule = $findings.SelectSingleNode($problemSeverity).AppendChild( (CreateElementForStatInfo Rule) )
+                    $failedRule.SetAttribute("Name", $Result_Problem.RuleName) 
                 }
             }
             AppendOutputToFileInTargetFolder '</table></div></p>' $findingsHtml_FileName             
@@ -741,12 +756,14 @@ foreach($smEnvInfoRow in $smEnvInfoRows) {
 }
 
 #Check CollectorIssues
+$findings.SetAttribute("CollectorHadIssues",0)
 $collectorTranscriptFileName = (Get-ChildItem -Path $inputFolder -Filter Transcript*.txt).FullName
 $collectorTranscriptContent = [System.IO.File]::ReadAllText($collectorTranscriptFileName)
 $collectorIssuesString = ( GetSubstringFromString $collectorTranscriptContent $collectorStartingText $collectorEndingText )
 if (-not [string]::IsNullOrWhiteSpace($collectorIssuesString)) {
     $telemetry.CollectorIssues = 1
     $findings_ScsmEnvInfo += "<tr><td>Collector had issues.<br/>This can cause 'false positive' analysis results!</td><td>Check in $(CollectorLink (Get-ChildItem -Path $inputFolder -Filter Transcript*.txt).Name)</td></tr>"
+    $findings.SetAttribute("CollectorHadIssues",1)
 }
 
 $findings_ScsmEnvInfo+= "</table></div></p>"
@@ -793,6 +810,8 @@ Write-Host "$analyzerEndingText $completionDateTime. (local time)"
 $script:SQLResultSetCounter = $null
 
 (GetStatInfoRoot).SetAttribute("SmdtRunFinish", $completionDateTime)
+AddTimingsToStatInfo
+
 Stop-Transcript | out-null
 
 #Check AnalyzerIssues
@@ -802,11 +821,11 @@ if (-not [string]::IsNullOrWhiteSpace($analyzerIssuesString)) {
     $telemetry.AnalyzerIssues = 1
    # $findings_AnalysisInfo = $findings_AnalysisInfo.Replace("|AnalyzerIssues|", "<tr><td>Analyzer had issues!</td><td>Check in $(CollectorLink '../Analyzer/Transcript.txt' 'Transcript.txt')</td></tr>")
     $findings_AnalysisInfo = $findings_AnalysisInfo.Replace("|AnalyzerIssues|", "<tr><td>Analyzer had issues!</td><td>Check in $(AnalyzerLink 'Transcript.txt')</td></tr>")
-    $findings.SetAttribute("AnalyzerIssues","1")
+    $findings.SetAttribute("AnalyzerHadIssues","1")
 }
 else {
     $findings_AnalysisInfo = $findings_AnalysisInfo.Replace("|AnalyzerIssues|","")
-    $findings.SetAttribute("AnalyzerIssues","0")
+    $findings.SetAttribute("AnalyzerHadIssues","0")
 }
 AppendOutputToFileInTargetFolder $findings_AnalysisInfo $findingsHtml_FileName 
 AppendOutputToFileInTargetFolder '</body></html>' $findingsHtml_FileName  
