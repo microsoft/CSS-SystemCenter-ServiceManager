@@ -5,7 +5,7 @@
     }
 
     $code = {
-        RamSB -outputString Collect_DWJobSchedules -pscriptBlock `
+        RamSB -outputString Collect_DWJobSchedules_Async -pscriptBlock `
         {
             ImportSmDwModule
             Collect_DWJobSchedules 

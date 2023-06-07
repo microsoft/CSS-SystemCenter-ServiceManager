@@ -7,7 +7,7 @@
     }  
 
     $code = {
-        RamSB -outputString Collect_SCSMUserRoles -pscriptBlock `
+        RamSB -outputString Collect_SCSMUserRoles_Async -pscriptBlock `
         {
             ImportSmModule
             Collect_SCSMUserRoles 
