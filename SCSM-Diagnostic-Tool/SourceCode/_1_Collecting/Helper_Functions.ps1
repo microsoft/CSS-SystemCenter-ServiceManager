@@ -1330,7 +1330,7 @@ function GetStatInfoRoot() {
     (GetStatInfo).DocumentElement  #should return StatInfo
 }
 function GetSmEnvInStatInfo() {
-    GetNodeInStatInfo -parentNode (GetStatInfoRoot) -subNodeName SmEnv  # do NOT use (GetStatInfoRoot).SmEnv, if SmEnv has no child - bcz that would return a String! https://stackoverflow.com/questions/19245359/how-to-add-a-child-element-for-xml-in-powershell
+    GetNodeInStatInfo -parentNode (GetStatInfoRoot) -subNodeName SmEnv  # do NOT use (GetStatInfoRoot).SmEnv, bcz if SmEnv has no child, that would return a String! https://stackoverflow.com/questions/19245359/how-to-add-a-child-element-for-xml-in-powershell
 }
 
 function GetNodeInStatInfo($parentNode, $subNodeName) {
