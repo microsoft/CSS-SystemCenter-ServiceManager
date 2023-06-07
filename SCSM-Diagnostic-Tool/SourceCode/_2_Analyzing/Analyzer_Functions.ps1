@@ -415,7 +415,13 @@ function RulePassed([string]$ruleName) {
     }
 }
 
+function DoesFileExistInSourceFolder($fileName, $subFolderName) {
+    if ($subFolderName) {
+        $fileName = Join-Path $subFolderName $fileName    
+    }
 
+    Test-Path -Path (Join-Path -Path $inputFolder -ChildPath $fileName)    
+}
 
 
 #endregion
