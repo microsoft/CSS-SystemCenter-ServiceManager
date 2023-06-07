@@ -1350,7 +1350,7 @@ function IsFileSignedByMicrosoft($filePath) {
     if ($sgn.SignerCertificate.Subject -notlike 'CN=Microsoft Corporation, *') { return $false }
     return $true
 }
-function IsFileSignedByMicrosoft() {
-    IsFileSigned $scriptFilePath
+function AmIRunningAsSigned() {
+    IsFileSignedByMicrosoft $scriptFilePath
 }
 #endregion
