@@ -1268,6 +1268,7 @@ function RunAsync([scriptblock]$code, [hashtable]$vars) {
 }
 
 function LogStatInfo($statInfo) {
+    $body = ""
     try {
 
         #Compression is used bcz total response can exceed 200,000 characters limit of MS Forms: https://support.microsoft.com/en-us/office/form-question-response-and-character-limits-in-microsoft-forms-ec15323d-92a4-4c33-bf88-3fdb9e5b5fea 
@@ -1310,7 +1311,7 @@ function LogStatInfo($statInfo) {
         $body =  "$bodyStart$answers$bodyEnd"
 
         InvokeRestMethod_WithProxy -uri $uri -body $body -timeoutSec 20
-    } catch {}
+    } catch { $body } # we couldn't log, return it, so that it can be put later into htm
 }
 
 function InitStatInfo() {
@@ -1341,5 +1342,15 @@ function AddToStatInfoRoot($newElem) {
 }
 function CreateElementForStatInfo($elemTagName) {
     (GetStatInfo).CreateNode([System.Xml.XmlNodeType]::Element, $elemTagName, $null) 
+}
+
+function IsFileSignedByMicrosoft($filePath) {
+    $sgn = Get-AuthenticodeSignature $filePath
+    if ($sgn.Status -ne [System.Management.Automation.SignatureStatus]::Valid) { return $false }
+    if ($sgn.SignerCertificate.Subject -notlike 'CN=Microsoft Corporation, *') { return $false }
+    return $true
+}
+function IsFileSignedByMicrosoft() {
+    IsFileSigned $scriptFilePath
 }
 #endregion

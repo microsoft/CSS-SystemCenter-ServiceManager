@@ -17,4 +17,8 @@ if (-not (IsSourceAnyScsmMgmtServer)) {
     Check_LocalOMSDK_Availability
     Check_ConnectedSDKUsers
     Check_TimeDiffBetweenMSAndSQL
+
+ #Below are not necessarily "rules"
+
+    GetForStatInfo_SMEnv_SM
 } 
