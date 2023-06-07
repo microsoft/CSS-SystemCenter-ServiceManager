@@ -618,7 +618,7 @@ select dbo.fn_GetEntityChangeLogGroomingWatermark()
 '@
 
    $SQL_SCSM_MS['SQL_MgmtServer_Availability']=@'
-select bme.DisplayName as MS_DisplayName, av.IsAvailable, av.LastModified
+select bme.DisplayName as MS_DisplayName, av.IsAvailable, av.LastModified, av.BaseManagedEntityId as MS_BmeId
 from Availability av 
 left join BaseManagedEntity bme on av.BaseManagedEntityId=bme.BaseManagedEntityId
 '@
