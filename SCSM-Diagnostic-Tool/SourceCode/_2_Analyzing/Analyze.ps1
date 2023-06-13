@@ -179,7 +179,7 @@ AppendOutputToFileInTargetFolder $findings_Part0 $findingsHtml_FileName
 
 $findings_PartH1 = @'
 <h1 style="color:black; text-align:center">SCSM Diagnostic Tool</h1>
-<div style="text-align: center;font-size: x-large;"><b><a style="color: black;background-color: yellow;" target="_blank" href="https://forms.office.com/r/QpC8qkSLVA">Feedback</a></b></div>
+<div style="text-align: center;font-size: x-large;"><b><a style="color: black;background-color: yellow;" target="_blank" href="https://forms.office.com/r/QpC8qkSLVA" title="Just a single question!">Feedback &#x1F60A; &#x1F610;</a></b></div>
 '@
 AppendOutputToFileInTargetFolder $findings_PartH1 $findingsHtml_FileName 
 
