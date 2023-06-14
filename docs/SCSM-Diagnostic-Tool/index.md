@@ -8,7 +8,7 @@ The *SCSM Diagnostic Tool* allows you to collect diagnostic logs from your Servi
 
 SCSM Diagnostic Tool discovers the SCSM components installed locally on the system (like Primary/Secondary Management Server, Data Warehouse Management Server, Portal, Console) and collects information accordingly.  
 
-Afterwards, it runs predefined "rules" against the collected info and generates a file named `Findings.html`. Customers can review this file and can implement the suggested actions prior to open a ticket with Microsoft Customer Support Services (CSS).
+Afterwards, it runs predefined "rules" against the collected info and generates a `Findings` report. Customers can review it and can implement the suggested actions prior to open a ticket with Microsoft Customer Support Services (CSS).
 
 # How to run
 
@@ -23,13 +23,13 @@ Afterwards, it runs predefined "rules" against the collected info and generates 
 4. Follow the instructions.
 5. **Upload** the resulting zip file to Microsoft CSS.
 
-If you want, you can open `Findings.html` which is included in the resulting zip file.
+If you want to review the `Findings`, extract all files and folders in the resulting zip file, then run `ShowTheFindings.ps1`.
  
 ## Minimum requirements
 
 - Windows Server 2016 or later
 - Service Manager 2019 or later
-- Windows Powershell version 4.0 or later
+- Windows PowerShell version 4.0 or later
 
 ## Notes:
 
