@@ -1354,4 +1354,14 @@ function IsFileSignedByMicrosoft($filePath) {
 function AmIRunningAsSigned() {
     IsFileSignedByMicrosoft $scriptFilePath
 }
+
+function ConvertUpnToDomainUsername($upn) {
+    $ADS_NAME_INITTYPE_GC = 3
+    $UNKNOWN = 8
+    $NT4NAME = 3
+    $ns=New-Object -ComObject NameTranslate
+    [System.__ComObject].InvokeMember("init","InvokeMethod",$null,$ns,($ADS_NAME_INITTYPE_GC,$null))
+    [System.__ComObject].InvokeMember("Set","InvokeMethod",$null,$ns,($UNKNOWN,$upn))
+    [System.__ComObject].InvokeMember("Get","InvokeMethod",$null,$ns,$NT4NAME)
+}
 #endregion
