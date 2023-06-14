@@ -18,6 +18,7 @@ Write-Host "(Please ignore any Warning and Errors)"
 
 CopyFileToTargetFolder $scriptFilePath
 AppendOutputToFileInTargetFolder ( $collectorVersion ) CollectorVersion.txt
+AppendOutputToFileInTargetFolder ( $ExecutionContext.SessionState.LanguageMode ) LanguageMode.txt
 
 AppendOutputToFileInTargetFolder  '"Duration","EndTime","StartTime","ScriptBlockText"'  Collector-MeasuredScriptBlocks.csv
 (GetStatInfoRoot).SetAttribute("SmdtRunStart", $resultDateTime)
