@@ -814,7 +814,6 @@ $script:SQLResultSetCounter = $null
 AddTimingsToStatInfo
 (GetStatInfoRoot).SetAttribute("SmdtResultZipName", [System.IO.Path]::GetFileName($resultingZipFile_FullPath) )
 (GetStatInfoRoot).SetAttribute("SmdtRanAsSigned", (AmIRunningAsSigned) )
-(GetStatInfoRoot).SetAttribute("SentBy","Run")
 
 Stop-Transcript | out-null
 
@@ -838,8 +837,8 @@ $findingsPS1_Content = "Start-Process .\$analyzer_FolderName\$findingsHtml_FileN
 Set-Content -Path (Join-Path -Path (Split-Path $resultFolder -Parent) -ChildPath $findingsPS1_FileName ) -Value $findingsPS1_Content
 
 #WriteTelemetry
-$statInfoBase64 = LogStatInfo (GetStatInfo).OuterXml
 AppendOutputToFileInTargetFolder (GetStatInfo).OuterXml StatInfo.xml
+LogStatInfo (GetStatInfo) "Run"
 
 #$ProgressPreference = 'Continue'
 if ($removeCollectorResultZipFile) {
