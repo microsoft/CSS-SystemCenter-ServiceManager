@@ -833,8 +833,73 @@ else {
 AppendOutputToFileInTargetFolder $findings_AnalysisInfo $findingsHtml_FileName 
 AppendOutputToFileInTargetFolder '</body></html>' $findingsHtml_FileName  
 
-$findingsPS1_Content = "Start-Process .\$analyzer_FolderName\$findingsHtml_FileName"
+$findingsPS1_Content = @'
+Remove-Variable * -ErrorAction SilentlyContinue -Exclude PSDefaultParameterValues
+Remove-Module *;
+$Error.Clear();
+Get-job | Remove-Job -Force
+$host.privatedata.ErrorForegroundColor ="DarkGray"  # For accessibility
+$global:ProgressPreference = 'SilentlyContinue'
+'@
+$findingsPS1_Content += "
+function GetFindingsHtml() {
+@'
+$(GetFileContentInTargetFolder $findingsHtml_FileName)
+'@
+}
+"
+$findingsPS1_Content += '$code = {
+'
+$findingsPS1_Content += GetFunctionDeclaration LogStatInfo
+$findingsPS1_Content += GetFunctionDeclaration InvokeRestMethod_WithProxy
+$findingsPS1_Content += GetFunctionDeclaration GetProxy
+$findingsPS1_Content += @'
+
+if ($input.MoveNext()) { $inputs = $input.Current } else { return }
+foreach($v in $inputs.Keys) {
+        New-Variable -Name $v -Value $inputs[$v]
+}
+Set-Location $workingFolder
+$statInfoXmlString = Get-Content -Path ".\$analyzer_FolderName\StatInfo.xml" -Encoding UTF8
+$statInfoXml = New-Object xml
+$statInfoXml.LoadXml($statInfoXmlString)
+LogStatInfo $statInfoXml "Open"
+}
+'@
+$findingsPS1_Content += @"
+
+`$analyzer_FolderName  = "$analyzer_FolderName"
+`$findingsHtml_FileName = "$findingsHtml_FileName"
+
+"@
+$findingsPS1_Content += @'
+Set-Location $PSScriptRoot
+if (Test-Path ".\$analyzer_FolderName\StatInfo.xml") {
+    $vars = @{
+        "workingFolder"  = $PSScriptRoot
+        "analyzer_FolderName"  = $analyzer_FolderName
+    }
+    Start-Job -ScriptBlock $code -InputObject $vars | Out-Null
+}
+else {
+    Read-Host "Please unzip the whole ZIP file and then try again."
+    Exit
+}
+
+if (!(Test-Path ".\$analyzer_FolderName\$findingsHtml_FileName")) {
+    Set-Content -Path .\$analyzer_FolderName\$findingsHtml_FileName -Value (GetFindingsHtml) -Encoding UTF8
+}
+Start-Process .\$analyzer_FolderName\$findingsHtml_FileName
+
+Write-Host "This will end in a few seconds."
+foreach($psJob in Get-Job) {
+    while ( $psJob.State -eq [System.Management.Automation.JobState]::Running ) {
+        Start-Sleep -Milliseconds 100
+    }
+}
+'@
 Set-Content -Path (Join-Path -Path (Split-Path $resultFolder -Parent) -ChildPath $findingsPS1_FileName ) -Value $findingsPS1_Content
+DeleteFileInTargetFolder $findingsHtml_FileName
 
 #WriteTelemetry
 AppendOutputToFileInTargetFolder (GetStatInfo).OuterXml StatInfo.xml
