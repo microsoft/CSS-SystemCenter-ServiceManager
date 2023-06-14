@@ -16,9 +16,25 @@
         }
         else 
         {
-            $serviceDomainUserName = $serviceDomainUserName.Replace('\','\\')
-            $ServiceSID = (gwmi win32_useraccount -Filter " Caption = '$serviceDomainUserName' " | Select-Object SID).SID
+            $parts = $serviceDomainUserName.Split('\')
+            if ($parts.Count -ne 2) {
+
+                $parts = $serviceDomainUserName.Split('@')
+                if ($parts.Count -ne 2) {
+                    return $null
+                }
+
+                [string]$convertedDomainUserName = ConvertUpnToDomainUsername -upn $serviceDomainUserName
+                $parts = $convertedDomainUserName.Split('\')
+            }
+            if ($parts.Count -ne 2) {
+                return $null
+            }
+            $serviceDomainName = $parts[0].Trim()
+            $serviceUserName = $parts[1].Trim()
+            $ServiceSID = (gwmi win32_useraccount -Filter " Domain='$serviceDomainName' and Name='$serviceUserName'").SID
             $serviceLocalPath = (gwmi Win32_UserProfile -Filter " SID = '$ServiceSID' ").LocalPath
+
             Collect_FilesInfoFromDirectory -pStartingPath ( [System.IO.Path]::Combine( $serviceLocalPath, $subFolders) ) -outputFileName "SCSM_Files_InProfile_OMSDKServiceAccount.csv"
         }
     }
@@ -34,9 +50,25 @@
         }
         else
         {
-            $serviceDomainUserName = $serviceDomainUserName.Replace('\','\\')
-            $ServiceSID = (gwmi win32_useraccount -Filter " Caption = '$serviceDomainUserName' " | Select-Object SID).SID
+            $parts = $serviceDomainUserName.Split('\')
+            if ($parts.Count -ne 2) {
+
+                $parts = $serviceDomainUserName.Split('@')
+                if ($parts.Count -ne 2) {
+                    return $null
+                }
+
+                [string]$convertedDomainUserName = ConvertUpnToDomainUsername -upn $serviceDomainUserName
+                $parts = $convertedDomainUserName.Split('\')
+            }
+            if ($parts.Count -ne 2) {
+                return $null
+            }
+            $serviceDomainName = $parts[0].Trim()
+            $serviceUserName = $parts[1].Trim()
+            $ServiceSID = (gwmi win32_useraccount -Filter " Domain='$serviceDomainName' and Name='$serviceUserName'").SID
             $serviceLocalPath = (gwmi Win32_UserProfile -Filter " SID = '$ServiceSID' ").LocalPath
+
             Collect_FilesInfoFromDirectory -pStartingPath ( [System.IO.Path]::Combine( $serviceLocalPath, $subFolders) ) -outputFileName "SCSM_Files_InProfile_OMCFGServiceAccount.csv"
         }
     }
