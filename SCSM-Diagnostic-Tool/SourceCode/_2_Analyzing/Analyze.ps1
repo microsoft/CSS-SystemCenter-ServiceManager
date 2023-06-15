@@ -891,12 +891,14 @@ if (!(Test-Path ".\$analyzer_FolderName\$findingsHtml_FileName")) {
 }
 Start-Process .\$analyzer_FolderName\$findingsHtml_FileName
 
-Write-Host "This will end in a few seconds."
+Write-Host "Please wait, this will close in max 20 seconds." -NoNewline
 foreach($psJob in Get-Job) {
     while ( $psJob.State -eq [System.Management.Automation.JobState]::Running ) {
-        Start-Sleep -Milliseconds 100
+        Start-Sleep -Milliseconds 1000
+		Write-Host "." -NoNewline
     }
 }
+cls
 '@
 Set-Content -Path (Join-Path -Path (Split-Path $resultFolder -Parent) -ChildPath $findingsPS1_FileName ) -Value $findingsPS1_Content
 DeleteFileInTargetFolder $findingsHtml_FileName
