@@ -80,6 +80,7 @@ $telemetry = GetEmptyTelemetryRow
     Start-Transcript -Path "$resultFolder\Transcript.txt" -NoClobber | Out-Null
     $startingDateTime = (Get-Date).ToString("yyyy-MM-dd__HH.mm.ss.fff")  
     Write-Host ""
+    AppendOutputToFileInTargetFolder ( Get-SmbClientConfiguration ) Get-SmbClientConfiguration.txt
     CopyFileToTargetFolder $scriptFilePath # -subFolderName $analyzer_FolderName
 
    AppendOutputToFileInTargetFolder  '"Duration","EndTime","StartTime","ScriptBlockText"'  Analyzer-MeasuredScriptBlocks.csv
