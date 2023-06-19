@@ -16,6 +16,7 @@ Write-Host "SCSM Diagnostic Tool started at $resultDateTime. (local time)"
 Write-Host "Please wait for completion. This can take a few minutes..." -ForegroundColor Yellow
 Write-Host "(Please ignore any Warning and Errors)"
 
+AppendOutputToFileInTargetFolder ( Get-SmbClientConfiguration ) Get-SmbClientConfiguration.txt
 CopyFileToTargetFolder $scriptFilePath
 AppendOutputToFileInTargetFolder ( $collectorVersion ) CollectorVersion.txt
 AppendOutputToFileInTargetFolder ( $ExecutionContext.SessionState.LanguageMode ) LanguageMode.txt
