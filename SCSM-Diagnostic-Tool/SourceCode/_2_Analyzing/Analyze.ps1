@@ -917,7 +917,9 @@ if ($removeCollectorResultZipFile) {
 if (-not $debugmode) {
 if ($compressTheResults) {
     Write-Host "Now compressing..." -ForegroundColor Yellow
-        
+
+    $resultingZipFile_FullPath = $resultingZipFile_FullPath.Replace( $inputPrefix, $inputPrefix + "_" + $script:RoleFoundAbbr )
+
     if ( $PSVersionTable.PSVersion.Major -lt 4 ) { 
         Compress-ZipFile  (Split-Path $resultFolder -Parent) $resultingZipFile_FullPath 
     }
