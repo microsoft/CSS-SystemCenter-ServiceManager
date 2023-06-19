@@ -64,12 +64,10 @@ Stop-Transcript | out-null
 #$ProgressPreference = 'Continue'
 
 $zipFileTargetFolder = Split-Path $scriptFilePath
-$resultingZipFile_FullPath = (Join-Path -Path $zipFileTargetFolder -ChildPath "$($resultPrefix)_$($script:RoleFoundAbbr)_$($resultDateTime).zip")
+$resultingZipFile_FullPath = (Join-Path -Path $zipFileTargetFolder -ChildPath "$($resultPrefix)_$($resultDateTime).zip")
 
 $currentFolderName = "$($resultPrefix)_$($resultDateTime)"
 AppendOutputToFileInTargetFolder ( (CalculateCollectorTimings $currentFolderName) | ConvertTo-Csv -NoTypeInformation ) CollectorTimings.csv
-$newFolderName = "$($resultPrefix)_$($script:RoleFoundAbbr)_$($resultDateTime)"
-Rename-Item -Path $currentFolderName -NewName $newFolderName
 #endregion
 
 return $resultingZipFile_FullPath # actually, there's no real zip file (anymore), but Analyzer will handle this accordingly

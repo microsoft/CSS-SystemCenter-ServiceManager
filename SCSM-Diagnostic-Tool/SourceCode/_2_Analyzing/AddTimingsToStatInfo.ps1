@@ -16,7 +16,7 @@ function AddTimingsToStatInfo() {
         $timing = CreateElementForStatInfo -elemTagName Timing
         $timing.SetAttribute("Info", $info )
         $timing.SetAttribute("Msecs", $msecs )
-        $timings.AppendChild( $timing )
+        $timings.AppendChild( $timing ) | Out-Null
     }
     AddToStatInfoRoot $timings
 }
