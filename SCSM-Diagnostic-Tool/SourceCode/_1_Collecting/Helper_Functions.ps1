@@ -1166,18 +1166,15 @@ function Ram([string]$pscriptBlockText, [string]$phase, [string]$outputString) #
 }
 
 function GetInternetAvailability() {
-    try {        
-        $internetAvailable = InvokeWebRequest_WithProxy -Uri 'https://www.microsoft.com' -timeoutSec 5
-
-        if ($internetAvailable -and $internetAvailable.StatusCode -eq 200) {
-            AppendOutputToFileInTargetFolder 'Yes' InternetAvailable.txt
-        }
-    }
-    catch {
-        AppendOutputToFileInTargetFolder 'No' InternetAvailable.txt
-    }
+    AppendOutputToFileInTargetFolder (IsInternetAvailable) InternetAvailable.txt
 }
-
+function IsInternetAvailable() {
+    try {
+        $internetAvailable = InvokeWebRequest_WithProxy -Uri 'https://www.microsoft.com' -timeoutSec 5
+        ($internetAvailable -and $internetAvailable.StatusCode -eq 200)
+    }
+    catch { $false }
+}
 function GetProxy($uri) { #https://learn.microsoft.com/en-us/dotnet/api/system.net.iwebproxy.getproxy?view=netframework-4.8.1#examples
     $wpi = [System.Net.WebRequest]::GetSystemWebProxy()
     $wpi.Credentials = [System.Net.CredentialCache]::DefaultNetworkCredentials
