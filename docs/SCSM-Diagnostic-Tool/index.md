@@ -1,3 +1,4 @@
+﻿<a style="color: black;background-color: yellow;" target="_blank" href="https://forms.office.com/r/QpC8qkSLVA" title="Just a single question!">Feedback 😊 😐</a>
 # SCSM Diagnostic Tool
 
 Download the latest release:  [SCSM-Diagnostic-Tool.ps1]({{ site.latestDownloadLink }}/SCSM-Diagnostic-Tool.ps1)
