@@ -3,7 +3,7 @@
     $dataRow.RuleName="Custom Relationship Types"
     $dataRow.RuleDesc=@"
     Custom Relationship Types with MaxCardinality=1 Targets should be excluded, if they are really not needed. Otherwise, WFs can lag and Consoles can face slowness. Please correlate with 'ECL row count' rule.
-<br/>More detailed info in the Appendix of this $(GetAnchorForExternal 'https://techcommunity.microsoft.com/t5/system-center-blog/troubleshooting-workflow-performance-and-delays/ba-p/347510' 'KB article.')
+<br/>More detailed info at Appendix section in this $(GetAnchorForExternal 'https://techcommunity.microsoft.com/t5/system-center-blog/troubleshooting-workflow-performance-and-delays/ba-p/347510' 'Doc.')
 <br/>Query results are in $(CollectorLink SQL_TroubleshootingWorkflowPerformanceandDelays.csv)
 "@
     $dataRow.SAPCategories = "wf*" 

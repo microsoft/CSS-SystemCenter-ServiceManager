@@ -19,7 +19,7 @@
     $dataRow = GetEmptyResultRow
     $dataRow.RuleName="SQL Server HW"
     $dataRow.RuleDesc="Must have min: 8 CPU, 8000 MB RAM"
-    $dataRow.RuleResult="Actual: $cpuCount CPU, $totalRamInMB MB RAM"
+    $dataRow.RuleResult="Actual: $cpuCount CPU, $totalRamInMB MB RAM."
     if (IsSourceScsmWfMgmtServer) { $dataRow.SAPCategories =  "wf\*perf*", "s*\*perf*"}
     if (IsSourceScsmDwMgmtServer) { $dataRow.SAPCategories = "dw\*" } 
     if (IsSourceScsmSecondaryMgmtServer) { $dataRow.SAPCategories =  "s*\*perf*"} 
@@ -27,7 +27,7 @@
 
     if ($cpuCount -ge 8  -and  $totalRamInMB -ge 8000) { $Result_OKs += $dataRow }
     else {        
-        $dataRow.RuleResult += " $(GetAnchorForExternal 'https://docs.microsoft.com/en-us/system-center/scsm/system-requirements?view=sc-sm-2019#hardware' KB)"        
+        $dataRow.RuleResult += "More details in this $(GetAnchorForExternal 'https://docs.microsoft.com/en-us/system-center/scsm/system-requirements?view=sc-sm-2019#hardware' Doc)"        
         $Result_Problems += $dataRow
     }
 }
