@@ -877,8 +877,20 @@ $statInfoXml = New-Object xml
 $statInfoXml.LoadXml($statInfoXmlString)
 LogStatInfo $statInfoXml "Open"
 }
+
 '@
+
+$findingsPS1_Content += GetFunctionDeclaration GetProxy
+$findingsPS1_Content += GetFunctionDeclaration InvokeWebRequest_WithProxy
+$findingsPS1_Content += GetFunctionDeclaration IsInternetAvailable
+
 $findingsPS1_Content += @"
+
+if ( !(IsInternetAvailable) )
+{
+    Read-Host "The Findings report contains links to resources on the internet. Therefore, please unzip the whole ZIP file on a machine that is connected to the INTERNET and then try again."
+    Exit
+}
 
 `$analyzer_FolderName  = "$analyzer_FolderName"
 `$findingsHtml_FileName = "$findingsHtml_FileName"
