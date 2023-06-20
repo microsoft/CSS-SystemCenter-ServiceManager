@@ -13,6 +13,7 @@ $openFindingsHtmlAtTheEnd = $false
 $openCollectorFolderAtTheEnd = $false #todo: get feedback if this should be $true
 
 $findingsHtml_FileName = "Findings.html"
+$findingsTxt_FileName = "Findings.txt"
 $collector_FolderName = "Collector"
 $analyzer_FolderName = "Analyzer"
 $findingsPS1_FileName = "ShowTheFindings.ps1"
@@ -835,7 +836,22 @@ else {
 AppendOutputToFileInTargetFolder $findings_AnalysisInfo $findingsHtml_FileName 
 AppendOutputToFileInTargetFolder '</body></html>' $findingsHtml_FileName  
 
-$findingsPS1_Content = @'
+$readableText = GetFileContentInTargetFolder $findingsHtml_FileName
+$encodedBytes = [System.Text.Encoding]::UTF8.GetBytes($readableText)
+$encodedText = [System.Convert]::ToBase64String($encodedBytes)
+AppendOutputToFileInTargetFolder $encodedText Findings.txt
+
+$findingsPS1_Content = @"
+<#
+
+--------------------------------------------
+Please execute with right/click + 'Run with PowerShell'
+--------------------------------------------
+
+#>
+
+"@
+$findingsPS1_Content += @'
 Remove-Variable * -ErrorAction SilentlyContinue -Exclude PSDefaultParameterValues
 Remove-Module *;
 $Error.Clear();
@@ -843,14 +859,8 @@ Get-job | Remove-Job -Force
 $host.privatedata.ErrorForegroundColor ="DarkGray"  # For accessibility
 $global:ProgressPreference = 'SilentlyContinue'
 '@
-$findingsPS1_Content += "
-function GetFindingsHtml() {
-@'
-$(GetFileContentInTargetFolder $findingsHtml_FileName)
-'@
-}
-"
-$findingsPS1_Content += '$code = {
+$findingsPS1_Content += '
+$code = {
 '
 $findingsPS1_Content += GetFunctionDeclaration LogStatInfo
 $findingsPS1_Content += GetFunctionDeclaration InvokeRestMethod_WithProxy
@@ -872,6 +882,7 @@ $findingsPS1_Content += @"
 
 `$analyzer_FolderName  = "$analyzer_FolderName"
 `$findingsHtml_FileName = "$findingsHtml_FileName"
+`$findingsTxt_FileName = "$findingsTxt_FileName"
 
 "@
 $findingsPS1_Content += @'
@@ -889,7 +900,10 @@ else {
 }
 
 if (!(Test-Path ".\$analyzer_FolderName\$findingsHtml_FileName")) {
-    Set-Content -Path .\$analyzer_FolderName\$findingsHtml_FileName -Value (GetFindingsHtml) -Encoding UTF8
+    $encodedValue = Get-Content -Path .\$analyzer_FolderName\$findingsTxt_FileName -Encoding UTF8
+    $decodedBytes = [System.Convert]::FromBase64String($encodedValue)
+    $decodedText  = [System.Text.Encoding]::Utf8.GetString($decodedBytes)
+    Set-Content -Path .\$analyzer_FolderName\$findingsHtml_FileName -Value $decodedText -Encoding UTF8
 }
 Start-Process .\$analyzer_FolderName\$findingsHtml_FileName
 
