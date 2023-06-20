@@ -17,7 +17,7 @@
 
     if ($cpuCount -ge 4  -and  $totalRamInMB -ge 8000) { $Result_OKs += $dataRow }
     else {        
-        $dataRow.RuleResult += " $(GetAnchorForExternal 'https://docs.microsoft.com/en-us/system-center/scsm/system-requirements?view=sc-sm-2019#hardware' KB)"        
+        $dataRow.RuleResult += "<br/>More details in $(GetAnchorForExternal 'https://docs.microsoft.com/en-us/system-center/scsm/system-requirements?view=sc-sm-2019#hardware' 'System Requirements')"        
         $Result_Problems += $dataRow
     }
 }

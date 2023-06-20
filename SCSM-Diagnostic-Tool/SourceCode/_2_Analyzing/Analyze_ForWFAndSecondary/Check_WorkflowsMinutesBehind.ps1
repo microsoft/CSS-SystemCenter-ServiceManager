@@ -4,7 +4,7 @@
     $dataRow = GetEmptyResultRow
     $dataRow.RuleName="Workflows Minutes Behind"
     $dataRow.RuleDesc=@"
-This rule checks if workflows are lagging for more than $tolerance_MinutesBehind minutes. More in this $(GetAnchorForExternal 'https://techcommunity.microsoft.com/t5/system-center-blog/troubleshooting-workflow-performance-and-delays/ba-p/347510' KB) article.
+This rule checks if workflows are lagging for more than $tolerance_MinutesBehind minutes. Details in this $(GetAnchorForExternal 'https://techcommunity.microsoft.com/t5/system-center-blog/troubleshooting-workflow-performance-and-delays/ba-p/347510' Doc).
 <br/>All WF lagging info is in $(CollectorLink SQL_WorkflowMinutesBehind.csv)
 "@
     $dataRow.RuleResult="No workflows are lagging."

@@ -14,13 +14,13 @@
     $dataRow.ProblemSeverity=[ProblemSeverity]::Critical
 
     if ($isBrokerEnabled -eq "True") {
-        $dataRow.RuleResult += "enabled"
+        $dataRow.RuleResult += "enabled."
         $Result_OKs += $dataRow
     }
     else {       
         $dataRow.RuleResult += "NOT enabled! $(CollectorLink SQL_Databases.csv)" 
-        $dataRow.RuleResult += " <a $(GetAnchorForExternal 'https://social.technet.microsoft.com/Forums/systemcenter/en-US/f16680c3-e906-4704-8d67-22c71c53472b/service-manager-db-sql-server-broker?forum=systemcenterservicemanager' KB)"
-        $dataRow.RuleResult += ' <br/>ACTION: Enable SQL DB Broker by running this SQL. Caution: This will disconnect all SQL connections to that DB. Good to stop all SM services before.'
+        $dataRow.RuleResult += "More details in this <a $(GetAnchorForExternal 'https://social.technet.microsoft.com/Forums/systemcenter/en-US/f16680c3-e906-4704-8d67-22c71c53472b/service-manager-db-sql-server-broker?forum=systemcenterservicemanager' Doc)."
+        $dataRow.RuleResult += ' <br/>ACTION: Enable SQL DB Broker by running this SQL. Caution: This will disconnect all SQL connections to that DB. Better to stop all SM services before.'
 $tmp = @"
 <pre>
     ALTER DATABASE $MainSQL_DbName SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
