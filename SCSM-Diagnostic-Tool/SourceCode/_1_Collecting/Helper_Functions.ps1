@@ -1198,7 +1198,7 @@ function GetProxy($uri) { #https://learn.microsoft.com/en-us/dotnet/api/system.n
 function InvokeWebRequest_WithProxy($uri, $timeoutSec=0, [switch]$useBasicParsing=$true, [switch]$useDefaultCredentials=$true, [string]$outFile=$null) {
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 
     $webProxyServer,$proxyUseDefaultCredentials = GetProxy($uri)    
-    Invoke-WebRequest -Uri $uri -UseBasicParsing:$useBasicParsing -TimeoutSec $timeoutSec -UseDefaultCredentials:$useDefaultCredentials -Proxy $webProxyServer -ProxyUseDefaultCredentials:$proxyUseDefaultCredentials -OutFile $outFile | Out-Null
+    Invoke-WebRequest -Uri $uri -UseBasicParsing:$useBasicParsing -TimeoutSec $timeoutSec -UseDefaultCredentials:$useDefaultCredentials -Proxy $webProxyServer -ProxyUseDefaultCredentials:$proxyUseDefaultCredentials -OutFile $outFile
 }
 function InvokeRestMethod_WithProxy($uri, $body, $timeoutSec=0) {
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 
