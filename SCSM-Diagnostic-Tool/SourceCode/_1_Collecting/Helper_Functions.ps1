@@ -1266,6 +1266,9 @@ function RunAsync([scriptblock]$code, [hashtable]$vars) {
 
 function LogStatInfo([xml]$statInfoXml, [string]$sentBy) {    
     $statInfoXml.DocumentElement.SetAttribute("SentBy",$sentBy)
+    if ($sentBy -eq "Open") {
+        $statInfoXml.DocumentElement.SetAttribute("FindingsOpenedAt", (Get-Date).ToString("yyyy-MM-dd__HH:mm.ss.fff zzz") )
+    }
     $statInfoXmlString = $statInfoXml.OuterXml
     $body = ""
     try {
