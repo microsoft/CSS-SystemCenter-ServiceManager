@@ -22,7 +22,7 @@ AppendOutputToFileInTargetFolder ( $collectorVersion ) CollectorVersion.txt
 AppendOutputToFileInTargetFolder ( $ExecutionContext.SessionState.LanguageMode ) LanguageMode.txt
 
 AppendOutputToFileInTargetFolder  '"Duration","EndTime","StartTime","ScriptBlockText"'  Collector-MeasuredScriptBlocks.csv
-(GetStatInfoRoot).SetAttribute("SmdtRunStart", $resultDateTime)
+(GetStatInfoRoot).SetAttribute("SmdtRunStart", (AddTzToDateTimeString $resultDateTime) )
 
 Ram GetInternetAvailability
 

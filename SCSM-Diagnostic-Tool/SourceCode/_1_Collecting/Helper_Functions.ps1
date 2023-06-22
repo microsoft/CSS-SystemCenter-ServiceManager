@@ -1266,9 +1266,25 @@ function RunAsync([scriptblock]$code, [hashtable]$vars) {
 
 function LogStatInfo([xml]$statInfoXml, [string]$sentBy) {    
     $statInfoXml.DocumentElement.SetAttribute("SentBy",$sentBy)
+
     if ($sentBy -eq "Open") {
-        $statInfoXml.DocumentElement.SetAttribute("FindingsOpenedAt", (Get-Date).ToString("yyyy-MM-dd__HH:mm.ss.fff zzz") )
+        $FindingsOpenedAt = (Get-Date).ToString("yyyy-MM-dd__HH:mm.ss.fff zzz")
+        $statInfoXml.DocumentElement.SetAttribute("FindingsOpenedAt", $FindingsOpenedAt )
+
+        $FindingsOpenDomainHash = (GetHashOfString ($env:USERDNSDOMAIN.ToLower()))
+        $statInfoXml.DocumentElement.SetAttribute("FindingsOpenDomainHash", $FindingsOpenDomainHash )
+
+        $SmdtRunDomainHash = $statInfoXml.DocumentElement.GetAttribute("SmdtRunDomainHash")
+        $statInfoXml.DocumentElement.SetAttribute("FindingsOpenedInSameDomain", ($FindingsOpenDomainHash -eq $SmdtRunDomainHash) )
+
+        $SmdtRunFinish = $statInfoXml.DocumentElement.GetAttribute("SmdtRunFinish")
+        $FindingsOpenedAt_Utc = ConvertDateTimeStringToDateTime_Utc $FindingsOpenedAt
+        $SmdtRunFinish_Utc = ConvertDateTimeStringToDateTime_Utc $SmdtRunFinish
+        $FindingsOpenedAfterTimeSpan = $FindingsOpenedAt_Utc - $SmdtRunFinish_Utc
+        $statInfoXml.DocumentElement.SetAttribute("FindingsOpenedAfter", (Get-UserFriendlyTimeSpane $FindingsOpenedAfterTimeSpan) )
+        $statInfoXml.DocumentElement.SetAttribute("FindingsOpenedAfterSeconds", [Math]::Truncate(($FindingsOpenedAfterTimeSpan.TotalSeconds)) )
     }
+
     $statInfoXmlString = $statInfoXml.OuterXml
     $body = ""
     try {
@@ -1359,5 +1375,60 @@ function ConvertUpnToDomainUsername($upn) {
     [System.__ComObject].InvokeMember("init","InvokeMethod",$null,$ns,($ADS_NAME_INITTYPE_GC,$null))
     [System.__ComObject].InvokeMember("Set","InvokeMethod",$null,$ns,($UNKNOWN,$upn))
     [System.__ComObject].InvokeMember("Get","InvokeMethod",$null,$ns,$NT4NAME)
+}
+function GetHashOfString($pString) {
+    Get-FileHash -Algorithm SHA256 -InputStream ([IO.MemoryStream]::new([Text.Encoding]::UTF8.GetBytes( $pString ))) | ForEach-Object Hash
+}
+
+function GetPossibleDateTimeStringFormats() {
+    GetPossibleDateTimeStringFormatsWithTz
+    GetPossibleDateTimeStringFormatsWithoutTz
+}
+function GetPossibleDateTimeStringFormatsWithTz() {
+    GetPossibleDateTimeStringFormatsWithoutTz | % { "$_ zzz"}
+}
+function GetPossibleDateTimeStringFormatsWithoutTz() {
+    "yyyy-MM-dd__HH.mm.ss.fff",
+    "yyyy-MM-dd__HH:mm.ss.fff",
+    "yyyy-MM-dd__HH:mm:ss.fff"
+}
+function GetDateTimeStringFormatFromDateTimeString($pDateTimeString) {
+    [datetime]$resultDateTime = [datetime]::MinValue
+    foreach($possibleFormat in (GetPossibleDateTimeStringFormats) ) {
+        if ( [datetime]::TryParseExact( $pDateTimeString, $possibleFormat, $null, [System.Globalization.DateTimeStyles]::None, [ref] $resultDateTime ) ) {
+            return $possibleFormat
+        }
+    }
+    return ""
+}
+
+function ConvertDateTimeStringToDateTime($pDateTimeString) {
+    [datetime]$resultDateTime = [datetime]::MinValue
+
+    foreach($possibleFormat in (GetPossibleDateTimeStringFormats) ) {
+        if ( [datetime]::TryParseExact( $pDateTimeString, $possibleFormat, $null, [System.Globalization.DateTimeStyles]::None, [ref] $resultDateTime ) ) {
+            return $resultDateTime
+        }
+    }
+    return $null
+}
+function ConvertDateTimeStringToDateTime_Utc($pDateTimeString) {
+    $resultDateTime = ConvertDateTimeStringToDateTime $pDateTimeString
+    if ( $resultDateTime -eq $null ) {
+        return $pDateTimeString
+    }
+    else {
+        return $resultDateTime.ToUniversalTime()
+    }
+}
+function AddTzToDateTimeString($pDateTimeString) {
+
+    $currentDateTimeStringFormat = GetDateTimeStringFormatFromDateTimeString $pDateTimeString
+    if ( $currentDateTimeStringFormat -eq "" -or $currentDateTimeStringFormat.Trim().EndsWith(" zzz") ) {
+        return $pDateTimeString
+    }
+
+    $currentDateTimeValue = [datetime]::ParseExact( $pDateTimeString, $currentDateTimeStringFormat, $null)
+    return $currentDateTimeValue.ToString( "$currentDateTimeStringFormat zzz" )
 }
 #endregion
