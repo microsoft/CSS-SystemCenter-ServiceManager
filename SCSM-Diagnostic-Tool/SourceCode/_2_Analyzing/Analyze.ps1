@@ -813,10 +813,11 @@ $completionDateTime = (Get-Date).ToString("yyyy-MM-dd__HH.mm.ss.fff")
 Write-Host "$analyzerEndingText $completionDateTime. (local time)"
 $script:SQLResultSetCounter = $null
 
-(GetStatInfoRoot).SetAttribute("SmdtRunFinish", $completionDateTime)
+(GetStatInfoRoot).SetAttribute("SmdtRunFinish", (AddTzToDateTimeString $completionDateTime) )
 AddTimingsToStatInfo
 (GetStatInfoRoot).SetAttribute("SmdtResultZipName", [System.IO.Path]::GetFileName($resultingZipFile_FullPath) )
 (GetStatInfoRoot).SetAttribute("SmdtRanAsSigned", (AmIRunningAsSigned) )
+(GetStatInfoRoot).SetAttribute("SmdtRunDomainHash", (GetHashOfString ($env:USERDNSDOMAIN.ToLower()) ) )
 
 Stop-Transcript | out-null
 
@@ -865,6 +866,15 @@ $code = {
 $findingsPS1_Content += GetFunctionDeclaration LogStatInfo
 $findingsPS1_Content += GetFunctionDeclaration InvokeRestMethod_WithProxy
 $findingsPS1_Content += GetFunctionDeclaration GetProxy
+$findingsPS1_Content += GetFunctionDeclaration GetHashOfString
+$findingsPS1_Content += GetFunctionDeclaration GetPossibleDateTimeStringFormats
+$findingsPS1_Content += GetFunctionDeclaration GetPossibleDateTimeStringFormatsWithTz
+$findingsPS1_Content += GetFunctionDeclaration GetPossibleDateTimeStringFormatsWithoutTz
+$findingsPS1_Content += GetFunctionDeclaration GetDateTimeStringFormatFromDateTimeString
+$findingsPS1_Content += GetFunctionDeclaration ConvertDateTimeStringToDateTime
+$findingsPS1_Content += GetFunctionDeclaration ConvertDateTimeStringToDateTime_Utc
+$findingsPS1_Content += GetFunctionDeclaration AddTzToDateTimeString
+$findingsPS1_Content += GetFunctionDeclaration Get-UserFriendlyTimeSpane
 $findingsPS1_Content += @'
 
 if ($input.MoveNext()) { $inputs = $input.Current } else { return }
