@@ -350,6 +350,7 @@ else {
 $smEnvRow.SMEnvValue += "<br/>More in $(CollectorLink msinfo32.txt)"
 $smEnvInfoRows += $smEnvRow
 
+$smEnv_OS.SetAttribute("InternetAvailable", (IsInternetAvailable) )
 #endregion
 #region Get SQL Info
 $smEnvRow=GetEmptySmEnvRow
@@ -815,7 +816,7 @@ $script:SQLResultSetCounter = $null
 
 (GetStatInfoRoot).SetAttribute("SmdtRunFinish", (AddTzToDateTimeString $completionDateTime) )
 AddTimingsToStatInfo
-(GetStatInfoRoot).SetAttribute("SmdtResultZipName", [System.IO.Path]::GetFileName($resultingZipFile_FullPath) )
+(GetStatInfoRoot).SetAttribute("SmdtResultZipName", [System.IO.Path]::GetFileName($resultingZipFile_FullPath).Replace( $inputPrefix, $inputPrefix + "_" + $script:RoleFoundAbbr ) )
 (GetStatInfoRoot).SetAttribute("SmdtRanAsSigned", (AmIRunningAsSigned) )
 (GetStatInfoRoot).SetAttribute("SmdtRunDomainHash", (GetHashOfString ($env:USERDNSDOMAIN.ToLower()) ) )
 
