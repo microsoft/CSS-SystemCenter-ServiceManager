@@ -48,7 +48,7 @@ function BuildScript($targetBuildFolderName) {
         $buildResultSB.AppendLine( "function GetToolVersion() {'$currentVersionStr'}" ) | Out-Null
 
         #region Generate Function GetShowTheFindingsPS1Content
-
+<#
         $buildResultSB.AppendLine( "function GetShowTheFindingsPS1Content() {" ) 
         $buildResultSB.AppendLine( "@'" ) | Out-Null
 
@@ -57,6 +57,7 @@ function BuildScript($targetBuildFolderName) {
 
         $buildResultSB.AppendLine( "'@" ) | Out-Null        
         $buildResultSB.AppendLine( "}" ) | Out-Null
+#>        
         #endregion
 
         $allPS1Files = Get-ChildItem -Path $sourceStartingFolderPath -Filter *.ps1 -Recurse -Exclude main.ps1, GetToolVersion.ps1, GetShowTheFindingsPS1Content.ps1
