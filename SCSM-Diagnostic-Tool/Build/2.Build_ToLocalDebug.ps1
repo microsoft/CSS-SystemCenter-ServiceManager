@@ -53,7 +53,7 @@ function BuildScript($targetBuildFolderName) {
         $buildResultSB.AppendLine( "@'" ) | Out-Null
 
         $GetShowTheFindingsPS1Content = Get-Content -Path "$Output_BuildFolderName\GetShowTheFindingsPS1Content.ps1" -Encoding UTF8 | Out-String
-        $buildResultSB.AppendLine( $GetShowTheFindingsPS1Content ) | Out-Null
+        $buildResultSB.Append( $GetShowTheFindingsPS1Content ) | Out-Null
 
         $buildResultSB.AppendLine( "'@" ) | Out-Null        
         $buildResultSB.AppendLine( "}" ) | Out-Null
