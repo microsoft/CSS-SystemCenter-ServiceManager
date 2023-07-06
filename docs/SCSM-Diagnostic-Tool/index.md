@@ -30,7 +30,7 @@ If you want to review the `Findings`, extract all files and folders in the resul
 
 - Windows Server 2016 or later
 - Service Manager 2019 or later
-- Windows PowerShell version 4.0 or later
+- Windows PowerShell version 5.1
 
 ## Notes:
 
