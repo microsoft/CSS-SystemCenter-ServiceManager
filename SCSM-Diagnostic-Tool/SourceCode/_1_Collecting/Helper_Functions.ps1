@@ -1170,7 +1170,7 @@ function GetInternetAvailability() {
 }
 function IsInternetAvailable() {
     try {
-        $internetAvailable = InvokeWebRequest_WithProxy -Uri 'https://www.microsoft.com' -timeoutSec 5
+        $internetAvailable = InvokeWebRequest_WithProxy -Uri 'https://forms.office.com/r/ci94TqWWh6' -timeoutSec 5
         ($internetAvailable -and $internetAvailable.StatusCode -eq 200)
     }
     catch { $false }
