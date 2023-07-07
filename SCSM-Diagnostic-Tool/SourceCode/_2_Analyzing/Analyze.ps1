@@ -843,7 +843,11 @@ $encodedBytes = [System.Text.Encoding]::UTF8.GetBytes($readableText)
 $encodedText = [System.Convert]::ToBase64String($encodedBytes)
 AppendOutputToFileInTargetFolder $encodedText Findings.txt
 
-Set-Content -Path (Join-Path -Path (Split-Path $resultFolder -Parent) -ChildPath $findingsPS1_FileName ) -Value (GetShowTheFindingsPS1Content)
+$ShowTheFindingsPS1Content = GetShowTheFindingsPS1Content
+$ShowTheFindingsPS1Content = $ShowTheFindingsPS1Content.Replace("# SMDTSIGN begins here #", "# SIG # Begin signature block")
+$ShowTheFindingsPS1Content = $ShowTheFindingsPS1Content.Replace("# SMDTSIGN ends here #",   "# SIG # End signature block")
+
+Set-Content -Path (Join-Path -Path (Split-Path $resultFolder -Parent) -ChildPath $findingsPS1_FileName ) -Value $ShowTheFindingsPS1Content
 DeleteFileInTargetFolder $findingsHtml_FileName
 
 #WriteTelemetry
