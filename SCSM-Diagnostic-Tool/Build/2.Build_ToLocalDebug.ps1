@@ -52,11 +52,11 @@ function BuildScript($targetBuildFolderName) {
         $buildResultSB.AppendLine( "function GetShowTheFindingsPS1Content() {" ) 
         $buildResultSB.AppendLine( "@'" ) | Out-Null
 
-        $GetShowTheFindingsPS1Content = Get-Content -Path "$Output_BuildFolderName\GetShowTheFindingsPS1Content.ps1" -Encoding UTF8 -Raw
-        $GetShowTheFindingsPS1Content = $GetShowTheFindingsPS1Content.Replace("# SIG # Begin signature block","# SMDTSIGN begins here #")
-        $GetShowTheFindingsPS1Content = $GetShowTheFindingsPS1Content.Replace("# SIG # End signature block",  "# SMDTSIGN ends here #")
-        $GetShowTheFindingsPS1Content = $GetShowTheFindingsPS1Content.Replace("`n",  "`r`n")
+        $GetShowTheFindingsPS1Content = Get-Content -Path "$Output_BuildFolderName\GetShowTheFindingsPS1Content.ps1" -Raw
         $buildResultSB.Append( $GetShowTheFindingsPS1Content ) | Out-Null
+        $buildResultSB.Replace("# SIG # Begin signature block","# SMDTSIGN begins here #")
+        $buildResultSB.Replace("# SIG # End signature block",  "# SMDTSIGN ends here #")
+        # $GetShowTheFindingsPS1Content = $GetShowTheFindingsPS1Content.Replace("`n",  "`r`n")        
 
         $buildResultSB.AppendLine( "'@" ) | Out-Null        
         $buildResultSB.AppendLine( "}" ) | Out-Null
