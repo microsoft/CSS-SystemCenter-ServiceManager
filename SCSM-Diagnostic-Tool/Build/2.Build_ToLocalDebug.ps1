@@ -54,8 +54,8 @@ function BuildScript($targetBuildFolderName) {
 
         $GetShowTheFindingsPS1Content = Get-Content -Path "$Output_BuildFolderName\GetShowTheFindingsPS1Content.ps1" -Raw
         $buildResultSB.Append( $GetShowTheFindingsPS1Content ) | Out-Null
-        $buildResultSB.Replace("# SIG # Begin signature block","# SMDTSIGN begins here #")
-        $buildResultSB.Replace("# SIG # End signature block",  "# SMDTSIGN ends here #")
+        #$buildResultSB.Replace("# SIG # Begin signature block","# SMDTSIGN begins here #")
+        #$buildResultSB.Replace("# SIG # End signature block",  "# SMDTSIGN ends here #")
         # $GetShowTheFindingsPS1Content = $GetShowTheFindingsPS1Content.Replace("`n",  "`r`n")        
 
         $buildResultSB.AppendLine( "'@" ) | Out-Null        
