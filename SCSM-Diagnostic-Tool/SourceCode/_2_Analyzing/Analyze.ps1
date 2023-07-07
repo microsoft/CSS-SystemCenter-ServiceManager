@@ -118,7 +118,7 @@ $imgThumpsUp = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAv
 $findings_Part0 = @'
 <html><head><style>
 table { border-collapse: collapse; } 	
-th, td { padding: 4px; text-align: left; border: 1px solid black; } 	
+th, td { padding: 4px; text-align: left; border: 1px solid black; vertical-align:top; }
 tr:hover {background-color: #EFDEDE;} 	
 p {margin-top:50px;}	
 h2 {color: black}
