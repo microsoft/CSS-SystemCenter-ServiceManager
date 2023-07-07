@@ -55,7 +55,7 @@ $findingsPS1_Content += @"
 
 if ( !(IsInternetAvailable) )
 {
-    Read-Host "The Findings report contains links to resources on the internet. Therefore, please unzip the whole ZIP file on a machine that is connected to the INTERNET and then try again."
+    Read-Host "The Findings report contains links to resources on the internet. Please unzip the whole ZIP file on a machine that is connected to the INTERNET and then try again."
     Exit
 }
 
