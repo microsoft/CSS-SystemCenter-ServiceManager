@@ -53,7 +53,9 @@ function BuildScript($targetBuildFolderName) {
         $buildResultSB.AppendLine( "@'" ) | Out-Null
 
         # $GetShowTheFindingsPS1Content = Get-Content -Path "$Output_BuildFolderName\GetShowTheFindingsPS1Content.ps1" -Raw
-        $GetShowTheFindingsPS1Content = [System.IO.File]::ReadAllText("$Output_BuildFolderName\GetShowTheFindingsPS1Content.ps1")
+        $pathOfGetShowTheFindingsPS1Content = ("$Output_BuildFolderName\GetShowTheFindingsPS1Content.ps1" | Resolve-Path).Path
+        Write-Host "pathOfGetShowTheFindingsPS1Content: $pathOfGetShowTheFindingsPS1Content"
+        $GetShowTheFindingsPS1Content = [System.IO.File]::ReadAllText($pathOfGetShowTheFindingsPS1Content)
         $buildResultSB.Append( $GetShowTheFindingsPS1Content ) | Out-Null
         #$buildResultSB.Replace("# SIG # Begin signature block","# SMDTSIGN begins here #")
         #$buildResultSB.Replace("# SIG # End signature block",  "# SMDTSIGN ends here #")
