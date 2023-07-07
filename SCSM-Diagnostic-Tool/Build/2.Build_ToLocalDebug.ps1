@@ -48,7 +48,7 @@ function BuildScript($targetBuildFolderName) {
         $buildResultSB.AppendLine( "function GetToolVersion() {'$currentVersionStr'}" ) | Out-Null
 
         #region Generate Function GetShowTheFindingsPS1Content
-$psversiontable
+
         $buildResultSB.AppendLine( "function GetShowTheFindingsPS1Content() {" ) | Out-Null
         $buildResultSB.AppendLine( "@'" ) | Out-Null
 
@@ -88,8 +88,8 @@ $psversiontable
 
         if ($buildResultStrIsGood) {
 
-            $buildResultStr = TrimEmptyLinesOutsideOfFunctions $invalidFilePath
-            Set-Content -Path $invalidFilePath -Value $buildResultStr        
+#            $buildResultStr = TrimEmptyLinesOutsideOfFunctions $invalidFilePath
+#            Set-Content -Path $invalidFilePath -Value $buildResultStr        
 
             #add more testings below as: 
             #$buildResultStrIsGood = $buildResultStrIsGood -and (SomeOtherTestHere $buildResultStr)      
