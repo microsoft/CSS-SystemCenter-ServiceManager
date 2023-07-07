@@ -48,7 +48,7 @@ function BuildScript($targetBuildFolderName) {
         $buildResultSB.AppendLine( "function GetToolVersion() {'$currentVersionStr'}" ) | Out-Null
 
         #region Generate Function GetShowTheFindingsPS1Content
-write-Host $psversiontable
+$psversiontable
         $buildResultSB.AppendLine( "function GetShowTheFindingsPS1Content() {" ) | Out-Null
         $buildResultSB.AppendLine( "@'" ) | Out-Null
 
