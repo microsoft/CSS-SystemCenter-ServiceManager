@@ -48,16 +48,18 @@ function BuildScript($targetBuildFolderName) {
         $buildResultSB.AppendLine( "function GetToolVersion() {'$currentVersionStr'}" ) | Out-Null
 
         #region Generate Function GetShowTheFindingsPS1Content
-<#
+
         $buildResultSB.AppendLine( "function GetShowTheFindingsPS1Content() {" ) 
         $buildResultSB.AppendLine( "@'" ) | Out-Null
 
         $GetShowTheFindingsPS1Content = Get-Content -Path "$Output_BuildFolderName\GetShowTheFindingsPS1Content.ps1" -Encoding UTF8 | Out-String
+        $GetShowTheFindingsPS1Content = $GetShowTheFindingsPS1Content.Replace("# SIG # Begin signature block","# KHSIGKH # Begin signature block")
+        $GetShowTheFindingsPS1Content = $GetShowTheFindingsPS1Content.Replace("# SIG # End signature block","# KHSIGKH # End signature block")
         $buildResultSB.Append( $GetShowTheFindingsPS1Content ) | Out-Null
 
         $buildResultSB.AppendLine( "'@" ) | Out-Null        
         $buildResultSB.AppendLine( "}" ) | Out-Null
-#>        
+
         #endregion
 
         $allPS1Files = Get-ChildItem -Path $sourceStartingFolderPath -Filter *.ps1 -Recurse -Exclude main.ps1, GetToolVersion.ps1, GetShowTheFindingsPS1Content.ps1
