@@ -49,13 +49,10 @@ function BuildScript($targetBuildFolderName) {
 
         #region Generate Function GetShowTheFindingsPS1Content
 
-        $buildResultSB.AppendLine( "function GetShowTheFindingsPS1Content() {" ) 
+        $buildResultSB.AppendLine( "function GetShowTheFindingsPS1Content() {" ) | Out-Null
         $buildResultSB.AppendLine( "@'" ) | Out-Null
 
-        # $GetShowTheFindingsPS1Content = Get-Content -Path "$Output_BuildFolderName\GetShowTheFindingsPS1Content.ps1" -Raw
-        $pathOfGetShowTheFindingsPS1Content = ("$Output_BuildFolderName\GetShowTheFindingsPS1Content.ps1" | Resolve-Path).Path
-        Write-Host "pathOfGetShowTheFindingsPS1Content: $pathOfGetShowTheFindingsPS1Content"
-        $GetShowTheFindingsPS1Content = [System.IO.File]::ReadAllText($pathOfGetShowTheFindingsPS1Content)
+        $GetShowTheFindingsPS1Content = Get-Content -Path "$Output_BuildFolderName\GetShowTheFindingsPS1Content.ps1" -Raw
         $buildResultSB.Append( $GetShowTheFindingsPS1Content ) | Out-Null
         #$buildResultSB.Replace("# SIG # Begin signature block","# SMDTSIGN begins here #")
         #$buildResultSB.Replace("# SIG # End signature block",  "# SMDTSIGN ends here #")
@@ -75,7 +72,7 @@ function BuildScript($targetBuildFolderName) {
         #endregion
 
         $buildResultStr = $buildResultSB.ToString()        
-        Set-Content -Path $invalidFilePath -Value $buildResultStr
+        Set-Content -Path $invalidFilePath -Value $buildResultStr -NoNewline
         #endregion
 
         #region Post-Build stuff, testing etc. Pass $invalidFilePath or $buildResultStr
