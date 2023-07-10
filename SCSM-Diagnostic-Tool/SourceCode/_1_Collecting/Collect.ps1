@@ -51,6 +51,14 @@ foreach($psJob in Get-Job) {
 }
 #endregion
 
+#region Some clean-up
+if (! (Get-Process -Name wevtutil -ErrorAction SilentlyContinue) ) {
+    Get-ChildItem -Path ( [System.IO.Path]::Combine( $env:windir, 'ServiceProfiles\LocalService\AppData\Local\Temp') ) -Filter "EVT*.tmp" -ErrorAction SilentlyContinue | Remove-Item -ErrorAction SilentlyContinue
+    Get-ChildItem -Path ( [System.IO.Path]::Combine( $env:windir, 'ServiceProfiles\LocalService\AppData\Local\Temp') ) -Filter "MSG*.tmp" -ErrorAction SilentlyContinue | Remove-Item -ErrorAction SilentlyContinue
+    Get-ChildItem -Path ( [System.IO.Path]::Combine( $env:windir, 'ServiceProfiles\LocalService\AppData\Local\Temp') ) -Filter "PUB*.tmp" -ErrorAction SilentlyContinue | Remove-Item -ErrorAction SilentlyContinue
+}
+#endregion
+
 #region Collector Final tasks
 Write-Host ""
 $completionDateTime = (Get-Date).ToString("yyyy-MM-dd__HH.mm.ss.fff")  
