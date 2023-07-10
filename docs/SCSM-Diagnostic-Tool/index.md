@@ -24,7 +24,12 @@ Afterwards, it runs predefined "rules" against the collected info and generates 
 4. Follow the instructions.
 5. **Upload** the resulting zip file to Microsoft CSS.
 
-If you want to review the `Findings`, copy the resulting zip file to a machine with internet connection, extract all files and folders into a folder, then run `ShowTheFindings.ps1` with right/click + **"Run with PowerShell"**.
+# Open the Findings Report
+If you want to review the `Findings`:
+- **Copy** the resulting zip file to any machine with internet connection
+  > ###### No SCSM component needs to be installed on the machine
+- **Extract** all files and folders into a folder
+- **Run** `ShowTheFindings.ps1` with right/click + **"Run with PowerShell"**
  
 ## Minimum requirements
 
