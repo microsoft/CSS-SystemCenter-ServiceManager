@@ -790,7 +790,7 @@ $findings_AnalysisInfo = @"
                <!-- <tr><td>Collector original zip location</td><td>|CollectorZip|</td></tr> -->
                 <tr><td>Diagnostic Version</td><td>|CollectorVersion|</td></tr>
                 <tr><td>Diagnostic Date</td><td>|AnalysisDate|</td></tr>
-                <!-- <tr><td>Analyzer Version</td><td>|AnalyzerVersion|</td></tr> -->
+                <tr><td>Run Id</td><td>$( (GetStatInfoRoot).GetAttribute("SmdtRunId") )</td></tr>
                 |AnalyzerIssues|
             </table>
         </div>
