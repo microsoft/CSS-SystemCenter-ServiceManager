@@ -15,20 +15,23 @@ To easily collect (start/stop) and format SCSM specific traces.
    .\Trace-SM.ps1
 
 ## Parameters
-- *-TraceOperation* (optional)  
+*-TraceOperation* (optional)  
   - *ShowStatus* -> this is the default operation, shows current trace status.
   - *Start* -> starts traces. Stops them if already running and moves them to a new subfolder.
   - *Stop* -> stops traces.
-  - *StopAndFormat* -> stops traces and then starts formatting them.  
-   
-- -*MaxFileSizeMB* (optional, only effective with the Start operation)
-  - Can be set to a numeric value in MBytes. Default is 100 MB.
-    
-- -*NewFileWhenMaxsizeReached* (optional, only effective with the Start operation)
+  - *StopAndFormat* -> stops traces and then starts formatting them.
+</br></br>
+  
+*-MaxFileSizeMB* (optional, only effective with the Start operation)
+  - Can be set to a numeric value in MBytes. Default is 100 MB.  
+</br></br>
+  
+*-NewFileWhenMaxsizeReached* (optional, only effective with the Start operation)
   - Default is circular file tracing. Old trace info is overridden when max file size is reached.  
-  When this switch is provided then old trace info will be retained because a new trace file will be created everytime when max file size is reached.
-    
-- *Areas* (optional, only effective with the Start operation)
+  When this switch is provided then old trace info will be retained because a new trace file will be created everytime when max file size is reached.  
+</br></br>
+  
+*-Areas* (optional)
   - If not set, the default is to trace all "areas" which are Default, SDK, ConsoleUI, Connectors, DataWarehouse, Workflows, PortalSSP, Performance. To start only specific areas provide their names as comma delimited.
 
 ## Examples
@@ -58,8 +61,8 @@ DataWarehouse Running                    100             True C:\Windows\temp\SM
 Workflows     Running                    100             True C:\Windows\temp\SMTrace\Workflows.etl    
 PortalSSP     Running                    100             True C:\Windows\temp\SMTrace\PortalSSP.etl    
 Performance   Running                    100             True C:\Windows\temp\SMTrace\Performance.etl  
-```
-
+```  
+  
 - ### To start all SCSM traces
 ```
 .\Trace-SM.ps1 Start
@@ -69,7 +72,7 @@ or
 .\Trace-SM.ps1 -TraceOperation Start
 ```
 
-Sample Output (note that existing traces are retained by moving then into a sub folder)  
+Sample Output (note that existing traces are retained by moving them into a sub folder)  
 
 ```
 Stopping all SCSM traces:
@@ -102,8 +105,8 @@ DataWarehouse Running                    100             True C:\Windows\temp\SM
 Workflows     Running                    100             True C:\Windows\temp\SMTrace\Workflows.etl
 PortalSSP     Running                    100             True C:\Windows\temp\SMTrace\PortalSSP.etl
 Performance   Running                    100             True C:\Windows\temp\SMTrace\Performance.etl
-```
-    
+```  
+  
 - ### To stop all SCSM traces
 ```
 .\Trace-SM.ps1 Stop
@@ -136,8 +139,8 @@ DataWarehouse Stopped
 Workflows     Stopped
 PortalSSP     Stopped
 Performance   Stopped
-```
-
+```  
+  
 - ### To stop all SCSM traces and start formatting
 ```
 .\Trace-SM.ps1 StopAndFormat
@@ -161,8 +164,8 @@ Stopping PortalSSP ...
 Stopping Performance ...
 Formatting all ETL files in C:\Windows\temp\SMTrace, this can take a few minutes, please wait ...
 Formatting completed. Press ENTER to navigate to the SCSM Trace folder ...
-```
-
+```  
+  
 - ### To start a specific trace in non-circular mode and with a size greater than 100MB
 ```
 .\Trace-SM.ps1 -TraceOperation Start -MaxFileSizeMB 250 -NewFileWhenMaxsizeReached -Areas Connectors
