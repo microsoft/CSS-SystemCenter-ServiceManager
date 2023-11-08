@@ -68,6 +68,7 @@ or
 .\Trace-SM.ps1 -TraceOperation Start
 ```
 Sample Output (note that existing traces are retained by moving then into a sub folder)  
+
 ```
 Stopping all SCSM traces:
 Stopping Default ...
