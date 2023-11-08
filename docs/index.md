@@ -9,6 +9,7 @@ We welcome contributions. Each script contains a link to GitHub for contribution
 | :------------------------ | 
 | [SCSM Diagnostic Tool](SCSM-Diagnostic-Tool) |
 | [Verify SSRS installation](Verify_SSRS_for_SCSM)  | 
+| [Trace-SM](Trace-SM)  | 
 
 <!-- | [Correct Fact Problems](CorrectFactProblems)  | [CorrectFactProblemsV7.3.sql](https://github.com/microsoft/CSS-SystemCenter-ServiceManager/releases/latest/download/CorrectFactProblemsV7.3.sql) |  -->
 
