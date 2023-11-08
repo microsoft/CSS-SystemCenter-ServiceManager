@@ -45,7 +45,8 @@ or
 .\Trace-SM.ps1 -TraceOperation ShowStatus
 ```
 
-Sample Output
+Sample Output  
+
 ```
 SCSM Trace    Status  ETL Max File size (MB) Is ETL Circular? Etl file Location                        
 ----------    ------  ---------------------- ---------------- -----------------                        
@@ -67,6 +68,7 @@ or
 ```
 .\Trace-SM.ps1 -TraceOperation Start
 ```
+
 Sample Output (note that existing traces are retained by moving then into a sub folder)  
 
 ```
@@ -110,7 +112,9 @@ or
 ```
 .\Trace-SM.ps1 -TraceOperation Stop
 ```
+
 Sample Output
+
 ```
 Stopping all SCSM traces:
 Stopping Default ...
@@ -142,7 +146,9 @@ or
 ```
 .\Trace-SM.ps1 -TraceOperation StopAndFormat
 ```
+
 Sample Output (note that while formatting is running in a separate command window, this command is blocked)
+
 ```
 Stopping all SCSM traces:
 Stopping Default ...
@@ -161,7 +167,9 @@ Formatting completed. Press ENTER to navigate to the SCSM Trace folder ...
 ```
 .\Trace-SM.ps1 -TraceOperation Start -MaxFileSizeMB 250 -NewFileWhenMaxsizeReached -Areas Connectors
 ```
+
 Sample Output (note that the ETL file name has a number which will increase if max file is reached)
+
 ```
 Stopping Connectors ...
 Starting Connectors ...
