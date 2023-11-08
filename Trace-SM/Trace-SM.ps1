@@ -11,7 +11,7 @@ Param(
   [switch]$NewFileWhenMaxsizeReached = $false,
 
   [Parameter(Mandatory=$false,Position=4)]
-#  [ValidateSet("Default","SDK", "ConsoleUI","Connectors","DataWarehouse","Workflows","PortalSSP","Performance")]
+  [ValidateSet("Default","SDK", "ConsoleUI","Connectors","DataWarehouse","Workflows","PortalSSP","Performance")]
   [string[]]$Areas = ("Default","SDK", "ConsoleUI","Connectors","DataWarehouse","Workflows","PortalSSP","Performance")
 )
 
