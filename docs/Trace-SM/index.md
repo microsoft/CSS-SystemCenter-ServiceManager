@@ -59,7 +59,7 @@ PortalSSP     Running                    100             True C:\Windows\temp\SM
 Performance   Running                    100             True C:\Windows\temp\SMTrace\Performance.etl  
 ```
 
-### - To start all SCSM traces
+- ### To start all SCSM traces
 ```
 .\Trace-SM.ps1 Start
 ```
@@ -99,6 +99,77 @@ DataWarehouse Running                    100             True C:\Windows\temp\SM
 Workflows     Running                    100             True C:\Windows\temp\SMTrace\Workflows.etl
 PortalSSP     Running                    100             True C:\Windows\temp\SMTrace\PortalSSP.etl
 Performance   Running                    100             True C:\Windows\temp\SMTrace\Performance.etl
+```
+    
+- ### To stop all SCSM traces
+```
+.\Trace-SM.ps1 Stop
+```
+or
+```
+.\Trace-SM.ps1 -TraceOperation Stop
+```
+Sample Output
+```
+Stopping SCSM traces ...
+Stopping Default ...
+Stopping SDK ...
+Stopping ConsoleUI ...
+Stopping Connectors ...
+Stopping DataWarehouse ...
+Stopping Workflows ...
+Stopping PortalSSP ...
+Stopping Performance ...
+
+SCSM Trace    Status  ETL Max File size (MB) Is ETL Circular? Etl file Location
+----------    ------  ---------------------- ---------------- -----------------
+Default       Stopped
+SDK           Stopped
+ConsoleUI     Stopped
+Connectors    Stopped
+DataWarehouse Stopped
+Workflows     Stopped
+PortalSSP     Stopped
+Performance   Stopped
+```
+
+- ### To stop all SCSM traces and start formatting
+```
+.\Trace-SM.ps1 StopAndFormat
+```
+or
+```
+.\Trace-SM.ps1 -TraceOperation StopAndFormat
+```
+Sample Output (note that while formatting is running in a separate command window, this command is blocked)
+```
+Stopping SCSM traces ...
+Stopping Default ...
+Stopping SDK ...
+Stopping ConsoleUI ...
+Stopping Connectors ...
+Stopping DataWarehouse ...
+Stopping Workflows ...
+Stopping PortalSSP ...
+Stopping Performance ...
+Formatting all ETL files in C:\Windows\temp\SMTrace, this can take a few minutes, please wait ...
+Formatting completed. Press ENTER to navigate to the SCSM Trace folder ...
+```
+
+- ### To start a specific trace in non-circular mode and with a size greater than 100MB
+```
+.\Trace-SM.ps1 -TraceOperation Start -MaxFileSizeMB 250 -NewFileWhenMaxsizeReached -Areas Connectors
+```
+Sample Output (note that the ETL file name has a number which will increase if max file is reached)
+```
+Stopping SCSM traces ...
+Stopping Connectors ...
+Starting SCSM traces ...
+Starting Connectors ...
+
+SCSM Trace Status  ETL Max File size (MB) Is ETL Circular? Etl file Location                       
+---------- ------  ---------------------- ---------------- -----------------                       
+Connectors Running                    250            False C:\Windows\temp\SMTrace\Connectors.1.etl
 ```
 
 ## Do you want to contribute to this script?
