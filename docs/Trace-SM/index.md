@@ -12,7 +12,7 @@ To easily collect (start/stop) and format SCSM specific traces.
 1. Open a Windows PowerShell window as an Administrator (PowerShell ISE can also be used).
 1. Navigate to the folder where you saved the script.
 2. Run the script as below:  
-   .\Trace-SM.ps1
+   `.\Trace-SM.ps1`
 
 ## Parameters
 *-TraceOperation* (optional)  
