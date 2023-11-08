@@ -200,7 +200,7 @@ function ShowEtwSessionStatus($etw_SessionName) {
 }
 
 function StartEtwSessions( [bool]$circular, [int]$maxFileSizeMB ) {
-    Write-Host "Starting SCSM traces ..." -ForegroundColor Yellow
+    if ($etw_areas.Length -eq 8) { Write-Host "Starting all SCSM traces:" -ForegroundColor Yellow }
     foreach($etw_area in $etw_areas) {
         Write-Host "Starting $etw_area ..." -ForegroundColor Cyan
         StartEtwSession -etw_SessionName $etw_area -circular $circular -maxFileSizeMB $maxFileSizeMB | Out-Null
@@ -242,7 +242,7 @@ function StartEtwSession([string]$etw_SessionName, [bool]$circular, [int]$maxFil
 }
 
 function StopEtwSessions() {
-    Write-Host "Stopping SCSM traces ..." -ForegroundColor Yellow 
+    if ($etw_areas.Length -eq 8) { Write-Host "Stopping all SCSM traces:" -ForegroundColor Yellow }
     foreach($etw_area in $etw_areas) {     
         Write-Host "Stopping $etw_area ..." -ForegroundColor Cyan
         StopEtwSession $etw_area  | Out-Null
@@ -280,7 +280,7 @@ function MoveOldTraces() {
         $targetFolderName = "OldTracesStoppedAtUtc_" + (Get-Date).ToUniversalTime().ToString("yyyy-MM-dd__HH.mm.ss.fff")
         $targetFolderPath = [System.IO.Path]::Combine( $SmTraceFolder, $targetFolderName )
         New-Item -ItemType Directory -Path $targetFolderPath -Force | Out-Null
-        Write-Host "ETL files already exist in $SmTraceFolder. Moving them into $targetFolderName"        
+        Write-Host "Note: ETL files already exist in $SmTraceFolder. Moving them into $targetFolderName"        
         $existingFiles | Move-Item -Destination $targetFolderPath -Force
     }
 }
@@ -291,7 +291,7 @@ function MoveOldFormattedLogs() {
         $targetFolderName = "OldFormattedLogsAtUtc_" + (Get-Date).ToUniversalTime().ToString("yyyy-MM-dd__HH.mm.ss.fff")
         $targetFolderPath = [System.IO.Path]::Combine( $SmTraceFolder, $targetFolderName )
         New-Item -ItemType Directory -Path $targetFolderPath -Force | Out-Null
-        Write-Host "Formatted LOG files already exist in $SmTraceFolder. Moving them into $targetFolderName"        
+        Write-Host "Note: Formatted LOG files already exist in $SmTraceFolder. Moving them into $targetFolderName"        
         $existingFiles | Move-Item -Destination $targetFolderPath -Force
     }
 }
