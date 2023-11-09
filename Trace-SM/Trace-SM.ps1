@@ -324,7 +324,7 @@ function main() {
     }
 #endregion
 
-    $SmInstallFolder = [System.IO.Path]::Combine( (Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\System Center\2010\Service Manager\Setup').InstallDirectory, "Tools" )
+    $SmInstallFolder = [System.IO.Path]::Combine( (Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\System Center\2010\Service Manager\Setup' -ErrorAction SilentlyContinue).InstallDirectory, "Tools" )
     if ( -not (Test-Path -LiteralPath $SmInstallFolder) ) {
         Write-Host "No SCSM installation folder detected. Aborting." -ForegroundColor DarkGray
         return
