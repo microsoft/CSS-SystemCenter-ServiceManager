@@ -16,10 +16,10 @@ To easily collect (start/stop) and format SCSM specific traces.
 
 ## Parameters
 *-TraceOperation* (mandatory)    
-  - *Start*   -> starts traces. Stops them if already running and moves them to a subfolder.
-  - *Stop*    -> stops traces.
-  - *StopAndFormat* -> stops traces and then starts formatting them. Pre-existing formatted log files will be moved to a subfolder beforehand.
-  - *ShowStatus*    -> shows only the current trace status.
+  - **Start**   -> starts traces. Stops them if already running and moves them to a subfolder.
+  - **Stop**    -> stops traces.
+  - **StopAndFormat** -> stops traces and then starts formatting them. Pre-existing formatted log files will be moved to a subfolder beforehand.
+  - **ShowStatus**    -> shows only the current trace status.
 <br />
 
 *-Areas* (optional)
