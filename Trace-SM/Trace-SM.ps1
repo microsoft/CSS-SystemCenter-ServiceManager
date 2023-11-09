@@ -1,18 +1,18 @@
 [CmdletBinding()]
 Param(
-  [Parameter(Mandatory=$false,Position=1)]
-  [ValidateSet("ShowStatus","Start","Stop","StopAndFormat")]
-  [string]$TraceOperation = "ShowStatus",
+  [Parameter(Mandatory=$true,Position=1)]
+  [ValidateSet("Start","Stop","StopAndFormat","ShowStatus")]
+  [string]$TraceOperation,
 
-  [Parameter(Mandatory=$false,Position=2)]  
-  [int]$MaxFileSizeMB = 100,
+  [Parameter(Mandatory=$false,Position=2)]
+  [ValidateSet("Default","SDK", "ConsoleUI","Connectors","DataWarehouse","Workflows","PortalSSP","Performance")]
+  [string[]]$Areas = ("Default","SDK", "ConsoleUI","Connectors","DataWarehouse","Workflows","PortalSSP","Performance"),
 
   [Parameter(Mandatory=$false,Position=3)]  
-  [switch]$NewFileWhenMaxsizeReached = $false,
+  [int]$MaxFileSizeMB = 100,
 
-  [Parameter(Mandatory=$false,Position=4)]
-  [ValidateSet("Default","SDK", "ConsoleUI","Connectors","DataWarehouse","Workflows","PortalSSP","Performance")]
-  [string[]]$Areas = ("Default","SDK", "ConsoleUI","Connectors","DataWarehouse","Workflows","PortalSSP","Performance")
+  [Parameter(Mandatory=$false,Position=4)]  
+  [switch]$NewFileWhenMaxsizeReached = $false
 )
 
 #region EULA
@@ -342,16 +342,18 @@ function main() {
         StopEtwSessions
         MoveOldTraces
         StartEtwSessions -circular (-Not $NewFileWhenMaxsizeReached) -maxFileSizeMB $MaxFileSizeMB
+        ShowEtwSessions
     }
-    elseif ( $TraceOperation -eq "Stop" -or $TraceOperation -eq "StopAndFormat" ) {
+    elseif ( $TraceOperation -eq "Stop" ) {
         StopEtwSessions
-    }  
-
-    if ( $TraceOperation -eq "StopAndFormat" ) {
+        ShowEtwSessions
+    }
+    elseif ( $TraceOperation -eq "StopAndFormat" ) {
+        StopEtwSessions
         MoveOldFormattedLogs
         FormatEtwSessions
     }
-    else {
+    elseif ( $TraceOperation -eq "ShowStatus" ) {
         ShowEtwSessions
     }
     
@@ -359,4 +361,3 @@ function main() {
 }
 
 main;
-
