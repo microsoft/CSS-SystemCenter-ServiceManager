@@ -33,8 +33,8 @@ To easily collect (start/stop) and format SCSM specific traces.
 <br />
 
 *-NewFileWhenMaxsizeReached* (optional, only effective with the Start operation, ignored with other operations)
-  - Default is circular file tracing. Old trace info is overridden when max file size is reached.  
-  When this switch is provided then old trace info will be retained because a new trace file will be created everytime when max file size is reached.  
+  - Default is *circular* file tracing where oldest trace info is overridden when max file size is reached.  
+  When this switch is provided then a new trace file will be created everytime when max file size is reached.  
 <br />
 
 > ##### Note: 
