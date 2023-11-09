@@ -22,6 +22,12 @@ To easily collect (start/stop) and format SCSM specific traces.
   - *ShowStatus*    -> shows only the current trace status.
 <br />
 
+*-Areas* (optional)
+  - If not set, the default is to trace all "areas" which are Default, SDK, ConsoleUI, Connectors, DataWarehouse, Workflows, PortalSSP, Performance.  
+  To deal with only specific areas provide their names as comma delimited, see example below.  
+  Note that during formatting the specified Areas are ignored and all ETL files are formatted into LOG files.
+<br />
+
 *-MaxFileSizeMB* (optional, only effective with the Start operation, ignored with other operations)
   - Can be set to a numeric value in MBytes. Default is 100 MB.  
 <br />
@@ -29,12 +35,6 @@ To easily collect (start/stop) and format SCSM specific traces.
 *-NewFileWhenMaxsizeReached* (optional, only effective with the Start operation, ignored with other operations)
   - Default is circular file tracing. Old trace info is overridden when max file size is reached.  
   When this switch is provided then old trace info will be retained because a new trace file will be created everytime when max file size is reached.  
-<br />
-
-*-Areas* (optional)
-  - If not set, the default is to trace all "areas" which are Default, SDK, ConsoleUI, Connectors, DataWarehouse, Workflows, PortalSSP, Performance.  
-  To deal with only specific areas provide their names as comma delimited, see example below.  
-  During formatting the specified Areas are ignored and all ETL files are formatted into LOG files.
 <br />
 
 > ##### Note: 
@@ -149,9 +149,13 @@ Formatting completed. Press ENTER to navigate to the SCSM Trace folder ...
 ```
 <br />
 
-- ### To start a specific trace in non-circular mode and with a size greater than 100MB
+- ### To start only a specific trace in non-circular mode and with max size of 250MB
 ```
-.\Trace-SM.ps1 -TraceOperation Start -MaxFileSizeMB 250 -NewFileWhenMaxsizeReached -Areas Connectors
+.\Trace-SM.ps1 Start Connectors 250 -NewFileWhenMaxsizeReached 
+```
+or
+```
+.\Trace-SM.ps1 -TraceOperation Start -Areas Connectors -MaxFileSizeMB 250 -NewFileWhenMaxsizeReached 
 ```
 
 Sample Output (note that the ETL file name has a number which will increase when max file is reached)
@@ -166,7 +170,7 @@ Connectors Running                    250            False C:\Windows\temp\SMTra
 ```
 <br />
 
-- ### To only show the current trace status
+- ### To only show the current status of all SCSM traces
 ```
 .\Trace-SM.ps1 ShowStatus
 ```
