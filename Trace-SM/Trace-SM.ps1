@@ -301,7 +301,7 @@ function main() {
 #region Init
 
     if ( -Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
-        Write-Host "Running as Administrator is required. Please run this script in an elevated PowerShell or ISE window." -ForegroundColor DarkGray
+        Write-Host "Running as Administrator is required. Please run this script in an elevated Windows PowerShell or ISE window." -ForegroundColor DarkGray
         Read-Host " "
         return
     }
@@ -361,3 +361,4 @@ function main() {
 }
 
 main;
+
