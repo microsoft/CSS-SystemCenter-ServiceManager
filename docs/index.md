@@ -1,11 +1,13 @@
-# SCSM Support Scripts
+# SCSM Support Scripts & Tools
 
-This site contains scripts for supporting and troubleshooting Microsoft Service Manager (SCSM). The scripts are intended for identifying and resolving a wide range of issues regarding SCSM. 
+This site contains scripts & tools for supporting and troubleshooting Microsoft Service Manager (SCSM). They are intended for identifying and resolving a wide range of issues regarding SCSM.  
 
-All scripts are developed and maintained by members of the Microsoft System Center technical support team.  
+> ##### Note:
+> These scripts & tools are developed and maintained by members of the Microsoft System Center technical support team in GitHub as an open-source project. They are NOT officially supported by Microsoft. Support Policy can be found [here](https://github.com/microsoft/CSS-SystemCenter-ServiceManager/blob/main/SUPPORT.md).  
+
 We welcome contributions. Each script contains a link to GitHub for contributions.
 
-| Support Scripts |   
+| Support Scripts & Tools |   
 | :------------------------ | 
 | [SCSM Diagnostic Tool](SCSM-Diagnostic-Tool) |
 | [Verify SSRS installation](Verify_SSRS_for_SCSM)  | 
