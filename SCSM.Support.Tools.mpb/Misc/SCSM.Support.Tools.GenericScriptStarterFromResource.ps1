@@ -68,6 +68,8 @@ function ExitScript() {
 $folder = [IO.Path]::Combine($env:windir, "Temp")
 $transcriptFileFullPath = [IO.Path]::Combine($folder, $transcriptFileName) 
 Start-Transcript -Path $transcriptFileFullPath -Force | Out-Null
+WriteLog "Script Version: $scriptVersion" # $scriptVersion will be inserted as the 1st line during ...MP.xml.Build.ps1
+
 if (-not ((IsThisScsmWfMgmtServer) -or (IsThisScsmDwMgmtServer)) ) { 
     WriteLog "This machine is neither WF nor DW mgmt server. Exiting..."
     ExitScript 
@@ -103,13 +105,23 @@ else {
 
 #endregion
 
-#region getting script from resource
+#region getting script from resource and then start it
 WriteLog "getting script from MP: $scriptMPName ResourceID: $scriptResource_ID via sql: $SQLInstance_SCSM db: $SQLDatabase_SCSM"
 $scriptBody = GetResourceValueFromSQL -SQLInstance $SQLInstance_SCSM -SQLDatabase $SQLDatabase_SCSM -MPName $scriptMPName -ResourceName $scriptResource_ID
 if ($scriptBody) {
 	$fileFullPath = [IO.Path]::Combine($folder, $scriptFileName)
-	WriteLog "writing script to $fileFullPath and starting it with arguments: $scriptArguments"
+	WriteLog "writing script to $fileFullPath"
 	[System.IO.File]::WriteAllText($fileFullPath, $scriptBody)
+
+    #region get MP's version
+    $ds = Invoke-AlternativeSqlCmd_WithoutTimeout -SQLInstance $SQLInstance_SCSM -SQLDatabase $SQLDatabase_SCSM -SQLQuery "select MPVersion from ManagementPack where MPName='$scriptMPName'"
+	if ($ds.Tables.Count -gt 0) {
+        $scriptFromMPVersion = $ds.Tables[0].Rows[0].MPVersion.ToString()
+    }
+    #endregion
+
+    $scriptArguments += " -ScriptFromMPVersion '$scriptFromMPVersion'" 
+    WriteLog "starting script with arguments: $scriptArguments"
 	Start-Process -FilePath "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" -ArgumentList "-noninteractive -noprofile -executionpolicy bypass -File $fileFullPath $scriptArguments"
 }
 else {

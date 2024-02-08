@@ -92,6 +92,7 @@ function InvokeWebRequest_WithProxy($uri, $timeoutSec=0, [switch]$useBasicParsin
 $folder = [IO.Path]::Combine($env:windir, "Temp")
 $transcriptFileFullPath = [IO.Path]::Combine($folder, "SCSM.Support.Tools.Main.Monitoring.MpbUpdater.Transcript.txt") 
 Start-Transcript -Path $transcriptFileFullPath -Force | Out-Null
+$scriptFromMPVersion = $args[ ($args.Count)-1 ]; WriteLog "Script from MP Version: $scriptFromMPVersion" #I am too lazy to parse $args. Just getting the last arg as value of ScriptFromMPVersion
 
 if (-not ((IsThisScsmWfMgmtServer) -or (IsThisScsmDwMgmtServer)) ) { 
     WriteLog "This machine is neither WF nor DW mgmt server."
@@ -106,7 +107,7 @@ $localVersion_MPB = New-Object Version
 $fileFullPath_MPB = [IO.Path]::Combine($folder, "SCSM.Support.Tools.mpb")
 
 if ( (Test-Path -Path $fileFullPath_MPB) ) { 
-    # $smstVersion = (Get-SCSMManagementPack -BundleFile $fileFullPath_MPB | ? { $_.Name -eq 'SCSM.Support.Tools.Main.Core'} | Select-Object -Property Version).Version
+    # There's a bug that holds a file handle on MPB open. This prevents then other commands like Import-SCSMManagementPack to work. The workaround is to run this script as a Job which means in a separate PS proccess.
 
     $jobParams = @($fileFullPath_MPB)
     Start-Job -ScriptBlock {

@@ -22,8 +22,9 @@ foreach($fileNode in $fileNodes) {
     }
 }
 
+$newInnerText = "`$scriptVersion = '$BuildVersion'`n" # $BuildVersion is set in parent script Seal_MP.ps1 and should be available here.
 $newInnerTextContentFileFullPath = ((Resolve-Path -Path "$folderName_Misc\SCSM.Support.Tools.GenericScriptStarterFromResource.ps1").Path)
-$newInnerText = [IO.File]::ReadAllText($newInnerTextContentFileFullPath , [System.Text.Encoding]::UTF8)
+$newInnerText += [IO.File]::ReadAllText($newInnerTextContentFileFullPath , [System.Text.Encoding]::UTF8)
 $currentNode.Contents = $newInnerText
 $doc.Save($mpFullPath)  
 

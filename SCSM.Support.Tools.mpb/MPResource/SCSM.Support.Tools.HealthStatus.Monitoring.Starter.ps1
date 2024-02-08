@@ -92,6 +92,7 @@ function InvokeWebRequest_WithProxy($uri, $timeoutSec=0, [switch]$useBasicParsin
 $folder = [IO.Path]::Combine($env:windir, "Temp")
 $transcriptFileFullPath = [IO.Path]::Combine($folder, "SCSM.Support.Tools.HealthStatus.Monitoring.Starter.Transcript.txt") 
 Start-Transcript -Path $transcriptFileFullPath -Force | Out-Null
+$scriptFromMPVersion = $args[ ($args.Count)-1 ]; WriteLog "Script from MP Version: $scriptFromMPVersion" #I am too lazy to parse $args. Just getting the last arg as value of ScriptFromMPVersion
 
 if (-not ((IsThisScsmWfMgmtServer) -or (IsThisScsmDwMgmtServer)) ) { 
     WriteLog "This machine is neither WF nor DW mgmt server."
