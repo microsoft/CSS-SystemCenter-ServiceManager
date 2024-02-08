@@ -39,11 +39,10 @@ function IsThisScsmWfMgmtServer() {
     return ( ($env:COMPUTERNAME -eq $WfDisplayName) -or ([System.Net.Dns]::GetHostEntry([string]$env:computername).HostName -eq $WfDisplayName) )
 }
 function GetSmdtVersionFromString([string]$smdtBody) {
-   $versionResult = New-Object Version
-   $sr = [System.IO.StringReader]::new($smdtBody)
-    while (-not $sr.EndOfStream){
-        $line = $sr.ReadLine().Trim()
-        if ( $line.StartsWith("function GetToolVersion()") ) {
+    $versionResult = New-Object Version
+    $sr = [System.IO.StringReader]::new($smdtBody)
+    while( ($line = $sr.ReadLine()) -ne $null) {
+        if ( $line.Trim().StartsWith("function GetToolVersion()") ) {
             $versionString = $line.Replace("function GetToolVersion()","").Replace("{'","").Replace("'}","").Trim()
             return New-Object Version -ArgumentList $versionString
         }

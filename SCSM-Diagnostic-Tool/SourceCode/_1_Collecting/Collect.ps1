@@ -18,6 +18,26 @@ Write-Host "(Please ignore any Warning and Errors)"
 
 AppendOutputToFileInTargetFolder ( Get-SmbClientConfiguration ) Get-SmbClientConfiguration.txt
 CopyFileToTargetFolder $scriptFilePath
+
+#region copy smdt.ps1 to windows Temp folder, if newer
+$smdtPS1SavedToWindirTemp = $false
+$windirTempFolder = [IO.Path]::Combine($env:windir, "Temp")
+$smdtPs1TargetFileName = "SCSM-Diagnostic-Tool.ps1"
+$smdtPs1TargetFullPath = [IO.Path]::Combine($windirTempFolder, $smdtPs1TargetFileName)
+$smdtVersionInTarget = New-Object Version
+if ( (Test-Path -Path $smdtPs1TargetFullPath) ) {
+    $smdtBody = [System.IO.File]::ReadAllText($smdtPs1TargetFullPath, [System.Text.Encoding]::UTF8) 
+    $smdtVersionInTarget = GetSmdtVersionFromString -smdtBody $smdtBody    
+}
+$currentlyRunningVersion = New-Object Version -ArgumentList $collectorVersion
+if ($currentlyRunningVersion -gt $smdtVersionInTarget) {
+    Copy-Item -Path $scriptFilePath -Destination $smdtPs1TargetFullPath -Force
+    $smdtPS1SavedToWindirTemp = $true
+}
+(GetStatInfoRoot).SetAttribute("SmdtPS1SavedToWindirTemp", $smdtPS1SavedToWindirTemp )
+(GetStatInfoRoot).SetAttribute("SmdtPS1VersionInWindirTemp", $smdtVersionInTarget )
+#endregion
+
 AppendOutputToFileInTargetFolder ( $collectorVersion ) CollectorVersion.txt
 AppendOutputToFileInTargetFolder ( $ExecutionContext.SessionState.LanguageMode ) LanguageMode.txt
 
