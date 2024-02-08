@@ -1,0 +1,60 @@
+<ManagementPack ContentReadable="true" SchemaVersion="2.0" OriginalSchemaVersion="1.1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+	<Manifest>
+		<Identity>
+			<ID>SCSM.Support.Tools.Main.Core</ID>
+			<Version>1.0.0.0</Version>
+		</Identity>
+		<Name>SCSM.Support.Tools.Main.Core</Name>
+		<References>
+			<Reference Alias="System">
+				<ID>System.Library</ID>
+				<Version>1.0.0.0</Version>
+				<PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+			</Reference>
+			<Reference Alias="Console">
+				<ID>Microsoft.EnterpriseManagement.ServiceManager.UI.Console</ID>
+				<Version>1.0.0.0</Version>
+				<PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+			</Reference>
+			<Reference Alias="Administration">
+				<ID>Microsoft.EnterpriseManagement.ServiceManager.UI.Administration</ID>
+				<Version>1.0.0.0</Version>
+				<PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+			</Reference>
+			<Reference Alias="SystemCenter">
+				<ID>Microsoft.SystemCenter.Library</ID>
+				<Version>1.0.0.0</Version>
+				<PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+			</Reference>
+			<Reference Alias="AdminItem">
+				<ID>System.AdminItem.Library</ID>
+				<Version>1.0.0.0</Version>
+				<PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+			</Reference>
+		</References>
+	</Manifest>
+	<TypeDefinitions>
+		<EntityTypes>
+			<ClassTypes>
+				<ClassType ID="SCSM.Support.Tools.Main.Data" Accessibility="Public" Abstract="false" Base="AdminItem!System.AdminItem" Hosted="false" Singleton="true" Extension="false">
+					<Property ID="EulaApprovedAt" Type="datetime" AutoIncrement="false" Key="false" CaseSensitive="false" MaxLength="256" MinLength="0" Required="false" Scale="0" />
+					<Property ID="EulaApprovedBy" Type="string"   AutoIncrement="false" Key="false" CaseSensitive="false" MaxLength="256" MinLength="0" Required="false" Scale="0" />
+				</ClassType>
+			</ClassTypes>
+		</EntityTypes>
+	</TypeDefinitions>
+	<LanguagePacks>
+		<LanguagePack ID="ENU" IsDefault="true">
+			<DisplayStrings>
+				<DisplayString ElementID="SCSM.Support.Tools.Main.Core">
+					<Name>SCSM Support Tools - Main (Core)</Name>
+					<Description>Contains definitions for SCSM Support Tools - Main</Description>
+				</DisplayString>
+				<DisplayString ElementID="SCSM.Support.Tools.Main.Data">
+					<Name>SCSM Support Tools - Main (Data)</Name>
+					<Description>Data for SCSM Support Tools - Main, such as Eula</Description>
+				</DisplayString>
+			</DisplayStrings>
+		</LanguagePack>
+	</LanguagePacks>
+</ManagementPack>

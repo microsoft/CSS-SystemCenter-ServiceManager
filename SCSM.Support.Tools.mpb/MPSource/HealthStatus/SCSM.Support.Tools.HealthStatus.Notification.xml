@@ -1,0 +1,127 @@
+<ManagementPack ContentReadable="true" SchemaVersion="2.0" OriginalSchemaVersion="1.1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <Manifest>
+    <Identity>
+      <ID>SCSM.Support.Tools.HealthStatus.Notification</ID>
+      <Version>1.0.0.0</Version>
+    </Identity>
+    <Name>SCSM.Support.Tools.HealthStatus.Notification</Name>
+    <References>
+      <Reference Alias="Console">
+        <ID>Microsoft.EnterpriseManagement.ServiceManager.UI.Console</ID>
+        <Version>1.0.0.0</Version>
+        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+      </Reference>
+      <Reference Alias="CustomSystem_Notifications_Library">
+        <ID>System.Notifications.Library</ID>
+        <Version>1.0.0.0</Version>
+        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+      </Reference>
+      <Reference Alias="CustomSCSM_Support_Tools_HealthStatus_Core">
+        <ID>SCSM.Support.Tools.HealthStatus.Core</ID>
+        <Version>1.0.0.0</Version>
+        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+      </Reference>
+      <Reference Alias="System">
+        <ID>System.Library</ID>
+        <Version>1.0.0.0</Version>
+        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+      </Reference>
+      <Reference Alias="SystemCenter">
+        <ID>Microsoft.SystemCenter.Library</ID>
+        <Version>1.0.0.0</Version>
+        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+      </Reference>
+      <Reference Alias="SystemCenter1">
+        <ID>Microsoft.SystemCenter.Subscriptions</ID>
+        <Version>1.0.0.0</Version>
+        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+      </Reference>
+      <Reference Alias="EnterpriseManagement">
+        <ID>Microsoft.EnterpriseManagement.ServiceManager.UI.Administration</ID>
+        <Version>1.0.0.0</Version>
+        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+      </Reference>
+    </References>
+  </Manifest>
+  <Categories>
+    <Category ID="SCSM.Support.Tools.HealthStatus.Notification.Category.Template" Target="SCSM.Support.Tools.HealthStatus.Notification.Template" Value="EnterpriseManagement!ServiceManager.Console.NotificationManagement.NotificationTemplates.Enumeration" />
+  </Categories>
+  <Templates>
+    <ObjectTemplate ID="SCSM.Support.Tools.HealthStatus.Notification.Template" TypeID="CustomSystem_Notifications_Library!System.Notification.Template.SMTP">
+      <Property Path="$Context/Property[Type='CustomSystem_Notifications_Library!System.Notification.Template.SMTP']/Subject$">&lt;1033&gt;SCSM Health Status of Management Servers&lt;/1033&gt;</Property>
+      <Property Path="$Context/Property[Type='CustomSystem_Notifications_Library!System.Notification.Template.SMTP']/Priority$">2</Property>
+      <Property Path="$Context/Property[Type='CustomSystem_Notifications_Library!System.Notification.Template.SMTP']/IsBodyHtml$">True</Property>
+      <Property Path="$Context/Property[Type='CustomSystem_Notifications_Library!System.Notification.Template']/Content$">&lt;1033&gt;&amp;lt;style&amp;gt;
+
+td { padding: 4px; text-align: left; border: 1px solid black; vertical-align:top; }
+
+
+&amp;lt;/style&amp;gt;
+
+&amp;lt;table style="border-collapse: collapse"&amp;gt;
+
+
+&amp;lt;tr style="background-color: #11594A; color:white; "&amp;gt;				  
+&amp;lt;td&amp;gt;Severity&amp;lt;/td&amp;gt; 
+&amp;lt;td&amp;gt;Component&amp;lt;/td&amp;gt; 
+&amp;lt;td&amp;gt;SMDT* Run Date&amp;lt;/td&amp;gt; 
+&amp;lt;td&amp;gt;Server&amp;lt;/td&amp;gt;
+&amp;lt;td&amp;gt;SMDT Triggered&amp;lt;/td&amp;gt; 
+&amp;lt;td&amp;gt;SMDT details file&amp;lt;/td&amp;gt;
+&amp;lt;/tr&amp;gt;
+
+
+&amp;lt;tr&amp;gt;
+&amp;lt;td&amp;gt;$Context/Path[Relationship='CustomSCSM_Support_Tools_HealthStatus_Core!SCSM.Support.Tools.HealthStatus.OverallToWF' TypeConstraint='CustomSCSM_Support_Tools_HealthStatus_Core!SCSM.Support.Tools.HealthStatus.Common']/Property[Type='CustomSCSM_Support_Tools_HealthStatus_Core!SCSM.Support.Tools.HealthStatus.Common']/MaxSeverity$&amp;lt;/td&amp;gt;
+
+&amp;lt;td&amp;gt;$Context/Path[Relationship='CustomSCSM_Support_Tools_HealthStatus_Core!SCSM.Support.Tools.HealthStatus.OverallToWF' TypeConstraint='CustomSCSM_Support_Tools_HealthStatus_Core!SCSM.Support.Tools.HealthStatus.WF']/Property[Type='CustomSCSM_Support_Tools_HealthStatus_Core!SCSM.Support.Tools.HealthStatus.WF']/Component$&amp;lt;/td&amp;gt;
+
+&amp;lt;td&amp;gt;$Context/Path[Relationship='CustomSCSM_Support_Tools_HealthStatus_Core!SCSM.Support.Tools.HealthStatus.OverallToWF' TypeConstraint='CustomSCSM_Support_Tools_HealthStatus_Core!SCSM.Support.Tools.HealthStatus.Common']/Property[Type='CustomSCSM_Support_Tools_HealthStatus_Core!SCSM.Support.Tools.HealthStatus.Common']/LastRun$&amp;lt;/td&amp;gt;
+
+ &amp;lt;td&amp;gt;$Context/Path[Relationship='CustomSCSM_Support_Tools_HealthStatus_Core!SCSM.Support.Tools.HealthStatus.OverallToWF' TypeConstraint='CustomSCSM_Support_Tools_HealthStatus_Core!SCSM.Support.Tools.HealthStatus.Common']/Property[Type='CustomSCSM_Support_Tools_HealthStatus_Core!SCSM.Support.Tools.HealthStatus.Common']/ServerName$&amp;lt;/td&amp;gt;
+
+&amp;lt;td&amp;gt;$Context/Path[Relationship='CustomSCSM_Support_Tools_HealthStatus_Core!SCSM.Support.Tools.HealthStatus.OverallToWF' TypeConstraint='CustomSCSM_Support_Tools_HealthStatus_Core!SCSM.Support.Tools.HealthStatus.Common']/Property[Type='CustomSCSM_Support_Tools_HealthStatus_Core!SCSM.Support.Tools.HealthStatus.Common']/TriggerMethod$&amp;lt;/td&amp;gt;
+
+&amp;lt;td&amp;gt;$Context/Path[Relationship='CustomSCSM_Support_Tools_HealthStatus_Core!SCSM.Support.Tools.HealthStatus.OverallToWF' TypeConstraint='CustomSCSM_Support_Tools_HealthStatus_Core!SCSM.Support.Tools.HealthStatus.Common']/Property[Type='CustomSCSM_Support_Tools_HealthStatus_Core!SCSM.Support.Tools.HealthStatus.Common']/ResultingZipFileAtFullPath$&amp;lt;/td&amp;gt;
+&amp;lt;/tr&amp;gt;
+
+&amp;lt;tr&amp;gt;
+&amp;lt;td&amp;gt;$Context/Path[Relationship='CustomSCSM_Support_Tools_HealthStatus_Core!SCSM.Support.Tools.HealthStatus.OverallToDW' TypeConstraint='CustomSCSM_Support_Tools_HealthStatus_Core!SCSM.Support.Tools.HealthStatus.Common']/Property[Type='CustomSCSM_Support_Tools_HealthStatus_Core!SCSM.Support.Tools.HealthStatus.Common']/MaxSeverity$&amp;lt;/td&amp;gt;
+
+&amp;lt;td&amp;gt;$Context/Path[Relationship='CustomSCSM_Support_Tools_HealthStatus_Core!SCSM.Support.Tools.HealthStatus.OverallToDW' TypeConstraint='CustomSCSM_Support_Tools_HealthStatus_Core!SCSM.Support.Tools.HealthStatus.DW']/Property[Type='CustomSCSM_Support_Tools_HealthStatus_Core!SCSM.Support.Tools.HealthStatus.DW']/Component$&amp;lt;/td&amp;gt;
+
+&amp;lt;td&amp;gt;$Context/Path[Relationship='CustomSCSM_Support_Tools_HealthStatus_Core!SCSM.Support.Tools.HealthStatus.OverallToDW' TypeConstraint='CustomSCSM_Support_Tools_HealthStatus_Core!SCSM.Support.Tools.HealthStatus.Common']/Property[Type='CustomSCSM_Support_Tools_HealthStatus_Core!SCSM.Support.Tools.HealthStatus.Common']/LastRun$&amp;lt;/td&amp;gt;
+
+ &amp;lt;td&amp;gt;$Context/Path[Relationship='CustomSCSM_Support_Tools_HealthStatus_Core!SCSM.Support.Tools.HealthStatus.OverallToDW' TypeConstraint='CustomSCSM_Support_Tools_HealthStatus_Core!SCSM.Support.Tools.HealthStatus.Common']/Property[Type='CustomSCSM_Support_Tools_HealthStatus_Core!SCSM.Support.Tools.HealthStatus.Common']/ServerName$&amp;lt;/td&amp;gt;
+
+&amp;lt;td&amp;gt;$Context/Path[Relationship='CustomSCSM_Support_Tools_HealthStatus_Core!SCSM.Support.Tools.HealthStatus.OverallToDW' TypeConstraint='CustomSCSM_Support_Tools_HealthStatus_Core!SCSM.Support.Tools.HealthStatus.Common']/Property[Type='CustomSCSM_Support_Tools_HealthStatus_Core!SCSM.Support.Tools.HealthStatus.Common']/TriggerMethod$&amp;lt;/td&amp;gt;
+
+&amp;lt;td&amp;gt;$Context/Path[Relationship='CustomSCSM_Support_Tools_HealthStatus_Core!SCSM.Support.Tools.HealthStatus.OverallToDW' TypeConstraint='CustomSCSM_Support_Tools_HealthStatus_Core!SCSM.Support.Tools.HealthStatus.Common']/Property[Type='CustomSCSM_Support_Tools_HealthStatus_Core!SCSM.Support.Tools.HealthStatus.Common']/ResultingZipFileAtFullPath$&amp;lt;/td&amp;gt;
+&amp;lt;/tr&amp;gt;
+
+&amp;lt;/table&amp;gt;
+
+&amp;lt;p&amp;gt;* All above information was reported by running the &amp;lt;a href="https://aka.ms/scsm-diagnostic-tool"&amp;gt;SCSM Diagnostic Tool (SMDT)&amp;lt;/a&amp;gt; on the Management Servers.&amp;lt;/p&amp;gt;&lt;/1033&gt;</Property>
+      <Property Path="$Context/Property[Type='CustomSystem_Notifications_Library!System.Notification.Template']/Encoding$">utf-8</Property>
+      <Property Path="$Context/Property[Type='CustomSystem_Notifications_Library!System.Notification.Template']/SeedClass$">SCSM.Support.Tools.HealthStatus.Overall$50fb0cd3-99e2-ce4b-ac89-c1c76ccffb24</Property>
+      <Property Path="$Context/Property[Type='CustomSystem_Notifications_Library!System.Notification.Template']/Protocol$">SMTP</Property>
+    </ObjectTemplate>
+  </Templates>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        <DisplayString ElementID="SCSM.Support.Tools.HealthStatus.Notification">
+          <Name>SCSM Support Tools - Health Status (Notification)</Name>
+          <Description>Contains notification items for SCSM Support Tools - Health Status</Description>
+        </DisplayString>
+        <DisplayString ElementID="SCSM.Support.Tools.HealthStatus.Notification.Template">
+          <Name>SCSM Health Status of Management Servers</Name>
+          <Description>Email template that contains info about Health Status of Management Servers</Description>
+        </DisplayString>
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
+  <Resources>
+    <Resource ID="SCSM.Support.Tools.HealthStatus.Notification.Subscription.Resource" Accessibility="Public" FileName="SCSM.Support.Tools.HealthStatus.Notification.Subscription.xml" HasNullStream="false" />
+  </Resources>
+</ManagementPack>

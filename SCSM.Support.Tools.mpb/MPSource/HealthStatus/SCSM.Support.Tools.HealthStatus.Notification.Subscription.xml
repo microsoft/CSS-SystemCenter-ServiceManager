@@ -1,0 +1,176 @@
+<ManagementPack ContentReadable="true" SchemaVersion="2.0" OriginalSchemaVersion="1.1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <Manifest>
+    <Identity>
+      <ID>SCSM.Support.Tools.HealthStatus.Notification.Subscription</ID>
+      <Version>1.0.0.0</Version>
+    </Identity>
+    <Name>SCSM.Support.Tools.HealthStatus.Notification.Subscription</Name>
+    <References>
+      <Reference Alias="Console">
+        <ID>Microsoft.EnterpriseManagement.ServiceManager.UI.Console</ID>
+        <Version>1.0.0.0</Version>
+        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+      </Reference>
+      <Reference Alias="CustomSystem_Notifications_Library">
+        <ID>System.Notifications.Library</ID>
+        <Version>1.0.0.0</Version>
+        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+      </Reference>
+      <Reference Alias="CustomSCSM_Support_Tools_HealthStatus_Core">
+        <ID>SCSM.Support.Tools.HealthStatus.Core</ID>
+        <Version>1.0.0.0</Version>
+        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+      </Reference>
+      <Reference Alias="System">
+        <ID>System.Library</ID>
+        <Version>1.0.0.0</Version>
+        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+      </Reference>
+      <Reference Alias="SystemCenter">
+        <ID>Microsoft.SystemCenter.Library</ID>
+        <Version>1.0.0.0</Version>
+        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+      </Reference>
+      <Reference Alias="SystemCenter1">
+        <ID>Microsoft.SystemCenter.Subscriptions</ID>
+        <Version>1.0.0.0</Version>
+        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+      </Reference>
+      <Reference Alias="EnterpriseManagement">
+        <ID>Microsoft.EnterpriseManagement.ServiceManager.UI.Administration</ID>
+        <Version>1.0.0.0</Version>
+        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+      </Reference>
+    </References>
+  </Manifest>
+  <Categories>
+    <!-- <Category ID="SCSM.Support.Tools.HealthStatus.Notification.Category.DailySubscription" Target="SCSM.Support.Tools.HealthStatus.Notification.DailySubscription" Value="EnterpriseManagement!Microsoft.EnterpriseManagement.ServiceManager.Rules.WorkflowSubscriptions" /> -->
+    <Category ID="SCSM.Support.Tools.HealthStatus.Notification.Category.ChangedSubscription" Target="SCSM.Support.Tools.HealthStatus.Notification.ChangedSubscription" Value="EnterpriseManagement!Microsoft.EnterpriseManagement.ServiceManager.Rules.WorkflowSubscriptions" />
+  </Categories>
+  <Monitoring>
+    <Rules>
+      <!--      <Rule ID="SCSM.Support.Tools.HealthStatus.Notification.DailySubscription" Enabled="false" Target="SystemCenter!Microsoft.SystemCenter.SubscriptionWorkflowTarget" ConfirmDelivery="true" Remotable="true" Priority="Normal" DiscardLevel="100">
+        <Category>System</Category>
+        <DataSources>
+          <DataSource ID="DS" TypeID="SystemCenter1!Microsoft.SystemCenter.CmdbInstanceSubscription.DataSourceModule">
+            <Subscription>
+              <InstanceSubscription Type="fc235b2a-37e4-73e0-761b-0ef7c14c302c">
+                <QueryInstance>
+                  <Criteria>
+                    <Expression>
+                      <SimpleExpression>
+                        <ValueExpressionLeft>
+                          <GenericProperty>LastModified</GenericProperty>
+                        </ValueExpressionLeft>
+                        <Operator>LessEqual</Operator>
+                        <ValueExpressionRight>
+                          <Token>[now]</Token>
+                        </ValueExpressionRight>
+                      </SimpleExpression>
+                    </Expression>
+                  </Criteria>
+                  <RecurrenceIntervalInMinutes>3</RecurrenceIntervalInMinutes>
+                </QueryInstance>
+              </InstanceSubscription>
+              <PollingIntervalInSeconds>60</PollingIntervalInSeconds>
+              <BatchSize>100</BatchSize>
+            </Subscription>
+          </DataSource>
+        </DataSources>
+        <WriteActions>
+          <WriteAction ID="WA" TypeID="SystemCenter1!Microsoft.EnterpriseManagement.SystemCenter.Subscription.WindowsWorkflowTaskWriteAction">
+            <Subscription>
+              <VisibleWorkflowStatusUi>true</VisibleWorkflowStatusUi>
+              <EnableBatchProcessing>true</EnableBatchProcessing>
+              <WindowsWorkflowConfiguration>
+                <AssemblyName>Microsoft.EnterpriseManagement.Notifications.Workflows</AssemblyName>
+                <WorkflowTypeName>Microsoft.EnterpriseManagement.Notifications.Workflows.SendNotificationsActivity</WorkflowTypeName>
+                <WorkflowParameters>
+                  <WorkflowParameter Name="SubscriptionId" Type="guid">$MPElement$</WorkflowParameter>
+                  <WorkflowArrayParameter Name="DataItems" Type="string">
+                    <Item>$Data/.$</Item>
+                  </WorkflowArrayParameter>
+                  <WorkflowArrayParameter Name="InstanceIds" Type="string">
+                    <Item>$Data/BaseManagedEntityId$</Item>
+                  </WorkflowArrayParameter>
+                  <WorkflowArrayParameter Name="TemplateIds" Type="string">
+                    <Item>4d22a5b7-dc1f-a80f-7cc9-618654c27c0c</Item>
+                  </WorkflowArrayParameter>
+                  <WorkflowArrayParameter Name="PrimaryUserList" Type="string">
+                    <Item>7e4d72e9-65e6-be33-3195-7c406aa4d741</Item>
+                  </WorkflowArrayParameter>
+                </WorkflowParameters>
+                <RetryExceptions />
+                <RetryDelaySeconds>60</RetryDelaySeconds>
+                <MaximumRunningTimeSeconds>7200</MaximumRunningTimeSeconds>
+              </WindowsWorkflowConfiguration>
+            </Subscription>
+          </WriteAction>
+        </WriteActions>
+      </Rule>
+ -->
+      <Rule ID="SCSM.Support.Tools.HealthStatus.Notification.ChangedSubscription" Enabled="true" Target="SystemCenter!Microsoft.SystemCenter.SubscriptionWorkflowTarget" ConfirmDelivery="true" Remotable="true" Priority="Normal" DiscardLevel="100">
+        <Category>System</Category>
+        <DataSources>
+          <DataSource ID="DS" TypeID="SystemCenter1!Microsoft.SystemCenter.CmdbInstanceSubscription.DataSourceModule">
+            <Subscription>
+              <InstanceSubscription Type="fc235b2a-37e4-73e0-761b-0ef7c14c302c">
+                <UpdateInstance />
+              </InstanceSubscription>
+              <PollingIntervalInSeconds>60</PollingIntervalInSeconds>
+              <BatchSize>100</BatchSize>
+            </Subscription>
+          </DataSource>
+        </DataSources>
+        <WriteActions>
+          <WriteAction ID="WA" TypeID="SystemCenter1!Microsoft.EnterpriseManagement.SystemCenter.Subscription.WindowsWorkflowTaskWriteAction">
+            <Subscription>
+              <VisibleWorkflowStatusUi>true</VisibleWorkflowStatusUi>
+              <EnableBatchProcessing>true</EnableBatchProcessing>
+              <WindowsWorkflowConfiguration>
+                <AssemblyName>Microsoft.EnterpriseManagement.Notifications.Workflows</AssemblyName>
+                <WorkflowTypeName>Microsoft.EnterpriseManagement.Notifications.Workflows.SendNotificationsActivity</WorkflowTypeName>
+                <WorkflowParameters>
+                  <WorkflowParameter Name="SubscriptionId" Type="guid">$MPElement$</WorkflowParameter>
+                  <WorkflowArrayParameter Name="DataItems" Type="string">
+                    <Item>$Data/.$</Item>
+                  </WorkflowArrayParameter>
+                  <WorkflowArrayParameter Name="InstanceIds" Type="string">
+                    <Item>$Data/BaseManagedEntityId$</Item>
+                  </WorkflowArrayParameter>
+                  <WorkflowArrayParameter Name="TemplateIds" Type="string">
+                    <Item>4d22a5b7-dc1f-a80f-7cc9-618654c27c0c</Item>
+                  </WorkflowArrayParameter>
+                  <WorkflowArrayParameter Name="PrimaryUserList" Type="string">
+                    <!-- <Item>7e4d72e9-65e6-be33-3195-7c406aa4d741</Item> -->
+                  </WorkflowArrayParameter>
+                </WorkflowParameters>
+                <RetryExceptions />
+                <RetryDelaySeconds>60</RetryDelaySeconds>
+                <MaximumRunningTimeSeconds>7200</MaximumRunningTimeSeconds>
+              </WindowsWorkflowConfiguration>
+            </Subscription>
+          </WriteAction>
+        </WriteActions>
+      </Rule>
+    </Rules>
+  </Monitoring>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        <DisplayString ElementID="SCSM.Support.Tools.HealthStatus.Notification.Subscription">
+          <Name>SCSM Support Tools - Health Status (Notification) Subscription</Name>
+          <Description>Contains subscription items for SCSM Support Tools - Health Status</Description>
+        </DisplayString>
+        <!-- <DisplayString ElementID="SCSM.Support.Tools.HealthStatus.Notification.DailySubscription">
+					<Name>SCSM Health Status of Management Servers - Daily subscription</Name>
+					<Description>Sends daily Health status of Management Servers</Description>
+				</DisplayString> -->
+        <DisplayString ElementID="SCSM.Support.Tools.HealthStatus.Notification.ChangedSubscription">
+          <Name>SCSM Health Status of Management Servers - Daily subscription</Name>
+          <Description>Sends email with SCSM Health Status whenever the SCSM Diagnostic Tool (SMDT) runs. This happens automatically every midnight. The SMDT can also be started manually.</Description>
+        </DisplayString>
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
+</ManagementPack>

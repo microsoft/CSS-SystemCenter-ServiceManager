@@ -1,0 +1,197 @@
+<ManagementPack ContentReadable="true" SchemaVersion="2.0" OriginalSchemaVersion="1.1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <Manifest>
+    <Identity>
+      <ID>SCSM.Support.Tools.HealthStatus.Core</ID>
+      <Version>1.0.0.0</Version>
+    </Identity>
+    <Name>SCSM.Support.Tools.HealthStatus.Core</Name>
+    <References>
+      <Reference Alias="System">
+        <ID>System.Library</ID>
+        <Version>1.0.0.0</Version>
+        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+      </Reference>
+      <Reference Alias="SystemCenter">
+        <ID>Microsoft.SystemCenter.Library</ID>
+        <Version>1.0.0.0</Version>
+        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+      </Reference>
+      <Reference Alias="AdminItem">
+        <ID>System.AdminItem.Library</ID>
+        <Version>1.0.0.0</Version>
+        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+      </Reference>
+      <Reference Alias="Subscriptions">
+        <ID>Microsoft.SystemCenter.Subscriptions</ID>
+        <Version>1.0.0.0</Version>
+        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+      </Reference>
+      <Reference Alias="AdminUI">
+        <ID>Microsoft.EnterpriseManagement.ServiceManager.UI.Administration</ID>
+        <Version>1.0.0.0</Version>
+        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+      </Reference>
+      <Reference Alias="Notifications">
+        <ID>System.Notifications.Library</ID>
+        <Version>1.0.0.0</Version>
+        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+      </Reference>
+    </References>
+  </Manifest>
+  <TypeDefinitions>
+    <EntityTypes>
+      <ClassTypes>
+        <ClassType ID="SCSM.Support.Tools.HealthStatus.Overall" Accessibility="Public" Abstract="false" Base="AdminItem!System.AdminItem" Hosted="false" Singleton="true" Extension="false">
+          <Property ID="LastChanged" Type="datetime" AutoIncrement="false" Key="false" CaseSensitive="false" MaxLength="256" MinLength="0" Required="false" Scale="0" />
+        </ClassType>
+        <ClassType ID="SCSM.Support.Tools.HealthStatus.Common" Accessibility="Public" Abstract="true" Base="AdminItem!System.AdminItem" Hosted="false" Singleton="false" Extension="false">
+          <Property ID="MaxSeverity" Type="enum" AutoIncrement="false" Key="false" CaseSensitive="false" MaxLength="256" MinLength="0" Required="false" Scale="0" EnumType="SCSM.Support.Tools.HealthStatus.Enum.Severity" />
+          <Property ID="ResultingZipFileAtFullPath" Type="string" AutoIncrement="false" Key="false" CaseSensitive="false" MaxLength="4000" MinLength="0" Required="false" Scale="0" />
+          <Property ID="TriggerMethod" Type="enum" AutoIncrement="false" Key="false" CaseSensitive="false" MaxLength="100" MinLength="0" Required="false" Scale="0" EnumType="SCSM.Support.Tools.HealthStatus.Enum.TriggerMethod" />
+          <Property ID="LastRun" Type="datetime" AutoIncrement="false" Key="false" CaseSensitive="false" MaxLength="256" MinLength="0" Required="false" Scale="0" />
+          <Property ID="ServerName" Type="string" AutoIncrement="false" Key="false" CaseSensitive="false" MaxLength="100" MinLength="0" Required="false" Scale="0" />
+        </ClassType>
+        <ClassType ID="SCSM.Support.Tools.HealthStatus.WF" Accessibility="Public" Abstract="false" Base="SCSM.Support.Tools.HealthStatus.Common" Hosted="false" Singleton="true" Extension="false">
+          <Property ID="Component" Type="enum" AutoIncrement="false" Key="false" CaseSensitive="false" MaxLength="256" MinLength="0" Required="false" Scale="0" EnumType="SCSM.Support.Tools.HealthStatus.Enum.Component" DefaultValue="SCSM.Support.Tools.HealthStatus.Enum.Component.WF" />
+        </ClassType>
+        <ClassType ID="SCSM.Support.Tools.HealthStatus.DW" Accessibility="Public" Abstract="false" Base="SCSM.Support.Tools.HealthStatus.Common" Hosted="false" Singleton="true" Extension="false">
+          <Property ID="Component" Type="enum" AutoIncrement="false" Key="false" CaseSensitive="false" MaxLength="256" MinLength="0" Required="false" Scale="0" EnumType="SCSM.Support.Tools.HealthStatus.Enum.Component" DefaultValue="SCSM.Support.Tools.HealthStatus.Enum.Component.DW" />
+        </ClassType>
+      </ClassTypes>
+      <RelationshipTypes>
+        <RelationshipType ID="SCSM.Support.Tools.HealthStatus.OverallToWF" Accessibility="Public" Abstract="false" Base="System!System.Reference">
+          <Source ID="HealthStatusOverall" MinCardinality="0" MaxCardinality="1" Type="SCSM.Support.Tools.HealthStatus.Overall" />
+          <Target ID="HealthStatusComponent" MinCardinality="0" MaxCardinality="1" Type="SCSM.Support.Tools.HealthStatus.WF" />
+        </RelationshipType>
+        <RelationshipType ID="SCSM.Support.Tools.HealthStatus.OverallToDW" Accessibility="Public" Abstract="false" Base="System!System.Reference">
+          <Source ID="HealthStatusOverall" MinCardinality="0" MaxCardinality="1" Type="SCSM.Support.Tools.HealthStatus.Overall" />
+          <Target ID="HealthStatusComponent" MinCardinality="0" MaxCardinality="1" Type="SCSM.Support.Tools.HealthStatus.DW" />
+        </RelationshipType>
+      </RelationshipTypes>
+      <EnumerationTypes>
+        <EnumerationValue ID="SCSM.Support.Tools.HealthStatus.Enum.Component" Accessibility="Public" />
+        <EnumerationValue ID="SCSM.Support.Tools.HealthStatus.Enum.Component.WF" Accessibility="Public" Parent="SCSM.Support.Tools.HealthStatus.Enum.Component" Ordinal="0" />
+        <EnumerationValue ID="SCSM.Support.Tools.HealthStatus.Enum.Component.DW" Accessibility="Public" Parent="SCSM.Support.Tools.HealthStatus.Enum.Component" Ordinal="1" />
+        <EnumerationValue ID="SCSM.Support.Tools.HealthStatus.Enum.TriggerMethod" Accessibility="Public" />
+        <EnumerationValue ID="SCSM.Support.Tools.HealthStatus.Enum.TriggerMethod.Manual" Accessibility="Public" Parent="SCSM.Support.Tools.HealthStatus.Enum.TriggerMethod" Ordinal="0" />
+        <EnumerationValue ID="SCSM.Support.Tools.HealthStatus.Enum.TriggerMethod.Schedule" Accessibility="Public" Parent="SCSM.Support.Tools.HealthStatus.Enum.TriggerMethod" Ordinal="1" />
+        <EnumerationValue ID="SCSM.Support.Tools.HealthStatus.Enum.Severity" Accessibility="Public" />
+        <EnumerationValue ID="SCSM.Support.Tools.HealthStatus.Enum.Severity.Critical" Accessibility="Public" Parent="SCSM.Support.Tools.HealthStatus.Enum.Severity" Ordinal="0" />
+        <EnumerationValue ID="SCSM.Support.Tools.HealthStatus.Enum.Severity.Error" Accessibility="Public" Parent="SCSM.Support.Tools.HealthStatus.Enum.Severity" Ordinal="1" />
+        <EnumerationValue ID="SCSM.Support.Tools.HealthStatus.Enum.Severity.Warning" Accessibility="Public" Parent="SCSM.Support.Tools.HealthStatus.Enum.Severity" Ordinal="2" />
+        <EnumerationValue ID="SCSM.Support.Tools.HealthStatus.Enum.Severity.Good" Accessibility="Public" Parent="SCSM.Support.Tools.HealthStatus.Enum.Severity" Ordinal="3" />
+        <EnumerationValue ID="SCSM.Support.Tools.HealthStatus.Enum.Severity.Unknown" Accessibility="Public" Parent="SCSM.Support.Tools.HealthStatus.Enum.Severity" Ordinal="4" />
+      </EnumerationTypes>
+      <TypeProjections>
+        <TypeProjection ID="SCSM.Support.Tools.HealthStatus.TP.Overall" Accessibility="Public" Type="SCSM.Support.Tools.HealthStatus.Overall">
+          <Component Path="$Target/Path[Relationship='SCSM.Support.Tools.HealthStatus.OverallToWF']$" Alias="HealthStatusWF" />
+          <Component Path="$Target/Path[Relationship='SCSM.Support.Tools.HealthStatus.OverallToDW']$" Alias="HealthStatusDW" />
+        </TypeProjection>
+      </TypeProjections>
+    </EntityTypes>
+  </TypeDefinitions>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        <DisplayString ElementID="SCSM.Support.Tools.HealthStatus.Core">
+          <Name>SCSM Support Tools - Health Status (Core)</Name>
+          <Description>Contains definitions for SCSM Support Tools - Health Status</Description>
+        </DisplayString>
+        <DisplayString ElementID="SCSM.Support.Tools.HealthStatus.Common">
+          <Name>SCSM Support Tools - Health Status (Abstract)</Name>
+          <Description>Health Status info of SM components like WF and DW management servers</Description>
+        </DisplayString>
+        <DisplayString ElementID="SCSM.Support.Tools.HealthStatus.WF">
+          <Name>SCSM Support Tools - Health Status (WF)</Name>
+          <Description>Health Status info specific to the Workflow/Primary management server</Description>
+        </DisplayString>
+        <DisplayString ElementID="SCSM.Support.Tools.HealthStatus.DW">
+          <Name>SCSM Support Tools - Health Status (DW)</Name>
+          <Description>Health Status info specific to the Data Warehouse management server</Description>
+        </DisplayString>
+        <DisplayString ElementID="SCSM.Support.Tools.HealthStatus.Overall">
+          <Name>SCSM Support Tools - Health Status</Name>
+          <Description>Health Status info from WF or DW Health Status. Useful in Notifications</Description>
+        </DisplayString>
+        <DisplayString ElementID="SCSM.Support.Tools.HealthStatus.Overall" SubElementID="LastChanged">
+          <Name>Last Changed At</Name>
+          <Description>When the SCSM Diagnostic Tool (SMDT) ran at WF or DW management servers</Description>
+        </DisplayString>
+        <DisplayString ElementID="SCSM.Support.Tools.HealthStatus.OverallToWF">
+          <Name>WF Health Status</Name>
+        </DisplayString>
+        <DisplayString ElementID="SCSM.Support.Tools.HealthStatus.OverallToDW">
+          <Name>DW Health Status</Name>
+        </DisplayString>
+        <DisplayString ElementID="SCSM.Support.Tools.HealthStatus.Common" SubElementID="ServerName">
+          <Name>Server name</Name>
+          <Description>The machine name where the SCSM Diagnostic Tool (SMDT) ran</Description>
+        </DisplayString>
+        <DisplayString ElementID="SCSM.Support.Tools.HealthStatus.Common" SubElementID="ResultingZipFileAtFullPath">
+          <Name>Diagnostic details in file</Name>
+          <Description>The full path where the SCSM Diagnostic Tool (SMDT) saved the resulting zip file.</Description>
+        </DisplayString>
+        <DisplayString ElementID="SCSM.Support.Tools.HealthStatus.Common" SubElementID="TriggerMethod">
+          <Name>Diagnostic tool Trigger method</Name>
+          <Description>How the SCSM Diagnostic Tool (SMDT) was triggered. Can be Manually or Scheduled</Description>
+        </DisplayString>
+        <DisplayString ElementID="SCSM.Support.Tools.HealthStatus.Common" SubElementID="LastRun">
+          <Name>Diagnostic Date</Name>
+          <Description>When the SCSM Diagnostic Tool (SMDT) ran</Description>
+        </DisplayString>
+        <DisplayString ElementID="SCSM.Support.Tools.HealthStatus.Common" SubElementID="MaxSeverity">
+          <Name>Highest Severity</Name>
+          <Description>Highest severity detected by the SCSM Diagnostic Tool (SMDT) like Critical, Error, Warning etc</Description>
+        </DisplayString>
+        <DisplayString ElementID="SCSM.Support.Tools.HealthStatus.Enum.Component">
+          <Name>SM component</Name>
+          <Description>SCSM component like WF or DW</Description>
+        </DisplayString>
+        <DisplayString ElementID="SCSM.Support.Tools.HealthStatus.Enum.Component.WF">
+          <Name>Workflow/Primary MS</Name>
+          <Description>Primary Management Server where workflows run</Description>
+        </DisplayString>
+        <DisplayString ElementID="SCSM.Support.Tools.HealthStatus.Enum.Component.DW">
+          <Name>Data Warehouse MS</Name>
+          <Description>Data Warehouse Management Server where DW jobs run</Description>
+        </DisplayString>
+        <DisplayString ElementID="SCSM.Support.Tools.HealthStatus.Enum.TriggerMethod">
+          <Name>Trigger Method</Name>
+          <Description>How the SCSM Diagnostic Tool (SMDT) was started</Description>
+        </DisplayString>
+        <DisplayString ElementID="SCSM.Support.Tools.HealthStatus.Enum.TriggerMethod.Manual">
+          <Name>Manually</Name>
+          <Description>The SCSM Diagnostic Tool (SMDT) was started manually</Description>
+        </DisplayString>
+        <DisplayString ElementID="SCSM.Support.Tools.HealthStatus.Enum.TriggerMethod.Schedule">
+          <Name>Scheduled</Name>
+          <Description>The SCSM Diagnostic Tool (SMDT) was started at schedule</Description>
+        </DisplayString>
+        <DisplayString ElementID="SCSM.Support.Tools.HealthStatus.Enum.Severity">
+          <Name>Severity</Name>
+          <Description>Highest severity detected by the SCSM Diagnostic Tool (SMDT) like Critical, Error, Warning etc</Description>
+        </DisplayString>
+        <DisplayString ElementID="SCSM.Support.Tools.HealthStatus.Enum.Severity.Critical">
+          <Name>Critical</Name>
+          <Description>These are NON-ignorable errors. They have to be fixed</Description>
+        </DisplayString>
+        <DisplayString ElementID="SCSM.Support.Tools.HealthStatus.Enum.Severity.Error">
+          <Name>Error</Name>
+          <Description>Can be ignored, but are severe Errors</Description>
+        </DisplayString>
+        <DisplayString ElementID="SCSM.Support.Tools.HealthStatus.Enum.Severity.Warning">
+          <Name>Warning</Name>
+          <Description>Can be ignored, they are not necessarily severe errors</Description>
+        </DisplayString>
+        <DisplayString ElementID="SCSM.Support.Tools.HealthStatus.Enum.Severity.Good">
+          <Name>Good</Name>
+          <Description>No issues detected</Description>
+        </DisplayString>
+        <DisplayString ElementID="SCSM.Support.Tools.HealthStatus.Enum.Severity.Unknown">
+          <Name>Unknown</Name>
+          <Description>Unknown</Description>
+        </DisplayString>
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
+</ManagementPack>

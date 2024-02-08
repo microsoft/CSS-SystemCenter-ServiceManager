@@ -1,0 +1,90 @@
+<ManagementPack ContentReadable="true" SchemaVersion="2.0" OriginalSchemaVersion="1.1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <Manifest>
+    <Identity>
+      <ID>SCSM.Support.Tools.Main.Presentation</ID>
+      <Version>1.0.0.0</Version>
+    </Identity>
+    <Name>SCSM.Support.Tools.Main.Presentation</Name>
+    <References>
+      <Reference Alias="System">
+        <ID>System.Library</ID>
+        <Version>1.0.0.0</Version>
+        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+      </Reference>
+      <Reference Alias="Console">
+        <ID>Microsoft.EnterpriseManagement.ServiceManager.UI.Console</ID>
+        <Version>1.0.0.0</Version>
+        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+      </Reference>
+      <Reference Alias="Administration">
+        <ID>Microsoft.EnterpriseManagement.ServiceManager.UI.Administration</ID>
+        <Version>1.0.0.0</Version>
+        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+      </Reference>
+      <Reference Alias="SystemCenter">
+        <ID>Microsoft.SystemCenter.Library</ID>
+        <Version>1.0.0.0</Version>
+        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+      </Reference>
+      <Reference Alias="SCSMSupportToolsMainCore">
+        <ID>SCSM.Support.Tools.Main.Core</ID>
+        <Version>1.0.0.0</Version>
+        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+      </Reference>
+    </References>
+  </Manifest>
+  <Categories>
+    <Category ID="SCSM.Support.Tools.Main.Presentation.Category.Folder.Root.Image32" Target="SCSM.Support.Tools.Main.Presentation.Folder.Root.Image32" Value="System!System.Internal.ManagementPack.Images.u32x32Icon" />
+  </Categories>
+  <Presentation>
+    <Views>
+      <View ID="SCSM.Support.Tools.Main.Presentation.View.Welcome" Accessibility="Public" Enabled="true" Target="System!System.Entity" TypeID="Administration!OverviewType" Visible="true">
+        <Category>NotUsed</Category>
+        <Configuration>
+          <Presentation>
+            <Header />
+            <Content>
+              <Grid xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:SCSM.Support.Tools.Main.Presentation="clr-namespace:SCSM.Support.Tools.Main.Presentation;assembly=SCSM.Support.Tools.Main.Presentation">
+                <SCSM.Support.Tools.Main.Presentation:Home />
+              </Grid>
+            </Content>
+          </Presentation>
+        </Configuration>
+      </View>
+    </Views>
+    <Folders>
+      <Folder ID="SCSM.Support.Tools.Main.Presentation.Folder.Root" Accessibility="Public" ParentFolder="Administration!Microsoft.EnterpriseManagement.ServiceManager.UI.Administration.Folder.Root" />
+    </Folders>
+    <FolderItems>
+      <FolderItem ElementID="SCSM.Support.Tools.Main.Presentation.View.Welcome" ID="SCSM.Support.Tools.Main.Presentation.FolderItem.Welcome" Folder="SCSM.Support.Tools.Main.Presentation.Folder.Root" />
+    </FolderItems>
+    <ImageReferences>
+      <ImageReference ElementID="SCSM.Support.Tools.Main.Presentation.Folder.Root" ImageID="SystemCenter!Microsoft.SystemCenter.ManagementServer.16x16Image" />
+      <ImageReference ElementID="SCSM.Support.Tools.Main.Presentation.Folder.Root" ImageID="SCSM.Support.Tools.Main.Presentation.Folder.Root.Image32" />
+      <ImageReference ElementID="SCSM.Support.Tools.Main.Presentation.View.Welcome" ImageID="Console!Microsoft.EnterpriseManagement.ServiceManager.UI.Console.Image.Class" />
+    </ImageReferences>
+  </Presentation>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        <DisplayString ElementID="SCSM.Support.Tools.Main.Presentation">
+          <Name>SCSM Support Tools - Main (Presentation)</Name>
+          <Description>Contains presentation items for SCSM Support Tools - Main</Description>
+        </DisplayString>
+        <DisplayString ElementID="SCSM.Support.Tools.Main.Presentation.Folder.Root">
+          <Name>SCSM Support Tools</Name>
+          <Description>Productivity and troubleshooting tools for Service Manager</Description>
+        </DisplayString>
+        <DisplayString ElementID="SCSM.Support.Tools.Main.Presentation.View.Welcome">
+          <Name>.Welcome</Name>
+          <Description>List of all SCSM Support Tools</Description>
+        </DisplayString>
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
+  <Resources>
+    <Assembly ID="SCSM.Support.Tools.Main.Presentation.Assembly" Accessibility="Public" QualifiedName="SCSM.Support.Tools.Main.Presentation" FileName="SCSM.Support.Tools.Main.Presentation.dll" />
+    <Assembly ID="SCSM.Support.Tools.Library.Assembly" Accessibility="Public" QualifiedName="SCSM.Support.Tools.Library" FileName="SCSM.Support.Tools.Library.dll" />
+    <Image ID="SCSM.Support.Tools.Main.Presentation.Folder.Root.Image32" Accessibility="Public" FileName="i362_ClassID_MOMServerRole_32.png" />
+  </Resources>
+</ManagementPack>

@@ -1,0 +1,138 @@
+﻿<UserControl  x:Class="SCSM.Support.Tools.HealthStatus.Presentation.Dashboard"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+			 xmlns:local="clr-namespace:SCSM.Support.Tools.HealthStatus.Presentation" 
+			 xmlns:library="clr-namespace:SCSM.Support.Tools.Library;assembly=SCSM.Support.Tools.Library"
+			 mc:Ignorable="d" 
+			 d:DesignHeight="450" d:DesignWidth="800">
+
+    <Grid Name="grid" ShowGridLines ="False">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <library:Eula Grid.Row="0" />
+
+        <Grid Grid.Row="1" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal"  Margin="5,10,0,10">
+                <Image Stretch="Fill" Source="/Microsoft.EnterpriseManagement.ServiceManager.Application.Common;component/Administration/Resources/scsm213_administration_32.png" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,5,5,0" />
+                <TextBlock VerticalAlignment="Center" FontSize="18" FontWeight="Bold">Health Status of Management Servers</TextBlock>
+            </StackPanel>
+            <!--<Grid Grid.Column="1"  HorizontalAlignment="Right" >
+				<StackPanel Orientation="Horizontal" Margin="0,0,10,0" >
+					<TextBlock Text="Version: " VerticalAlignment="Center" TextAlignment="Right"></TextBlock>
+					<TextBlock Text="{x:Static local:Dashboard.VersionOfCore}" VerticalAlignment="Center"></TextBlock>
+				</StackPanel>
+			</Grid>-->
+        </Grid>
+
+        <TextBlock Grid.Row="2" TextWrapping="Wrap" Margin="30,10,0,10"><Run Text="The &quot;Health Status&quot; is determined by the Findings of running the SCSM Diagnostic Tool (SMDT) on the Management Servers. The SMDT runs automatically every midnight."/><LineBreak/><Run Text="A summary of latest Findings are below. To see the Finding details, extract the zip file located on the relevant server."/></TextBlock>
+
+        <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="30,10,0,10" >
+            <Image Height="16" Width="16" Source="/Microsoft.EnterpriseManagement.UI.ConsoleFramework;component/resources/icon_plus.png" VerticalAlignment="Center"/>
+            <TextBlock TextWrapping="Wrap" Margin="10,0,10,-0.3"><Run FontWeight="Bold" Text="Strongly Recommended" TextDecorations="Underline"/><Run Text=": Do you want to receive a daily email with Health Status information?"/></TextBlock>
+            <TextBlock>
+						<Hyperlink Click="EditSubscriptionMP_Click">
+							<Run Text="Click to set the 'Recipient' who will receive the daily email"/>
+						</Hyperlink>
+            </TextBlock>
+        </StackPanel>
+
+        <Grid Grid.Row="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <StackPanel Orientation="Vertical" Width="Auto">
+                <Border x:Name="Component_WF" BorderThickness="3" BorderBrush="Gray" CornerRadius="8" Margin="30,10,10,10" Initialized="Component_WF_Initialized">
+                    <StackPanel Orientation="Vertical" Margin="30,10,10,10">
+
+                        <StackPanel Orientation="Horizontal" Margin="-10,0,0,5">
+                            <Image Source="/Microsoft.EnterpriseManagement.ServiceManager.Application.Common;component/Administration/Resources/Generic_Workflows_16.png" Stretch="Fill" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,10,0"/>
+                            <TextBlock VerticalAlignment="Top" FontWeight="Bold" FontSize="16" Text="{Binding Path=Component.DisplayName, Mode=OneWay}" Margin="0,-5,0,0" ></TextBlock>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,-5,0,0">
+                            <Label>Highest Severity:</Label>
+                            <Image x:Name="MaxSeverity_WF" Margin="3,0"></Image>
+                            <TextBox VerticalAlignment="Center" IsReadOnly="True" Width="Auto" BorderThickness="0" Text="{Binding Path=MaxSeverity.DisplayName, Mode=OneWay}"></TextBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,-5,0,0">
+                            <Label>Server Name:</Label>
+                            <TextBox VerticalAlignment="Center" IsReadOnly="True" Width="Auto" BorderThickness="0" Text="{Binding Path=ServerName, Mode=OneWay}"></TextBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,-5,0,0" >
+                            <Label>Diagnostic Date:</Label>
+                            <TextBox VerticalAlignment="Center" IsReadOnly="True" Width="Auto" BorderThickness="0" Text="{Binding Path=LastRun, Mode=OneWay}"></TextBox>
+                            <TextBlock x:Name="LastRunFriendly_WF" VerticalAlignment="Center" Width="Auto"></TextBlock>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,-5,0,0" >
+                            <Label>Diagnostic Tool triggered as:</Label>
+                            <TextBox VerticalAlignment="Center" IsReadOnly="True" Width="Auto" BorderThickness="0" Text="{Binding Path=TriggerMethod.DisplayName, Mode=OneWay}"></TextBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,-5,0,0" >
+                            <Label>Diagnostic Findings in file:</Label>
+                            <TextBox VerticalAlignment="Center" IsReadOnly="True" Width="Auto" BorderThickness="0" Text="{Binding Path=ResultingZipFileAtFullPath, Mode=OneWay}" ></TextBox>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                <Border x:Name="Component_DW" BorderThickness="3" BorderBrush="Gray" CornerRadius="8" Margin="30,10,10,10" Initialized="Component_DW_Initialized" >
+                    <StackPanel Orientation="Vertical" Margin="30,10,10,10">
+
+                        <StackPanel Orientation="Horizontal" Margin="-10,0,0,5">
+                            <Image Source="/Microsoft.EnterpriseManagement.ServiceManager.Application.Common;component/Administration/Resources/Wunderbar_DataWarehouse_16.png" Stretch="Fill" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,10,0"/>
+                            <TextBlock VerticalAlignment="Top" FontWeight="Bold" FontSize="16" Text="{Binding Path=Component.DisplayName, Mode=OneWay}" Margin="0,-5,0,0" ></TextBlock>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,-5,0,0" >
+                            <Label>Highest Severity:</Label>
+                            <Image x:Name="MaxSeverity_DW" Margin="3,0"></Image>
+                            <TextBox VerticalAlignment="Center" IsReadOnly="True" Width="Auto" BorderThickness="0" Text="{Binding Path=MaxSeverity.DisplayName, Mode=OneWay}"></TextBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,-5,0,0" >
+                            <Label>Server Name:</Label>
+                            <TextBox VerticalAlignment="Center" IsReadOnly="True" Width="Auto" BorderThickness="0" Text="{Binding Path=ServerName, Mode=OneWay}"></TextBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,-5,0,0" >
+                            <Label>Diagnostic Date:</Label>
+                            <TextBox VerticalAlignment="Center" IsReadOnly="True" Width="Auto" BorderThickness="0" Text="{Binding Path=LastRun, Mode=OneWay}"></TextBox>
+                            <TextBlock x:Name="LastRunFriendly_DW" VerticalAlignment="Center" Width="Auto"></TextBlock>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,-5,0,0" >
+                            <Label>Diagnostic Tool triggered as:</Label>
+                            <TextBox VerticalAlignment="Center" IsReadOnly="True" Width="Auto" BorderThickness="0" Text="{Binding Path=TriggerMethod.DisplayName, Mode=OneWay}"></TextBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,-5,0,0" >
+                            <Label>Diagnostic Findings in file:</Label>
+                            <TextBox VerticalAlignment="Center" IsReadOnly="True" Width="Auto" BorderThickness="0" Text="{Binding Path=ResultingZipFileAtFullPath, Mode=OneWay}" ></TextBox>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Grid>
+    </Grid>
+    <!--<StackPanel Grid.Row="2" Orientation="Horizontal" Margin="30,10,0,10" >
+			<Image Height="16" Width="16" Source="/Microsoft.EnterpriseManagement.UI.ConsoleFramework;component/resources/icon_plus.png" VerticalAlignment="Center"/>
+			<TextBlock TextWrapping="Wrap" Margin="10,0,10,-0.3"><Run FontWeight="Bold" Text="Tip" TextDecorations="Underline"/><Run Text=": Do you want to receive daily emails with Health Status information?"/></TextBlock>
+			<TextBlock>
+						<Hyperlink Click="EditSubscriptionMP_Click">
+							<Run Text="Click to set the 'Recipient' who will receive the daily emails"/>
+						</Hyperlink>
+			</TextBlock>
+		</StackPanel>-->
+</UserControl>

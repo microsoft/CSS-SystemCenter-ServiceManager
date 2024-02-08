@@ -819,7 +819,90 @@ $script:SQLResultSetCounter = $null
 AddTimingsToStatInfo
 (GetStatInfoRoot).SetAttribute("SmdtResultZipName", [System.IO.Path]::GetFileName($resultingZipFile_FullPath).Replace( $inputPrefix, $inputPrefix + "_" + $script:RoleFoundAbbr ) )
 (GetStatInfoRoot).SetAttribute("SmdtRanAsSigned", (AmIRunningAsSigned) )
-(GetStatInfoRoot).SetAttribute("SmdtRunDomainHash", (GetHashOfString ($env:USERDNSDOMAIN.ToLower()) ) )
+(GetStatInfoRoot).SetAttribute("SmdtRunDomainHash", (GetHashOfString ([System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().Name.ToLower()) ) )
+
+#region Setting SCSM Health Status but only if SMST Eula is accepted
+if ((IsSourceScsmWfMgmtServer)) {
+    $TargetMS = "localhost"
+}
+elseif ((IsSourceScsmDwMgmtServer)) {
+    $TargetMS = $SMDBInfo.SDKServer_SMDB
+}
+else {
+    $TargetMS = $null
+}
+if ($TargetMS) {
+
+    #region checking Eula for SCSM.Support.Tools (Smst)
+    $SmstEulaAccepted = $false
+    $SmstMainCore_MP = Get-SCSMManagementPack -Name SCSM.Support.Tools.Main.Core -ComputerName $TargetMS
+    if ($SmstMainCore_MP) {
+        $SmstMain_Data = Get-SCSMClassInstance -Class (Get-SCSMClass -Name SCSM.Support.Tools.Main.Data -ComputerName $TargetMS) -ComputerName $TargetMS 
+        $findings.SetAttribute("SmstMpbVersion",  $SmstMainCore_MP.Version.ToString())
+        $findings.SetAttribute("SmstMpbImportedAt",  $SmstMain_Data.'#TimeAdded'.ToString("yyyy-MM-dd__HH.mm.ss.fff zzz"))    
+        if ($SmstMain_Data.EulaApprovedAt) {
+            $SmstEulaAccepted = $true
+            $findings.SetAttribute("SmstEulaApprovedAt", $SmstMain_Data.EulaApprovedAt.ToString("yyyy-MM-dd__HH.mm.ss.fff zzz"))
+        }
+    }
+    #endregion
+
+    $HealthStatus_MP = Get-SCSMManagementPack -Name SCSM.Support.Tools.HealthStatus.Core -ComputerName $TargetMS
+    if ($HealthStatus_MP -and $SmstEulaAccepted) {
+
+        #region mandatory part before doing any update on instances of HealthStatus.WF or HealthStatus.DW
+        $HealthStatus_Overall = Get-SCSMClassInstance -Class (Get-SCSMClass -Name SCSM.Support.Tools.HealthStatus.Overall -ComputerName $TargetMS) -ComputerName $TargetMS
+
+        $HealthStatus_WF = Get-SCSMClassInstance -Class (Get-SCSMClass -Name SCSM.Support.Tools.HealthStatus.WF -ComputerName $TargetMS) -ComputerName $TargetMS        
+        $HealthStatus_rsClassWF = Get-SCSMRelationshipClass -Name SCSM.Support.Tools.HealthStatus.OverallToWF -ComputerName $TargetMS
+        if (-not (Get-SCRelationshipInstance -SourceInstance $HealthStatus_Overall -TargetInstance $HealthStatus_WF -ComputerName $TargetMS) ) {
+            New-SCRelationshipInstance -RelationshipClass $HealthStatus_rsClassWF -Source $HealthStatus_Overall -Target $HealthStatus_WF -ComputerName $TargetMS
+        }
+
+        $HealthStatus_DW = Get-SCSMClassInstance -Class (Get-SCSMClass -Name SCSM.Support.Tools.HealthStatus.DW -ComputerName $TargetMS) -ComputerName $TargetMS
+        $HealthStatus_rsClassDW = Get-SCSMRelationshipClass -Name SCSM.Support.Tools.HealthStatus.OverallToDW -ComputerName $TargetMS
+        if (-not (Get-SCRelationshipInstance -SourceInstance $HealthStatus_Overall -TargetInstance $HealthStatus_DW -ComputerName $TargetMS) ) {
+            New-SCRelationshipInstance -RelationshipClass $HealthStatus_rsClassDW -Source $HealthStatus_Overall -Target $HealthStatus_DW -ComputerName $TargetMS
+        }
+        #endregion
+
+        $enumSeverity_Critical = $HealthStatus_MP.EntityTypes.GetEnumerations("SCSM.Support.Tools.HealthStatus.Enum.Severity.Critical")[0]
+        $enumSeverity_Error = $HealthStatus_MP.EntityTypes.GetEnumerations("SCSM.Support.Tools.HealthStatus.Enum.Severity.Error")[0]
+        $enumSeverity_Warning = $HealthStatus_MP.EntityTypes.GetEnumerations("SCSM.Support.Tools.HealthStatus.Enum.Severity.Warning")[0]
+        $enumSeverity_Unknown = $HealthStatus_MP.EntityTypes.GetEnumerations("SCSM.Support.Tools.HealthStatus.Enum.Severity.Unknown")[0] 
+        $enumSeverity_Good = $HealthStatus_MP.EntityTypes.GetEnumerations("SCSM.Support.Tools.HealthStatus.Enum.Severity.Good")[0]
+    
+        $enumTriggerMethod_Manual = $HealthStatus_MP.EntityTypes.GetEnumerations("SCSM.Support.Tools.HealthStatus.Enum.TriggerMethod.Manual")[0]
+        $enumTriggerMethod_Schedule = $HealthStatus_MP.EntityTypes.GetEnumerations("SCSM.Support.Tools.HealthStatus.Enum.TriggerMethod.Schedule")[0]
+
+        $findings_MaxSeverity = $enumSeverity_Good        
+        if ($findings_Critical.GetAttribute("Count") -ne "0") { $findings_MaxSeverity = $enumSeverity_Critical }
+        elseif ($findings_Error.GetAttribute("Count") -ne "0") { $findings_MaxSeverity = $enumSeverity_Error }
+        elseif ($findings_Warning.GetAttribute("Count") -ne "0") { $findings_MaxSeverity = $enumSeverity_Warning }
+        elseif ($findings_Unclassified.GetAttribute("Count") -ne "0") { $findings_MaxSeverity = $enumSeverity_Unknown }
+
+        if ((IsSourceScsmWfMgmtServer)) {
+            $HealthStatus_WForDW = $HealthStatus_WF
+        }
+        else {
+            $HealthStatus_WForDW = $HealthStatus_DW
+        }
+
+        $HealthStatus_WForDW.MaxSeverity = $findings_MaxSeverity.Id 
+        $HealthStatus_WForDW.ServerName = $env:COMPUTERNAME
+        $HealthStatus_WForDW.ResultingZipFileAtFullPath = $resultingZipFile_FullPath.Replace( $inputPrefix, $inputPrefix + "_" + $script:RoleFoundAbbr )
+        $HealthStatus_WForDW.LastRun = [datetime]::Now #(Get-Date)
+        $HealthStatus_WForDW.TriggerMethod = if ($Script:MyInvocation.UnboundArguments.Contains("-startedByRule")) { $enumTriggerMethod_Schedule.Id } else { $enumTriggerMethod_Manual.Id }
+        $HealthStatus_WForDW | Update-SCSMClassInstance
+
+        $HealthStatus_Overall.LastChanged = [datetime]::Now
+		$HealthStatus_Overall | Update-SCSMClassInstance
+        
+        $findings.SetAttribute("SmstHealthStatusVersion", $HealthStatus_MP.Version.ToString())
+        $findings.SetAttribute("SmstHealthStatus_MaxSeverity", $findings_MaxSeverity.Name.Replace("SCSM.Support.Tools.HealthStatus.Enum.Severity.",""))
+    }
+}
+#endregion
 
 Stop-Transcript | out-null
 
@@ -853,7 +936,11 @@ DeleteFileInTargetFolder $findingsHtml_FileName
 
 #WriteTelemetry
 AppendOutputToFileInTargetFolder (GetStatInfo).OuterXml StatInfo.xml
-LogStatInfo (GetStatInfo) "Run"
+$sentByForStatInfo = "Run"
+if ( $Script:MyInvocation.UnboundArguments.Contains("-startedByRule") ) { 
+    $sentByForStatInfo = "Rule" 
+} 
+LogStatInfo (GetStatInfo) $sentByForStatInfo
 
 #$ProgressPreference = 'Continue'
 if ($removeCollectorResultZipFile) {
