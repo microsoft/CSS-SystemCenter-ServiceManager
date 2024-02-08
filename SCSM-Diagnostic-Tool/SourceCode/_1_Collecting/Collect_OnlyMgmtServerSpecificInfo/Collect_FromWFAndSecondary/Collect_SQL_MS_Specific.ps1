@@ -416,7 +416,9 @@ and MP.MPName not in
 'System.SLA.Library',
 'System.SLA.Library',
 'System.WorkItem.Activity.Library',
-'System.WorkItem.Library')
+'System.WorkItem.Library',
+'SCSM.Support.Tools.HealthStatus.Core'
+)
 ORDER BY MP.MPName, R.RelationshipTypeName
 '@
     $SQL_SCSM_MS['SQL_ForRFH_829977'] = @'
