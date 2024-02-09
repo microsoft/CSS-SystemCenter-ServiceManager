@@ -65,7 +65,7 @@ function ExitScript() {
     Exit
 }
 
-$folder = [IO.Path]::Combine($env:windir, "Temp")
+$folder = [IO.Path]::Combine($env:windir, "Temp", "SCSM.Support.Tools")
 $transcriptFileFullPath = [IO.Path]::Combine($folder, $transcriptFileName) 
 Start-Transcript -Path $transcriptFileFullPath -Force | Out-Null
 WriteLog "Script Version: $scriptVersion" # $scriptVersion will be inserted as the 1st line during ...MP.xml.Build.ps1

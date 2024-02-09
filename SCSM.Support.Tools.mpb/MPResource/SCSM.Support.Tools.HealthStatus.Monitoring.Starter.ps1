@@ -88,7 +88,7 @@ function InvokeWebRequest_WithProxy($uri, $timeoutSec=0, [switch]$useBasicParsin
     Invoke-WebRequest -Uri $uri -UseBasicParsing:$useBasicParsing -TimeoutSec $timeoutSec -UseDefaultCredentials:$useDefaultCredentials -Proxy $webProxyServer -ProxyUseDefaultCredentials:$proxyUseDefaultCredentials -OutFile $outFile
 }
 
-$folder = [IO.Path]::Combine($env:windir, "Temp")
+$folder = [IO.Path]::Combine($env:windir, "Temp", "SCSM.Support.Tools")
 $transcriptFileFullPath = [IO.Path]::Combine($folder, "SCSM.Support.Tools.HealthStatus.Monitoring.Starter.Transcript.txt") 
 Start-Transcript -Path $transcriptFileFullPath -Force | Out-Null
 $scriptFromMPVersion = $args[ ($args.Count)-1 ]; WriteLog "Script from MP Version: $scriptFromMPVersion" #I am too lazy to parse $args. Just getting the last arg as value of ScriptFromMPVersion
