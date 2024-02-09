@@ -10,7 +10,7 @@ $collector_FolderName = "Collector"
 $resultFolder = New-Item -Force -ItemType Directory -Path $resultFolderPath -Name "$($resultPrefix)_$resultDateTime\$collector_FolderName"
 Start-Transcript -Path "$resultFolder\Transcript_$resultDateTime.txt" -NoClobber | Out-Null
 
-Write-Host "This script does *NOT* make any change in your SCSM environment. It is completely read-only."
+#Write-Host "This script does *NOT* make any change in your SCSM environment. It is completely read-only."
 Write-Host ""
 Write-Host "SCSM Diagnostic Tool started at $resultDateTime. (local time)"
 Write-Host "Please wait for completion. This can take a few minutes..." -ForegroundColor Yellow
