@@ -1,0 +1,100 @@
+<ManagementPack ContentReadable="true" SchemaVersion="2.0" OriginalSchemaVersion="1.1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+	<Manifest>
+		<Identity>
+			<ID>SCSM.Support.Tools.Main.Monitoring</ID>
+			<Version>1.0.0.0</Version>
+		</Identity>
+		<Name>SCSM.Support.Tools.Main.Monitoring</Name>
+		<References>
+			<Reference Alias="System">
+				<ID>System.Library</ID>
+				<Version>1.0.0.0</Version>
+				<PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+			</Reference>
+			<Reference Alias="SystemCenter">
+				<ID>Microsoft.SystemCenter.Library</ID>
+				<Version>1.0.0.0</Version>
+				<PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+			</Reference>
+			<Reference Alias="AdminUI">
+				<ID>Microsoft.EnterpriseManagement.ServiceManager.UI.Administration</ID>
+				<Version>1.0.0.0</Version>
+				<PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+			</Reference>
+			<Reference Alias="AdminItem">
+				<ID>System.AdminItem.Library</ID>
+				<Version>1.0.0.0</Version>
+				<PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+			</Reference>
+			<Reference Alias="LfxLibrary">
+				<ID>ServiceManager.LinkingFramework.Library</ID>
+				<Version>1.0.0.0</Version>
+				<PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+			</Reference>
+		</References>
+	</Manifest>
+	<Categories>
+	</Categories>
+	<Monitoring>
+		<Rules>
+			<Rule ID="SCSM.Support.Tools.Main.Monitoring.Rule.Starter" Enabled="true" Target="LfxLibrary!Microsoft.SystemCenter.LinkingFramework.LinkingFrameworkTarget" ConfirmDelivery="true" Remotable="true" Priority="Normal" DiscardLevel="100">
+				<Category>System</Category>
+				<DataSources>
+					<DataSource ID="Scheduler" TypeID="System!System.Scheduler">
+						<Scheduler>
+							<SimpleReccuringSchedule>
+								<Interval Unit="Minutes">15</Interval>
+								<!-- 
+				<Interval Unit="Days">1</Interval>
+				<SyncTime>02:00</SyncTime> 
+				-->
+							</SimpleReccuringSchedule>
+							<ExcludeDates />
+						</Scheduler>
+					</DataSource>
+				</DataSources>
+				<WriteActions>
+					<WriteAction ID="ExecuteCommand" TypeID="System!System.CommandExecuter" RunAs="SystemCenter!Microsoft.SystemCenter.DatabaseWriteActionAccount">
+						<ApplicationName>C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe</ApplicationName>
+						<WorkingDirectory />
+						<CommandLine>-noninteractive -noprofile -executionpolicy bypass -Command "&amp; '$File/SCSM.Support.Tools.RunScriptFromResource.ps1$' '$File/SCSM.Support.Tools.RunScriptFromResource.Params.ps1$' "</CommandLine>
+						<TimeoutSeconds>1500</TimeoutSeconds>
+						<RequireOutput>false</RequireOutput>
+						<Files>
+							<File>
+								<Name>SCSM.Support.Tools.RunScriptFromResource.ps1</Name><!--the Contents element of this File node will be written (in output folder) by related Build.ps1 with content of Misc\SCSM.Support.Tools.GenericScriptStarterFromResource.ps1 -->
+								<Contents />
+							</File>
+							<File>
+								<Name>SCSM.Support.Tools.RunScriptFromResource.Params.ps1</Name><!-- set the variables here accordingly -->
+								<Contents>
+$scriptMPName =      'SCSM.Support.Tools.Main.Monitoring'
+$scriptResource_ID = 'SCSM.Support.Tools.Main.Monitoring.MpbUpdater.ScriptResource'
+$scriptFileName =    'SCSM.Support.Tools.Main.Monitoring.MpbUpdater.ps1'
+$scriptArguments =   ''
+$transcriptFileName ='SCSM.Support.Tools.Main.Monitoring.GenericScriptStarterFromResource.Transcript.txt'
+								</Contents>
+							</File>
+						</Files>
+					</WriteAction>
+				</WriteActions>
+			</Rule>
+		</Rules>
+	</Monitoring>
+	<LanguagePacks>
+		<LanguagePack ID="ENU" IsDefault="true">
+			<DisplayStrings>
+				<DisplayString ElementID="SCSM.Support.Tools.Main.Monitoring">
+					<Name>SCSM Support Tools - Main (Monitoring)</Name>
+					<Description>Contains monitoring items for SCSM Support Tools - Main, such as starting the MPB Updater periodically</Description>
+				</DisplayString>
+				<DisplayString ElementID="SCSM.Support.Tools.Main.Monitoring.Rule.Starter">
+					<Name>SCSM Support Tools - Main (Monitoring) rule starter</Name>
+				</DisplayString>
+			</DisplayStrings>
+		</LanguagePack>
+	</LanguagePacks>
+	<Resources>
+		<Resource ID="SCSM.Support.Tools.Main.Monitoring.MpbUpdater.ScriptResource" Accessibility="Public" FileName="SCSM.Support.Tools.Main.Monitoring.MpbUpdater.ps1" HasNullStream="false" />
+	</Resources>
+</ManagementPack>

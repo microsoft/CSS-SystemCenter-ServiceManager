@@ -10,7 +10,7 @@ $collector_FolderName = "Collector"
 $resultFolder = New-Item -Force -ItemType Directory -Path $resultFolderPath -Name "$($resultPrefix)_$resultDateTime\$collector_FolderName"
 Start-Transcript -Path "$resultFolder\Transcript_$resultDateTime.txt" -NoClobber | Out-Null
 
-Write-Host "This script does *NOT* make any change in your SCSM environment. It is completely read-only."
+#Write-Host "This script does *NOT* make any change in your SCSM environment. It is completely read-only."
 Write-Host ""
 Write-Host "SCSM Diagnostic Tool started at $resultDateTime. (local time)"
 Write-Host "Please wait for completion. This can take a few minutes..." -ForegroundColor Yellow
@@ -18,6 +18,27 @@ Write-Host "(Please ignore any Warning and Errors)"
 
 AppendOutputToFileInTargetFolder ( Get-SmbClientConfiguration ) Get-SmbClientConfiguration.txt
 CopyFileToTargetFolder $scriptFilePath
+
+#region copy smdt.ps1 to windows Temp folder, if newer
+$smdtPS1SavedToWindirTemp = $false
+$windirTempFolder = [IO.Path]::Combine($env:windir, "Temp", "SCSM.Support.Tools")
+New-Item -Path $windirTempFolder -ItemType Directory -ErrorAction SilentlyContinue
+$smdtPs1TargetFileName = "SCSM-Diagnostic-Tool.ps1"
+$smdtPs1TargetFullPath = [IO.Path]::Combine($windirTempFolder, $smdtPs1TargetFileName)
+$smdtVersionInTarget = New-Object Version
+if ( (Test-Path -Path $smdtPs1TargetFullPath) ) {
+    $smdtBody = [System.IO.File]::ReadAllText($smdtPs1TargetFullPath, [System.Text.Encoding]::UTF8) 
+    $smdtVersionInTarget = GetSmdtVersionFromString -smdtBody $smdtBody    
+}
+$currentlyRunningVersion = New-Object Version -ArgumentList $collectorVersion
+if ($currentlyRunningVersion -gt $smdtVersionInTarget) {
+    Copy-Item -Path $scriptFilePath -Destination $smdtPs1TargetFullPath -Force
+    $smdtPS1SavedToWindirTemp = $true
+}
+(GetStatInfoRoot).SetAttribute("SmdtPS1SavedToWindirTemp", $smdtPS1SavedToWindirTemp )
+(GetStatInfoRoot).SetAttribute("SmdtPS1VersionInWindirTemp", $smdtVersionInTarget )
+#endregion
+
 AppendOutputToFileInTargetFolder ( $collectorVersion ) CollectorVersion.txt
 AppendOutputToFileInTargetFolder ( $ExecutionContext.SessionState.LanguageMode ) LanguageMode.txt
 

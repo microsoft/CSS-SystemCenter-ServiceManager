@@ -1,0 +1,297 @@
+<ManagementPack ContentReadable="true" SchemaVersion="2.0" OriginalSchemaVersion="1.1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <Manifest>
+    <Identity>
+      <ID>SCSM.Support.Tools.HealthStatus.Presentation</ID>
+      <Version>1.0.0.0</Version>
+    </Identity>
+    <Name>SCSM.Support.Tools.HealthStatus.Presentation</Name>
+    <References>
+      <Reference Alias="Console">
+        <ID>Microsoft.EnterpriseManagement.ServiceManager.UI.Console</ID>
+        <Version>1.0.0.0</Version>
+        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+      </Reference>
+      <Reference Alias="ConfigurationManagement">
+        <ID>ServiceManager.ConfigurationManagement.Library</ID>
+        <Version>1.0.0.0</Version>
+        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+      </Reference>
+      <Reference Alias="CustomSCSM_Support_Tools_HealthStatus_Core">
+        <ID>SCSM.Support.Tools.HealthStatus.Core</ID>
+        <Version>1.0.0.0</Version>
+        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+      </Reference>
+      <Reference Alias="CustomSCSM_Support_Tools_Core">
+        <ID>SCSM.Support.Tools.Main.Core</ID>
+        <Version>1.0.0.0</Version>
+        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+      </Reference>
+      <Reference Alias="CustomSCSM_Support_Tools_Presentation">
+        <ID>SCSM.Support.Tools.Main.Presentation</ID>
+        <Version>1.0.0.0</Version>
+        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+      </Reference>
+      <Reference Alias="System">
+        <ID>System.Library</ID>
+        <Version>1.0.0.0</Version>
+        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+      </Reference>
+      <Reference Alias="Administration">
+        <ID>Microsoft.EnterpriseManagement.ServiceManager.UI.Administration</ID>
+        <Version>1.0.0.0</Version>
+        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+      </Reference>
+    </References>
+  </Manifest>
+  <Categories>
+  </Categories>
+  <Presentation>
+    <Views>
+      <View ID="SCSM.Support.Tools.HealthStatus.Presentation.View.Dashboard" Accessibility="Public" Enabled="true" Target="System!System.Entity" TypeID="Administration!OverviewType" Visible="true">
+        <Category>NotUsed</Category>
+        <Configuration>
+          <Presentation>
+            <Header />
+            <Content>
+              <Grid xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:SCSM.Support.Tools.HealthStatus.Presentation="clr-namespace:SCSM.Support.Tools.HealthStatus.Presentation;assembly=SCSM.Support.Tools.HealthStatus.Presentation">
+                <SCSM.Support.Tools.HealthStatus.Presentation:Dashboard />
+              </Grid>
+            </Content>
+          </Presentation>
+        </Configuration>
+      </View>
+      <!--		
+		<View ID="SCSM.Support.Tools.HealthStatus.View.Welcome" Accessibility="Public" Enabled="true" Target="System!System.Entity" TypeID="Administration!OverviewType" Visible="true">
+				<Category>NotUsed</Category>
+				<Configuration>
+					<Presentation>
+						<Header />
+						<Content>
+							<Grid xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+								xmlns:HealthStatus="clr-namespace:SCSM.Support.Tools.HealthStatus;assembly=SCSM.Support.Tools.HealthStatus">
+								<HealthStatus:Welcome />
+							</Grid>
+						</Content>
+					</Presentation>
+				</Configuration>
+			</View>
+			<View ID="View.621263932b7e41bb83d41447339baac0" Accessibility="Public" Enabled="true" Target="System!System.Entity" TypeID="Administration!OverviewType" Visible="true">
+				<Category>NotUsed</Category>
+				<Configuration>
+					<Presentation>
+						<Header />
+						<Content>
+							<Grid xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+								xmlns:HealthStatus="clr-namespace:SCSM.Support.Tools.HealthStatus;assembly=SCSM.Support.Tools.HealthStatus">
+								<HealthStatus:DailySubscription />
+							</Grid>
+						</Content>
+					</Presentation>
+				</Configuration>
+			</View>
+			<View ID="View.00748ff8ec66473a8b45dcd59d2142ef" Accessibility="Public" Enabled="true" Target="CustomSCSM_Support_Tools_HealthStatus_Core!SCSM.Support.Tools.HealthStatus.DW" TypeID="Console!GridViewType" Visible="true">
+				<Category>NotUsed</Category>
+				<Data>
+					<Adapters>
+						<Adapter AdapterName="dataportal:EnterpriseManagementObjectAdapter">
+							<AdapterAssembly>Microsoft.EnterpriseManagement.UI.SdkDataAccess</AdapterAssembly>
+							<AdapterType>Microsoft.EnterpriseManagement.UI.SdkDataAccess.DataAdapters.EnterpriseManagementObjectAdapter</AdapterType>
+						</Adapter>
+						<Adapter AdapterName="viewframework://Adapters/AdvancedList">
+							<AdapterAssembly>Microsoft.EnterpriseManagement.UI.ViewFramework</AdapterAssembly>
+							<AdapterType>Microsoft.EnterpriseManagement.UI.ViewFramework.AdvancedListSupportAdapter</AdapterType>
+						</Adapter>
+						<Adapter AdapterName="omsdk://Adapters/Criteria">
+							<AdapterAssembly>Microsoft.EnterpriseManagement.UI.SdkDataAccess</AdapterAssembly>
+							<AdapterType>Microsoft.EnterpriseManagement.UI.SdkDataAccess.DataAdapters.SdkCriteriaAdapter</AdapterType>
+						</Adapter>
+					</Adapters>
+					<ItemsSource>
+						<AdvancedListSupportClass DataTypeName="" AdapterName="viewframework://Adapters/AdvancedList" FullUpdateAdapter="dataportal:EnterpriseManagementObjectAdapter" DataSource="mom:ManagementGroup" FullUpdateFrequency="1" Streaming="true" IsRecurring="true" RecurrenceFrequency="{x:Static s:Int32.MaxValue}" xmlns="clr-namespace:Microsoft.EnterpriseManagement.UI.ViewFramework;assembly=Microsoft.EnterpriseManagement.UI.ViewFramework" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib">
+							<AdvancedListSupportClass.Parameters>
+								<QueryParameter Parameter="ManagementPackClassId" Value="$MPElement[Name='CustomSCSM_Support_Tools_HealthStatus_Core!SCSM.Support.Tools.HealthStatus.DW']$" />
+							</AdvancedListSupportClass.Parameters>
+						</AdvancedListSupportClass>
+					</ItemsSource>
+					<Criteria />
+				</Data>
+				<Presentation>
+					<Columns>
+						<mux:ColumnCollection xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:mux="http://schemas.microsoft.com/SystemCenter/Common/UI/Views/GridView" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:datebinding="clr-namespace:Microsoft.EnterpriseManagement.UI.Extensions;assembly=Microsoft.EnterpriseManagement.UI.Extensions" xmlns:data="clr-namespace:Microsoft.EnterpriseManagement.UI.Extensions;assembly=Microsoft.EnterpriseManagement.UI.Extensions" xmlns:appCommon="clr-namespace:Microsoft.EnterpriseManagement.ServiceManager.Application.Common;assembly=Microsoft.EnterpriseManagement.ServiceManager.Application.Common" xmlns:toolbox="clr-namespace:Microsoft.EnterpriseManagement.UI.WpfToolbox;assembly=Microsoft.EnterpriseManagement.UI.FormsInfra" xmlns:slaBinding="clr-namespace:Microsoft.EnterpriseManagement.ServiceManager.SLA.Common;assembly=Microsoft.EnterpriseManagement.ServiceManager.SLA.Common">
+							<mux:Column Name="MaxSeverity.DisplayName" DisplayMemberBinding="{Binding Path=MaxSeverity.DisplayName, Mode=OneWay}" Width="100" DisplayName="MaxSeverity.58ca818567714d7a9171ae18fe92dd14" Property="MaxSeverity.DisplayName" DataType="s:String" />
+							<mux:Column Name="ServerName" DisplayMemberBinding="{Binding Path=ServerName, Mode=OneWay}" Width="100" DisplayName="ServerName.91df1de566df414c814e056fe28e4358" Property="ServerName" DataType="s:String" />
+							<mux:Column Name="LastRun" DisplayMemberBinding="{datebinding:DateBinding Path=LastRun, Mode=OneWay}" Width="100" DisplayName="LastRun.e9d5e456c3a345e4b2d8010d6113ef11" Property="LastRun" DataType="s:DateTime" />
+							<mux:Column Name="TriggerMethod.DisplayName" DisplayMemberBinding="{Binding Path=TriggerMethod.DisplayName, Mode=OneWay}" Width="100" DisplayName="TriggerMethod.f2f8c2b384e9458083e1ed864672b718" Property="TriggerMethod.DisplayName" DataType="s:String" />
+							<mux:Column Name="ResultingZipFileAtFullPath" DisplayMemberBinding="{Binding Path=ResultingZipFileAtFullPath, Mode=OneWay}" Width="100" DisplayName="ResultingZipFileAtFullPath.6187f5fa586e403c9eda18c21d22c2f6" Property="ResultingZipFileAtFullPath" DataType="s:String" />
+						</mux:ColumnCollection>
+					</Columns>
+					<AdditonalProperties />
+					<ViewStrings>
+						<ViewString ID="LastRun.e9d5e456c3a345e4b2d8010d6113ef11">$MPElement[Name="LastRun.e9d5e456c3a345e4b2d8010d6113ef11"]$</ViewString>
+						<ViewString ID="ResultingZipFileAtFullPath.6187f5fa586e403c9eda18c21d22c2f6">$MPElement[Name="ResultingZipFileAtFullPath.6187f5fa586e403c9eda18c21d22c2f6"]$</ViewString>
+						<ViewString ID="TriggerMethod.f2f8c2b384e9458083e1ed864672b718">$MPElement[Name="TriggerMethod.f2f8c2b384e9458083e1ed864672b718"]$</ViewString>
+						<ViewString ID="MaxSeverity.58ca818567714d7a9171ae18fe92dd14">$MPElement[Name="MaxSeverity.58ca818567714d7a9171ae18fe92dd14"]$</ViewString>
+						<ViewString ID="ServerName.91df1de566df414c814e056fe28e4358">$MPElement[Name="ServerName.91df1de566df414c814e056fe28e4358"]$</ViewString>
+					</ViewStrings>
+				</Presentation>
+			</View>
+			<View ID="View.f1cb07d0143c4571a40f333bcfee81fe" Accessibility="Public" Enabled="true" Target="CustomSCSM_Support_Tools_HealthStatus_Core!SCSM.Support.Tools.HealthStatus.WF" TypeID="Console!GridViewType" Visible="true">
+				<Category>NotUsed</Category>
+				<Data>
+					<Adapters>
+						<Adapter AdapterName="dataportal:EnterpriseManagementObjectAdapter">
+							<AdapterAssembly>Microsoft.EnterpriseManagement.UI.SdkDataAccess</AdapterAssembly>
+							<AdapterType>Microsoft.EnterpriseManagement.UI.SdkDataAccess.DataAdapters.EnterpriseManagementObjectAdapter</AdapterType>
+						</Adapter>
+						<Adapter AdapterName="viewframework://Adapters/AdvancedList">
+							<AdapterAssembly>Microsoft.EnterpriseManagement.UI.ViewFramework</AdapterAssembly>
+							<AdapterType>Microsoft.EnterpriseManagement.UI.ViewFramework.AdvancedListSupportAdapter</AdapterType>
+						</Adapter>
+						<Adapter AdapterName="omsdk://Adapters/Criteria">
+							<AdapterAssembly>Microsoft.EnterpriseManagement.UI.SdkDataAccess</AdapterAssembly>
+							<AdapterType>Microsoft.EnterpriseManagement.UI.SdkDataAccess.DataAdapters.SdkCriteriaAdapter</AdapterType>
+						</Adapter>
+					</Adapters>
+					<ItemsSource>
+						<AdvancedListSupportClass DataTypeName="" AdapterName="viewframework://Adapters/AdvancedList" FullUpdateAdapter="dataportal:EnterpriseManagementObjectAdapter" DataSource="mom:ManagementGroup" FullUpdateFrequency="1" Streaming="true" IsRecurring="true" RecurrenceFrequency="{x:Static s:Int32.MaxValue}" xmlns="clr-namespace:Microsoft.EnterpriseManagement.UI.ViewFramework;assembly=Microsoft.EnterpriseManagement.UI.ViewFramework" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib">
+							<AdvancedListSupportClass.Parameters>
+								<QueryParameter Parameter="ManagementPackClassId" Value="$MPElement[Name='CustomSCSM_Support_Tools_HealthStatus_Core!SCSM.Support.Tools.HealthStatus.WF']$" />
+							</AdvancedListSupportClass.Parameters>
+						</AdvancedListSupportClass>
+					</ItemsSource>
+					<Criteria />
+				</Data>
+				<Presentation>
+					<Columns>
+						<mux:ColumnCollection xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:mux="http://schemas.microsoft.com/SystemCenter/Common/UI/Views/GridView" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:datebinding="clr-namespace:Microsoft.EnterpriseManagement.UI.Extensions;assembly=Microsoft.EnterpriseManagement.UI.Extensions" xmlns:data="clr-namespace:Microsoft.EnterpriseManagement.UI.Extensions;assembly=Microsoft.EnterpriseManagement.UI.Extensions" xmlns:appCommon="clr-namespace:Microsoft.EnterpriseManagement.ServiceManager.Application.Common;assembly=Microsoft.EnterpriseManagement.ServiceManager.Application.Common" xmlns:toolbox="clr-namespace:Microsoft.EnterpriseManagement.UI.WpfToolbox;assembly=Microsoft.EnterpriseManagement.UI.FormsInfra" xmlns:slaBinding="clr-namespace:Microsoft.EnterpriseManagement.ServiceManager.SLA.Common;assembly=Microsoft.EnterpriseManagement.ServiceManager.SLA.Common">
+							<mux:Column Name="MaxSeverity.DisplayName" DisplayMemberBinding="{Binding Path=MaxSeverity.DisplayName, Mode=OneWay}" Width="100" DisplayName="MaxSeverity.c07160bb839846f999e43e4586cec8d1" Property="MaxSeverity.DisplayName" DataType="s:String" />
+							<mux:Column Name="ServerName" DisplayMemberBinding="{Binding Path=ServerName, Mode=OneWay}" Width="100" DisplayName="ServerName.5e48eec6312840768499e72602ca0b71" Property="ServerName" DataType="s:String" />
+							<mux:Column Name="LastRun" DisplayMemberBinding="{datebinding:DateBinding Path=LastRun, Mode=OneWay}" Width="100" DisplayName="LastRun.9f1effa4f73e45c794650197319c7043" Property="LastRun" DataType="s:DateTime" />
+							<mux:Column Name="TriggerMethod.DisplayName" DisplayMemberBinding="{Binding Path=TriggerMethod.DisplayName, Mode=OneWay}" Width="100" DisplayName="TriggerMethod.63854aab84c24bfab49760116c33d01a" Property="TriggerMethod.DisplayName" DataType="s:String" />
+							<mux:Column Name="ResultingZipFileAtFullPath" DisplayMemberBinding="{Binding Path=ResultingZipFileAtFullPath, Mode=OneWay}" Width="100" DisplayName="ResultingZipFileAtFullPath.16ba1e7f003b4b4fae4e3ba733d88fd7" Property="ResultingZipFileAtFullPath" DataType="s:String" />
+						</mux:ColumnCollection>
+					</Columns>
+					<AdditonalProperties />
+					<ViewStrings>
+						<ViewString ID="LastRun.9f1effa4f73e45c794650197319c7043">$MPElement[Name="LastRun.9f1effa4f73e45c794650197319c7043"]$</ViewString>
+						<ViewString ID="ResultingZipFileAtFullPath.16ba1e7f003b4b4fae4e3ba733d88fd7">$MPElement[Name="ResultingZipFileAtFullPath.16ba1e7f003b4b4fae4e3ba733d88fd7"]$</ViewString>
+						<ViewString ID="TriggerMethod.63854aab84c24bfab49760116c33d01a">$MPElement[Name="TriggerMethod.63854aab84c24bfab49760116c33d01a"]$</ViewString>
+						<ViewString ID="MaxSeverity.c07160bb839846f999e43e4586cec8d1">$MPElement[Name="MaxSeverity.c07160bb839846f999e43e4586cec8d1"]$</ViewString>
+						<ViewString ID="ServerName.5e48eec6312840768499e72602ca0b71">$MPElement[Name="ServerName.5e48eec6312840768499e72602ca0b71"]$</ViewString>
+					</ViewStrings>
+				</Presentation>
+			</View>
+-->
+    </Views>
+    <Folders>
+      <!-- <Folder ID="Folder.a6e62cefef584ca69027355829e0953d" Accessibility="Public" ParentFolder="CustomSCSM_Support_Tools_Core!SCSM.Support.Tools.Folder.Root" />	 -->
+    </Folders>
+    <FolderItems>
+      <FolderItem ElementID="SCSM.Support.Tools.HealthStatus.Presentation.View.Dashboard" ID="SCSM.Support.Tools.HealthStatus.Presentation.FolderItem.Dashboard" Folder="CustomSCSM_Support_Tools_Presentation!SCSM.Support.Tools.Main.Presentation.Folder.Root" />
+      <!-- <FolderItem ElementID="SCSM.Support.Tools.HealthStatus.View.Welcome" ID="SCSM.Support.Tools.HealthStatus.FolderItem.Welcome"  Folder="Folder.a6e62cefef584ca69027355829e0953d" />	
+			<FolderItem ElementID="View.621263932b7e41bb83d41447339baac0" ID="FolderItem.621263932b7e41bb83d41447339baac0"  Folder="Folder.a6e62cefef584ca69027355829e0953d" />			
+			<FolderItem ElementID="View.00748ff8ec66473a8b45dcd59d2142ef" ID="FolderItem.c19a84df104547b6a2369269de56bd4d" Folder="Folder.a6e62cefef584ca69027355829e0953d" />
+			<FolderItem ElementID="View.f1cb07d0143c4571a40f333bcfee81fe" ID="FolderItem.0c664acaccc2454696210ed2cc916b5f" Folder="Folder.a6e62cefef584ca69027355829e0953d" />   -->
+    </FolderItems>
+    <ImageReferences>
+      <ImageReference ElementID="SCSM.Support.Tools.HealthStatus.Presentation.View.Dashboard" ImageID="SCSM.Support.Tools.HealthStatus.Presentation.Image" />
+      <!-- <ImageReference ElementID="Folder.a6e62cefef584ca69027355829e0953d" ImageID="Console!Microsoft.EnterpriseManagement.ServiceManager.UI.Console.Image.Folder" />					
+			<ImageReference ElementID="SCSM.Support.Tools.HealthStatus.View.Welcome" ImageID="Console!Microsoft.EnterpriseManagement.ServiceManager.UI.Console.Image.Class" />	
+			<ImageReference ElementID="View.00748ff8ec66473a8b45dcd59d2142ef" ImageID="Console!Microsoft.EnterpriseManagement.ServiceManager.UI.Console.Image.Class" />
+			<ImageReference ElementID="View.f1cb07d0143c4571a40f333bcfee81fe" ImageID="Console!Microsoft.EnterpriseManagement.ServiceManager.UI.Console.Image.Class" />
+			<ImageReference ElementID="View.621263932b7e41bb83d41447339baac0" ImageID="Console!Microsoft.EnterpriseManagement.ServiceManager.UI.Console.Image.Class" /> -->
+    </ImageReferences>
+    <!-- <StringResources>
+			<StringResource ID="LastRun.e9d5e456c3a345e4b2d8010d6113ef11" />
+			<StringResource ID="ResultingZipFileAtFullPath.6187f5fa586e403c9eda18c21d22c2f6" />
+			<StringResource ID="TriggerMethod.f2f8c2b384e9458083e1ed864672b718" />
+			<StringResource ID="MaxSeverity.58ca818567714d7a9171ae18fe92dd14" />
+			<StringResource ID="ServerName.91df1de566df414c814e056fe28e4358" />
+			<StringResource ID="LastRun.9f1effa4f73e45c794650197319c7043" />
+			<StringResource ID="ResultingZipFileAtFullPath.16ba1e7f003b4b4fae4e3ba733d88fd7" />
+			<StringResource ID="TriggerMethod.63854aab84c24bfab49760116c33d01a" />
+			<StringResource ID="MaxSeverity.c07160bb839846f999e43e4586cec8d1" />
+			<StringResource ID="ServerName.5e48eec6312840768499e72602ca0b71" />
+		</StringResources> -->
+  </Presentation>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        <DisplayString ElementID="SCSM.Support.Tools.HealthStatus.Presentation">
+          <Name>SCSM Support Tools - Health Status (Presentation)</Name>
+          <Description>Contains presentation items for SCSM Support Tools - Health Status</Description>
+        </DisplayString>
+        <!-- <DisplayString ElementID="View.00748ff8ec66473a8b45dcd59d2142ef">
+					<Name>Data Warehouse</Name>
+					<Description>The Health Status of the Data Warehouse management server determined by the last run of the Service Manager Diagnostic Tool (SMDT).</Description>
+				</DisplayString> -->
+        <!-- <DisplayString ElementID="LastRun.e9d5e456c3a345e4b2d8010d6113ef11">
+					<Name>Diagnostic Date</Name>
+					<Description>When the SCSM Diagnostic Tool (SMDT) ran</Description>
+				</DisplayString>
+				<DisplayString ElementID="ResultingZipFileAtFullPath.6187f5fa586e403c9eda18c21d22c2f6">
+					<Name>Diagnostic details in file</Name>
+					<Description>The full path where the SCSM Diagnostic Tool (SMDT) saved the resulting zip file.</Description>
+				</DisplayString>
+				<DisplayString ElementID="TriggerMethod.f2f8c2b384e9458083e1ed864672b718">
+					<Name>Diagnostic tool Trigger method</Name>
+					<Description>How the SCSM Diagnostic Tool (SMDT) was triggered. Can be Manually or Scheduled</Description>
+				</DisplayString>
+				<DisplayString ElementID="MaxSeverity.58ca818567714d7a9171ae18fe92dd14">
+					<Name>Highest Severity</Name>
+					<Description>Highest severity detected by the SCSM Diagnostic Tool (SMDT) like Critical, Error, Warning etc</Description>
+				</DisplayString>
+				<DisplayString ElementID="ServerName.91df1de566df414c814e056fe28e4358">
+					<Name>Server name</Name>
+					<Description>The machine name where the SCSM Diagnostic Tool (SMDT) ran</Description>
+				</DisplayString> -->
+        <!-- <DisplayString ElementID="View.f1cb07d0143c4571a40f333bcfee81fe">
+					<Name>Primary / Workflow</Name>
+					<Description>The Health Status of the Primary/Workflow management server determined by the last run of the Service Manager Diagnostic Tool (SMDT).</Description>
+				</DisplayString> -->
+        <!-- <DisplayString ElementID="LastRun.9f1effa4f73e45c794650197319c7043">
+					<Name>Diagnostic Date</Name>
+					<Description>When the SCSM Diagnostic Tool (SMDT) ran</Description>
+				</DisplayString>
+				<DisplayString ElementID="ResultingZipFileAtFullPath.16ba1e7f003b4b4fae4e3ba733d88fd7">
+					<Name>Diagnostic details in file</Name>
+					<Description>The full path where the SCSM Diagnostic Tool (SMDT) saved the resulting zip file.</Description>
+				</DisplayString>
+				<DisplayString ElementID="TriggerMethod.63854aab84c24bfab49760116c33d01a">
+					<Name>Diagnostic tool Trigger method</Name>
+					<Description>How the SCSM Diagnostic Tool (SMDT) was triggered. Can be Manually or Scheduled</Description>
+				</DisplayString>
+				<DisplayString ElementID="MaxSeverity.c07160bb839846f999e43e4586cec8d1">
+					<Name>Highest Severity</Name>
+					<Description>Highest severity detected by the SCSM Diagnostic Tool (SMDT) like Critical, Error, Warning etc</Description>
+				</DisplayString>
+				<DisplayString ElementID="ServerName.5e48eec6312840768499e72602ca0b71">
+					<Name>Server name</Name>
+					<Description>The machine name where the SCSM Diagnostic Tool (SMDT) ran</Description>
+				</DisplayString> -->
+        <DisplayString ElementID="SCSM.Support.Tools.HealthStatus.Presentation.View.Dashboard">
+          <Name>Health Status</Name>
+          <Description>A dashboard with the Health Status of Management Servers</Description>
+        </DisplayString>
+        <!-- 	<DisplayString ElementID="SCSM.Support.Tools.HealthStatus.View.Welcome">
+					<Name>.Getting Started</Name>
+					<Description>Description of the 'Health Status' tool</Description>
+				</DisplayString>				
+				<DisplayString ElementID="View.621263932b7e41bb83d41447339baac0">
+					<Name>Daily E-mails</Name>
+					<Description>Set the Recipients of Daily Health Status emails</Description>
+				</DisplayString>
+
+				<DisplayString ElementID="Folder.a6e62cefef584ca69027355829e0953d">
+					<Name>Health Status</Name>
+					<Description>Health Status of Management Servers</Description>
+				</DisplayString> -->
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
+  <Resources>
+    <!-- <Assembly ID="Test_ConfNotifAssembly" Accessibility="Public" QualifiedName="Test_ConfNotif" FileName="Test_ConfNotif.dll" /> -->
+    <Assembly ID="SCSM.Support.Tools.HealthStatus.Presentation.Assembly" Accessibility="Public" QualifiedName="SCSM.Support.Tools.HealthStatus.Presentation" FileName="SCSM.Support.Tools.HealthStatus.Presentation.dll" />
+    <Image ID="SCSM.Support.Tools.HealthStatus.Presentation.Image" Accessibility="Public" FileName="SCSM213_Administration_16.png" />
+  </Resources>
+</ManagementPack>

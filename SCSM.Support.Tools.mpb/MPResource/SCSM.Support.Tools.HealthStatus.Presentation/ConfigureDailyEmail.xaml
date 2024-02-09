@@ -1,0 +1,39 @@
+﻿<UserControl x:Class="SCSM.Support.Tools.HealthStatus.DailySubscription" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:SCSM.Support.Tools.HealthStatus" mc:Ignorable="d">
+    <Grid Loaded="Grid_Loaded">
+        <!--
+		<Button x:Name="CreateMP" Content="Create MP and Subscription" Click="CreateSubscriptionMP_Click" Margin="294,87,367,308" RenderTransformOrigin="0.486,-0.994" Visibility="Hidden"/>
+		<Button x:Name="InsertMP" Content="Insert Subscription" Click="InsertSubscriptionMP_Click" Margin="501,55,60,340" Visibility="Hidden"/>
+-->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" MinWidth="200"/>
+        </Grid.ColumnDefinitions>
+        <Button x:Name="EditMP" VerticalAlignment="Stretch" Grid.RowSpan="1" Margin="10,10,10,10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Image Stretch="Fill" Source="/SCSM.Support.Tools.HealthStatus;component/Administration_NotificationSubscriptionNormal_16.png" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,5,5,0" Grid.Row="0" Grid.Column="0"/>
+                <TextBlock FontSize="16" Grid.RowSpan="1" Grid.ColumnSpan="1" Grid.Column="1" Margin="30,0,0,5" Grid.Row="0">
+					<Run Text="Set Up Daily Emails"/>
+                </TextBlock>
+                <TextBlock TextWrapping="Wrap" Grid.RowSpan="1" Grid.Row="1" Grid.Column="0" VerticalAlignment="Stretch" Margin="10,10,10,10" Grid.ColumnSpan="3" Height="Auto"><Run Text="Service Manager can send you daily 'Health Status' emails."/><LineBreak/><Run Text="A daily Notification Subsciption has been already created for your convenience. The recipient of this daily subscription is usually set to the SCSM Administrator."/></TextBlock>
+                <StackPanel Orientation="Horizontal" Grid.Row="2" Margin="20,-10,0,0" >
+                    <Image Height="16" Width="16" Source="/SCSM.Support.Tools.HealthStatus;component/i758_Framework_Go_16.png" VerticalAlignment="Center"/>
+                    <TextBlock Margin="10,2,10,10" Grid.RowSpan="1" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" TextWrapping="WrapWithOverflow" VerticalAlignment="Stretch">
+						<Hyperlink Click="EditSubscriptionMP_Click">
+							<Run Text="Click to set the 'Recipient' who will receive the daily emails"/>
+						</Hyperlink>
+                    </TextBlock>
+                </StackPanel>
+            </Grid>
+        </Button>
+    </Grid>
+</UserControl>

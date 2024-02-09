@@ -1431,4 +1431,16 @@ function AddTzToDateTimeString($pDateTimeString) {
     $currentDateTimeValue = [datetime]::ParseExact( $pDateTimeString, $currentDateTimeStringFormat, $null)
     return $currentDateTimeValue.ToString( "$currentDateTimeStringFormat zzz" )
 }
+
+function GetSmdtVersionFromString([string]$smdtBody) {
+    $versionResult = New-Object Version
+    $sr = [System.IO.StringReader]::new($smdtBody)
+    while( ($line = $sr.ReadLine()) -ne $null) {
+        if ( $line.Trim().StartsWith("function GetToolVersion()") ) {
+            $versionString = $line.Replace("function GetToolVersion()","").Replace("{'","").Replace("'}","").Trim()
+            return New-Object Version -ArgumentList $versionString
+        }
+    }
+    return $versionResult
+}
 #endregion

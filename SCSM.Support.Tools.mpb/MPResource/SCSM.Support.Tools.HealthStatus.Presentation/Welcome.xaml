@@ -1,0 +1,93 @@
+﻿<UserControl x:Class="SCSM.Support.Tools.HealthStatus.Welcome" 
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SCSM.Support.Tools.HealthStatus" 
+             xmlns:scwpf="http://schemas.microsoft.com/SystemCenter/Common/UI/Wpf"		   
+             mc:Ignorable="d" >
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <Style x:Key="HyperlinkControlStyle" TargetType="{x:Type scwpf:Hyperlink}">
+                <Setter Property="Foreground" Value="Blue"/>
+                <Setter Property="Control.Template">
+                    <Setter.Value>
+                        <ControlTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Height="16" Width="16"  
+                            Source="/Microsoft.EnterpriseManagement.ServiceManager.Application.Common;component/Administration/Resources/GreenArrow_17.png" VerticalAlignment="Center" />
+                                <TextBlock TextTrimming="CharacterEllipsis" 
+                            Margin="4,0,0,0" 
+                            ToolTip="{TemplateBinding ToolTip}" 
+                            Text="{TemplateBinding scwpf:Hyperlink.Content}" 
+                            Foreground="{TemplateBinding Foreground}"
+                            TextDecorations="Underline" 
+                            VerticalAlignment="Center" 
+                            TextWrapping="NoWrap" 
+                            HorizontalAlignment="Left" />
+                            </StackPanel>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Foreground">
+                            <Setter.Value>Silver</Setter.Value>
+                        </Setter>
+                    </Trigger>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Foreground" Value="DarkGray" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <ScrollViewer xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" VerticalScrollBarVisibility="Auto">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" MinWidth="200"/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="EditMP" VerticalAlignment="Stretch" Grid.RowSpan="1" Margin="10,10,10,10" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Image Stretch="Fill" Source="/Microsoft.EnterpriseManagement.ServiceManager.Application.Common;component/Administration/Resources/Administration_NotificationSubscriptionNormal_16.png" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,5,5,0" Grid.Row="0" Grid.Column="0"/>
+                    <TextBlock FontSize="16" Grid.RowSpan="1" Grid.ColumnSpan="1" Grid.Column="1" Margin="30,0,0,5" Grid.Row="0" VerticalAlignment="Stretch" Text="SCSM Health Status of Management Servers"/>
+                    <TextBlock TextWrapping="Wrap" Grid.RowSpan="1" Grid.Row="1" Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="10,10,10,10" Grid.ColumnSpan="3" Height="Auto"><Run Text="The &quot;Health Status&quot; is determined by the Findings of running the SCSM Diagnostic Tool (SMDT) on the Management Servers."/><LineBreak/><Run Text="SMDT can be started manually. In addition, it runs automatically every 24 hours. In either way, the last diagnostic findings are saved in the SM database."/><LineBreak/><Run/><LineBreak/><Run Text="Click on below links to view last SMDT diagnostic Findings:"/></TextBlock>
+
+                    <StackPanel Orientation="Vertical" Grid.Row="2" Margin="20,-10,0,0" >
+                        <StackPanel Orientation="Horizontal">
+                            <!--<Image Height="16" Width="16" Source="/SCSM.Support.Tools.HealthStatus;component/i758_Framework_Go_16.png" VerticalAlignment="Center"/>-->
+                            <scwpf:Hyperlink Content="on the Primary/Workflow management server" TargetUri="{x:Static local:Welcome.NavUri_WF}" Style="{StaticResource HyperlinkControlStyle}"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Vertical" Grid.Row="3" Margin="20,0,0,0" >
+                        <StackPanel Orientation="Horizontal">
+                            <!--                        <Image Height="16" Width="16" Source="/SCSM.Support.Tools.HealthStatus;component/i758_Framework_Go_16.png" VerticalAlignment="Center" /> -->
+                            <scwpf:Hyperlink Content="on the Data Warehouse management server" TargetUri="{x:Static local:Welcome.NavUri_DW}" Style="{StaticResource HyperlinkControlStyle}" />
+                        </StackPanel>
+                    </StackPanel>
+
+
+                    <StackPanel Orientation="Vertical" Grid.Row="4" >                        
+                        <TextBlock Margin="10,10,10,0" Grid.RowSpan="1" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" TextWrapping="WrapWithOverflow" VerticalAlignment="Stretch"><Run FontWeight="Bold" FontStyle="Italic" Text="Tip"/><Run Text=": As a proactive approach, it is "/><Run FontWeight="Bold" FontStyle="Italic" Text="strongly recommended"/><Run Text=" to let SCSM notify you with "/><Run Text="daily emails" TextDecorations="Underline"/><Run Text=" about the Health Status of your management servers."/></TextBlock>
+                            
+                        <StackPanel Orientation="Horizontal" Margin="20,0,0,0">
+                            <!--<Image Height="16" Width="16" Source="/SCSM.Support.Tools.HealthStatus;component/i758_Framework_Go_16.png" VerticalAlignment="Center"/>-->
+                            <scwpf:Hyperlink Content="Click to configure Daily E-mails" TargetUri="{x:Static local:Welcome.NavUri_DailyEmails}" Style="{StaticResource HyperlinkControlStyle}" />
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </Button>
+        </Grid>
+    </ScrollViewer>
+</UserControl>
