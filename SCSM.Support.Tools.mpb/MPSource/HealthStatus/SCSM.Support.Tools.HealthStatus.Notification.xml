@@ -58,6 +58,8 @@ td { padding: 4px; text-align: left; border: 1px solid black; vertical-align:top
 
 &amp;lt;/style&amp;gt;
 
+&amp;lt;p&amp;gt; The &amp;lt;a href="https://aka.ms/scsm-diagnostic-tool"&amp;gt;SCSM Diagnostic Tool (SMDT)&amp;lt;/a&amp;gt; has just completed on one of the Management Servers. The table below contains the latest Health Status of both servers.&amp;lt;/p&amp;gt;
+
 &amp;lt;table style="border-collapse: collapse"&amp;gt;
 
 
@@ -101,7 +103,7 @@ td { padding: 4px; text-align: left; border: 1px solid black; vertical-align:top
 
 &amp;lt;/table&amp;gt;
 
-&amp;lt;p&amp;gt;* All above information was reported by running the &amp;lt;a href="https://aka.ms/scsm-diagnostic-tool"&amp;gt;SCSM Diagnostic Tool (SMDT)&amp;lt;/a&amp;gt; on the Management Servers.&amp;lt;/p&amp;gt;&lt;/1033&gt;</Property>
+&lt;/1033&gt;</Property>
       <Property Path="$Context/Property[Type='CustomSystem_Notifications_Library!System.Notification.Template']/Encoding$">utf-8</Property>
       <Property Path="$Context/Property[Type='CustomSystem_Notifications_Library!System.Notification.Template']/SeedClass$">SCSM.Support.Tools.HealthStatus.Overall$50fb0cd3-99e2-ce4b-ac89-c1c76ccffb24</Property>
       <Property Path="$Context/Property[Type='CustomSystem_Notifications_Library!System.Notification.Template']/Protocol$">SMTP</Property>
