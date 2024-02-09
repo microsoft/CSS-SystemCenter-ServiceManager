@@ -61,11 +61,11 @@
       <RelationshipTypes>
         <RelationshipType ID="SCSM.Support.Tools.HealthStatus.OverallToWF" Accessibility="Public" Abstract="false" Base="System!System.Reference">
           <Source ID="HealthStatusOverall" MinCardinality="0" MaxCardinality="1" Type="SCSM.Support.Tools.HealthStatus.Overall" />
-          <Target ID="HealthStatusComponent" MinCardinality="0" MaxCardinality="1" Type="SCSM.Support.Tools.HealthStatus.WF" />
+          <Target ID="HealthStatusComponent" MinCardinality="0" MaxCardinality="2147483647" Type="SCSM.Support.Tools.HealthStatus.WF" /> <!-- MaxCardinality should be actually 1 but this would cause double subscriptions due to ExcludedRelatedEntityChangeLog -->
         </RelationshipType>
         <RelationshipType ID="SCSM.Support.Tools.HealthStatus.OverallToDW" Accessibility="Public" Abstract="false" Base="System!System.Reference">
           <Source ID="HealthStatusOverall" MinCardinality="0" MaxCardinality="1" Type="SCSM.Support.Tools.HealthStatus.Overall" />
-          <Target ID="HealthStatusComponent" MinCardinality="0" MaxCardinality="1" Type="SCSM.Support.Tools.HealthStatus.DW" />
+          <Target ID="HealthStatusComponent" MinCardinality="0" MaxCardinality="2147483647" Type="SCSM.Support.Tools.HealthStatus.DW" /><!-- MaxCardinality should be actually 1 but this would cause double subscriptions due to ExcludedRelatedEntityChangeLog -->
         </RelationshipType>
       </RelationshipTypes>
       <EnumerationTypes>
