@@ -855,13 +855,13 @@ if ($TargetMS) {
 
         $HealthStatus_WF = Get-SCSMClassInstance -Class (Get-SCSMClass -Name SCSM.Support.Tools.HealthStatus.WF -ComputerName $TargetMS) -ComputerName $TargetMS        
         $HealthStatus_rsClassWF = Get-SCSMRelationshipClass -Name SCSM.Support.Tools.HealthStatus.OverallToWF -ComputerName $TargetMS
-        if (-not (Get-SCRelationshipInstance -SourceInstance $HealthStatus_Overall -TargetInstance $HealthStatus_WF -ComputerName $TargetMS) ) {
+        if (-not (Get-SCSMRelationshipInstance -SourceInstance $HealthStatus_Overall -ComputerName $TargetMS | ? { $_.TargetObject -eq $HealthStatus_WF -and (-not $_.IsDeleted) }) ) {
             New-SCRelationshipInstance -RelationshipClass $HealthStatus_rsClassWF -Source $HealthStatus_Overall -Target $HealthStatus_WF -ComputerName $TargetMS
         }
 
         $HealthStatus_DW = Get-SCSMClassInstance -Class (Get-SCSMClass -Name SCSM.Support.Tools.HealthStatus.DW -ComputerName $TargetMS) -ComputerName $TargetMS
         $HealthStatus_rsClassDW = Get-SCSMRelationshipClass -Name SCSM.Support.Tools.HealthStatus.OverallToDW -ComputerName $TargetMS
-        if (-not (Get-SCRelationshipInstance -SourceInstance $HealthStatus_Overall -TargetInstance $HealthStatus_DW -ComputerName $TargetMS) ) {
+        if (-not (Get-SCSMRelationshipInstance -SourceInstance $HealthStatus_Overall -ComputerName $TargetMS | ? { $_.TargetObject -eq $HealthStatus_DW -and (-not $_.IsDeleted) }) ) {
             New-SCRelationshipInstance -RelationshipClass $HealthStatus_rsClassDW -Source $HealthStatus_Overall -Target $HealthStatus_DW -ComputerName $TargetMS
         }
         #endregion
