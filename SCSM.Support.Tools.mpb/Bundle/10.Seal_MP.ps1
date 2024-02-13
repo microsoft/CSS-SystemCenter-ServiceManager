@@ -77,7 +77,6 @@ $MpXmlBuilds +=  "HealthStatus\SCSM.Support.Tools.HealthStatus.Monitoring.xml.Bu
 $MpXmlsNotToSeal += "HealthStatus\SCSM.Support.Tools.HealthStatus.Notification.Subscription.xml"
 
 $Resources += "$folderName_MPResource\SCSM.Support.Tools.HealthStatus.Monitoring.Starter.ps1"
-#$Resources += "$folderName_MPResource\SCSM-Diagnostic-Tool.ps1"
 $Resources += "..\SCSM-Diagnostic-Tool\LocalDebug\SCSM-Diagnostic-Tool.ps1"
 $Resources += "$folderName_MPSource\HealthStatus\SCSM.Support.Tools.HealthStatus.Notification.Subscription.xml"
 $Resources += "$folderName_MPResource\SCSM213_Administration_16.png"
