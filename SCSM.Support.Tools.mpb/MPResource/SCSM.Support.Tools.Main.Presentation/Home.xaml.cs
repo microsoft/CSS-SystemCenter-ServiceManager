@@ -3,6 +3,7 @@ using SCSM.Support.Tools.Library;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -61,19 +62,6 @@ namespace SCSM.Support.Tools.Main.Presentation
                     + "/Folder." + Helpers.fn_MPObjectId("SCSM.Support.Tools.Main.Presentation", MpKeyToken, "SCSM.Support.Tools.Main.Presentation.Folder.Root")
                     + "/View." + Helpers.fn_MPObjectId("SCSM.Support.Tools.HealthStatus.Presentation", MpKeyToken, "SCSM.Support.Tools.HealthStatus.Presentation.View.Dashboard");
                 return new Uri(navUri);
-            }
-        }
-
-        private bool EulaApproved
-        {
-            get
-            {
-                // get from MT
-                //return Helpers.IsEulaApproved();
-                return true;
-            }
-            set {
-                //set MT
             }
         }
     }
