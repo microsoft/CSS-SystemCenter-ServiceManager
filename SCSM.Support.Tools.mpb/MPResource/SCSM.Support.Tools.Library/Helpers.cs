@@ -82,9 +82,5 @@ namespace SCSM.Support.Tools.Library
             return result;
         }
 
-        public static bool IsEulaApproved() {
-            // get from MT
-            return true;
-        }
     }
 }
