@@ -30,23 +30,38 @@ namespace SCSM.Support.Tools.Library
 
         private void EulaAgreement_Click(object sender, RoutedEventArgs e)
         {
-            if (ShowEulaForm() == DialogResult.Yes)
+            try
             {
-                EulaStatus.EulaAccepted = true;
-                this.EulaAgreement.Height = 0;
+                if (ShowEulaForm() == DialogResult.Yes)
+                {
+                    EulaStatus.EulaAccepted = true;
+                    this.EulaAgreement.Height = 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                Helpers.LogAndShowException(ex);
             }
         }
 
         private void UserControl_Initialized(object sender, EventArgs e)
         {
-            
-            if (EulaStatus.EulaAccepted)
+            if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(this)) { return; }
+
+            try
             {
-                this.EulaAgreement.Height = 0;
+                if (EulaStatus.EulaAccepted)
+                {
+                    this.EulaAgreement.Height = 0;
+                }
+                else
+                {
+                    this.EulaAgreement.Height = 5000;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                this.EulaAgreement.Height = 5000;
+                Helpers.LogAndShowException(ex);
             }
         }
 
@@ -145,6 +160,7 @@ namespace SCSM.Support.Tools.Library
         private static readonly object lockEulaWrite = new object();
         private static bool wasEulaInfoQueriedFromSDK;
         private static bool eulaAccepted;
+
         public static bool EulaAccepted
         {
             get
@@ -173,7 +189,7 @@ namespace SCSM.Support.Tools.Library
 
                 return eulaAccepted;
             }
-            set
+            internal set
             {
                 if (value != true) { return; };
 

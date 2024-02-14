@@ -31,22 +31,38 @@ namespace SCSM.Support.Tools.Main.Presentation
 
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
         {
-            Hyperlink hl = (Hyperlink)sender;
-            string navigateUri = hl.NavigateUri.ToString();
-            Process.Start(new ProcessStartInfo(navigateUri));
-            e.Handled = true;
+            try
+            {
+                Hyperlink hl = (Hyperlink)sender;
+                string navigateUri = hl.NavigateUri.ToString();
+                Process.Start(new ProcessStartInfo(navigateUri));
+                e.Handled = true;
+            }
+            catch (Exception ex)
+            {
+                Helpers.LogAndShowException(ex);
+            }
         }
 
-        private static string MpKeyToken = "31bf3856ad364e35"; 
+        private static string MpKeyToken = "31bf3856ad364e35";
 
         public static string VersionOfCore
         {
             get
             {
-                string coreMpName = "SCSM.Support.Tools.Main.Core";
-                var mpCore = ConsoleContextHelper.Instance.GetManagementPack(Helpers.fn_MPId(coreMpName, MpKeyToken));
-                var version = new Version(mpCore["Version"].ToString());
-                return version.ToString();
+                var result = "";
+                try
+                {
+                    string coreMpName = "SCSM.Support.Tools.Main.Core";
+                    var mpCore = ConsoleContextHelper.Instance.GetManagementPack(Helpers.fn_MPId(coreMpName, MpKeyToken));
+                    var version = new Version(mpCore["Version"].ToString());
+                    result = version.ToString();
+                }
+                catch (Exception ex)
+                {
+                    Helpers.LogAndShowException(ex);
+                }
+                return result;
             }
         }
 
@@ -56,12 +72,21 @@ namespace SCSM.Support.Tools.Main.Presentation
         {
             get
             {
-                string navUri = prefix_Nav
+                var result = new Uri(prefix_Nav);
+                try
+                {
+                    string navUri = prefix_Nav
                     + "/Folder." + Helpers.fn_MPObjectId("Microsoft.EnterpriseManagement.ServiceManager.UI.Administration", MpKeyToken, "Microsoft.EnterpriseManagement.ServiceManager.UI.Administration.Folder")
                     + "/Folder." + Helpers.fn_MPObjectId("Microsoft.EnterpriseManagement.ServiceManager.UI.Administration", MpKeyToken, "Microsoft.EnterpriseManagement.ServiceManager.UI.Administration.Folder.Root")
                     + "/Folder." + Helpers.fn_MPObjectId("SCSM.Support.Tools.Main.Presentation", MpKeyToken, "SCSM.Support.Tools.Main.Presentation.Folder.Root")
                     + "/View." + Helpers.fn_MPObjectId("SCSM.Support.Tools.HealthStatus.Presentation", MpKeyToken, "SCSM.Support.Tools.HealthStatus.Presentation.View.Dashboard");
-                return new Uri(navUri);
+                    return new Uri(navUri);
+                }
+                catch (Exception ex)
+                {
+                    Helpers.LogAndShowException(ex);
+                }
+                return result;
             }
         }
     }
