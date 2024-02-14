@@ -36,150 +36,124 @@ namespace SCSM.Support.Tools.HealthStatus.Presentation
 
         private string subscriptionMpName = "SCSM.Support.Tools.HealthStatus.Notification.Subscription";
         private string subscriptionMpDisplayName = "SCSM Support Tools - Health Status (Notification) Subscription";
-        //private string subscriptionName = "SCSM.Support.Tools.HealthStatus.Notification.DailySubscription";
         private string subscriptionName = "SCSM.Support.Tools.HealthStatus.Notification.ChangedSubscription";
         private string subscriptionMpResourceName = "SCSM.Support.Tools.HealthStatus.Notification.Subscription.Resource";
         private string class_HealthStatus_WF = "SCSM.Support.Tools.HealthStatus.WF";
         private string class_HealthStatus_DW = "SCSM.Support.Tools.HealthStatus.DW";
         private string notifMpName = "SCSM.Support.Tools.HealthStatus.Notification";
-        //private string notifTemplateName = "SCSM.Support.Tools.HealthStatus.Notification.Template";
         private static string MpKeyToken = "31bf3856ad364e35";
 
         private void EditSubscriptionMP_Click(object sender, RoutedEventArgs e)
         {
-            IServiceContainer container = (IServiceContainer)FrameworkServices.GetService(typeof(IServiceContainer));
-            IManagementGroupSession curSession = (IManagementGroupSession)container.GetService(typeof(IManagementGroupSession));
-            EnterpriseManagementGroup Emg = curSession.ManagementGroup;
-
-            #region import unsealed Subscriptions MP if not exist
-            if (Emg.ManagementPacks.GetManagementPacks().Where(mp => mp.Name == subscriptionMpName).FirstOrDefault() == null)
+            try
             {
+                IServiceContainer container = (IServiceContainer)FrameworkServices.GetService(typeof(IServiceContainer));
+                IManagementGroupSession curSession = (IManagementGroupSession)container.GetService(typeof(IManagementGroupSession));
+                EnterpriseManagementGroup Emg = curSession.ManagementGroup;
 
-                var notifMP = Emg.ManagementPacks.GetManagementPacks().Where(mp => mp.Name == notifMpName).FirstOrDefault();
-                var resource_subsMP = Emg.Resources.GetResource<ManagementPackResource>(subscriptionMpResourceName, notifMP);
-                var streamSubs = Emg.Resources.GetResourceData(resource_subsMP);
-                var tmpFileFullPath = ConsoleContextHelper.Instance.WriteStreamToTempFile(subscriptionMpName, ".xml", streamSubs);
-                //todo   EDIT notifTemplateId here in the file (if not correct)  ///////////////////////////////////////////////////////////////////////////////////////////////////////
-                //var doc = new XmlDocument();
-                //doc.Load(tmpFileFullPath);
-                //var currentNotifTemplateNode = doc.DocumentElement.SelectSingleNode(string.Format("/ManagementPack/Monitoring/Rules/Rule[@ID='{0}']", subscriptionName)).SelectSingleNode("WriteActions/WriteAction/Subscription/WindowsWorkflowConfiguration/WorkflowParameters/WorkflowArrayParameter[@Name='TemplateIds']/Item").FirstChild;
+                #region import unsealed Subscriptions MP if not exist
+                if (Emg.ManagementPacks.GetManagementPacks().Where(mp => mp.Name == subscriptionMpName).FirstOrDefault() == null)
+                {
 
-                //string newNotifTemplateId = Helpers.fn_MPObjectId(notifMpName, MpKeyToken, notifTemplateName).ToString().ToLower();
-                //if (currentNotifTemplateNode.InnerText.ToLower() != newNotifTemplateId)
-                //{
-                //    currentNotifTemplateNode.InnerText = newNotifTemplateId;
-                //    doc.Save(tmpFileFullPath);
-                //}
+                    var notifMP = Emg.ManagementPacks.GetManagementPacks().Where(mp => mp.Name == notifMpName).FirstOrDefault();
+                    var resource_subsMP = Emg.Resources.GetResource<ManagementPackResource>(subscriptionMpResourceName, notifMP);
+                    var streamSubs = Emg.Resources.GetResourceData(resource_subsMP);
+                    var tmpFileFullPath = ConsoleContextHelper.Instance.WriteStreamToTempFile(subscriptionMpName, ".xml", streamSubs);
 
-                var newMP = new ManagementPack(tmpFileFullPath);
-                Emg.ManagementPacks.ImportManagementPack(newMP);
+                    var newMP = new ManagementPack(tmpFileFullPath);
+                    Emg.ManagementPacks.ImportManagementPack(newMP);
+                }
+                #endregion
+
+                var subscription = Emg.Monitoring.GetRules().Where(r => r.Name == subscriptionName).FirstOrDefault();
+                if (subscription == null)
+                {
+                    MessageBox.Show(string.Format("Looks like the Daily Subscription has been removed from the unsealed MP named '{0}'.\n\nIn order to re-create this daily subscription, this unsealed MP has to be deleted first.\nPlease ensure to export it before deleting.", subscriptionMpDisplayName), "SCSM Support Tools - Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+                IDataItem subscriptionDataItem = ConsoleContextHelper.Instance.GetWorkflowSubscriptionRule(subscription.Id);
+                var commandHandler = new Microsoft.EnterpriseManagement.ServiceManager.UI.Administration.Notification.Subscription.SubscriptionCommandHandler();
+                commandHandler.EditSubscription(subscriptionDataItem, true);
             }
-            #endregion
-
-            var subscription = Emg.Monitoring.GetRules().Where(r => r.Name == subscriptionName).FirstOrDefault();
-            if (subscription == null)
+            catch (Exception ex)
             {
-                MessageBox.Show(string.Format("Looks like the Daily Subscription has been removed from the unsealed MP named '{0}'.\n\nIn order to re-create this daily subscription, this unsealed MP has to be deleted first.\nPlease ensure to export it before deleting.", subscriptionMpDisplayName), "SCSM Support Tools - Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
+                Helpers.LogAndShowException(ex);
             }
-            IDataItem subscriptionDataItem = ConsoleContextHelper.Instance.GetWorkflowSubscriptionRule(subscription.Id);
-            var commandHandler = new Microsoft.EnterpriseManagement.ServiceManager.UI.Administration.Notification.Subscription.SubscriptionCommandHandler();
-            commandHandler.EditSubscription(subscriptionDataItem, true);
-        }
-
-        //private void EditSubscriptionMP_Click(object sender, RoutedEventArgs e)
-        //{
-        //    IServiceContainer container = (IServiceContainer)FrameworkServices.GetService(typeof(IServiceContainer));
-        //    IManagementGroupSession curSession = (IManagementGroupSession)container.GetService(typeof(IManagementGroupSession));
-        //    EnterpriseManagementGroup Emg = curSession.ManagementGroup;
-
-        //    #region import unsealed Subscriptions MP if not exist
-        //    if (Emg.ManagementPacks.GetManagementPacks().Where(mp => mp.Name == subscriptionMpName).FirstOrDefault() == null)
-        //    {
-
-        //        var notifMP = Emg.ManagementPacks.GetManagementPacks().Where(mp => mp.Name == notifMpName).FirstOrDefault();
-        //        var resource_subsMP = Emg.Resources.GetResource<ManagementPackResource>(subscriptionMpResourceName, notifMP);
-        //        var streamSubs = Emg.Resources.GetResourceData(resource_subsMP);
-        //        var tmpFileFullPath = ConsoleContextHelper.Instance.WriteStreamToTempFile(subscriptionMpName, ".xml", streamSubs);
-        //        //todo   EDIT notifTemplateId here in the file (if not correct)  ///////////////////////////////////////////////////////////////////////////////////////////////////////
-        //        //var doc = new XmlDocument();
-        //        //doc.Load(tmpFileFullPath);
-        //        //var currentNotifTemplateNode = doc.DocumentElement.SelectSingleNode(string.Format("/ManagementPack/Monitoring/Rules/Rule[@ID='{0}']", subscriptionName)).SelectSingleNode("WriteActions/WriteAction/Subscription/WindowsWorkflowConfiguration/WorkflowParameters/WorkflowArrayParameter[@Name='TemplateIds']/Item").FirstChild;
-
-        //        //string newNotifTemplateId = Helpers.fn_MPObjectId(notifMpName, MpKeyToken, notifTemplateName).ToString().ToLower();
-        //        //if (currentNotifTemplateNode.InnerText.ToLower() != newNotifTemplateId)
-        //        //{
-        //        //    currentNotifTemplateNode.InnerText = newNotifTemplateId;
-        //        //    doc.Save(tmpFileFullPath);
-        //        //}
-
-        //        var newMP = new ManagementPack(tmpFileFullPath);
-        //        Emg.ManagementPacks.ImportManagementPack(newMP);
-        //    }
-        //    #endregion
-
-        //    var subscription = Emg.Monitoring.GetRules().Where(r => r.Name == subscriptionName).FirstOrDefault();
-        //    if (subscription == null)
-        //    {
-        //        MessageBox.Show(string.Format("Looks like the Daily Subscription has been removed from the unsealed MP named '{0}'.\n\nIn order to re-create the daily subscription, this unsealed MP has to be deleted first.\nPlease ensure to export it before deleting.", subscriptionMpDisplayName), "SCSM Support Tools - Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
-        //        return;
-        //    }
-        //    IDataItem subscriptionDataItem = ConsoleContextHelper.Instance.GetWorkflowSubscriptionRule(subscription.Id);
-        //    var commandHandler = new Microsoft.EnterpriseManagement.ServiceManager.UI.Administration.Notification.Subscription.SubscriptionCommandHandler();
-        //    commandHandler.EditSubscription(subscriptionDataItem, true);
-        //}
-
-        private IDataItem GetHealthStatus_WF()
-        {
-            var mpClassId = (Guid)ConsoleContextHelper.Instance.GetClassType(class_HealthStatus_WF)["Id"];
-            var healthStatus = ConsoleContextHelper.Instance.GetAllInstances(mpClassId).First();
-            return healthStatus;
-        }
-        private IDataItem GetHealthStatus_DW()
-        {
-            var mpClassId = (Guid)ConsoleContextHelper.Instance.GetClassType(class_HealthStatus_DW)["Id"];
-            var healthStatus = ConsoleContextHelper.Instance.GetAllInstances(mpClassId).First();
-            return healthStatus;
         }
 
         private void Component_WF_Initialized(object sender, EventArgs e)
         {
-            var healthStatus = GetHealthStatus_WF();
-            Component_WF.DataContext = healthStatus;
-
-            if (healthStatus["MaxSeverity"] != null)
+            try
             {
-                var maxSeverity_Name = (healthStatus["MaxSeverity"] as IDataItem)["Name"].ToString();
-                SetPerSeverity(sender as Border, MaxSeverity_WF, maxSeverity_Name);
-                SetLastRunFriendly(healthStatus["LastRun"], LastRunFriendly_WF);
+                Component_WForDW_Initialized(sender, e);
+            }
+            catch (Exception ex)
+            {
+                Helpers.LogAndShowException(ex);
             }
         }
         private void Component_DW_Initialized(object sender, EventArgs e)
         {
-            var healthStatus = GetHealthStatus_DW();
-            Component_DW.DataContext = healthStatus;
-
-            if (healthStatus["MaxSeverity"] != null)
+            try
             {
-                var maxSeverity_Name = (healthStatus["MaxSeverity"] as IDataItem)["Name"].ToString();
-                SetPerSeverity(sender as Border, MaxSeverity_DW, maxSeverity_Name);
-                SetLastRunFriendly(healthStatus["LastRun"], LastRunFriendly_DW);
+                Component_WForDW_Initialized(sender, e);
+            }
+            catch (Exception ex)
+            {
+                Helpers.LogAndShowException(ex);
             }
         }
+        
+        private void Component_WForDW_Initialized(object sender, EventArgs e)
+        {
+            Border component = sender as Border;
+            Image severityIcon = null;
+            TextBlock lastRunFriendly = null;
+            IDataItem healthStatus = null;
 
+            if (component.Name.EndsWith("WF"))
+            {
+                healthStatus = GetHealthStatus_WForDW(class_HealthStatus_WF);
+                severityIcon = MaxSeverity_WF;
+                lastRunFriendly = LastRunFriendly_WF;
+            }
+            else if (component.Name.EndsWith("DW"))
+            {
+                healthStatus = GetHealthStatus_WForDW(class_HealthStatus_DW);
+                severityIcon = MaxSeverity_DW;
+                lastRunFriendly = LastRunFriendly_DW;
+            }
+            else
+            {
+                throw new Exception("sender in Component_WForDW_Initialized is neither WF or DW."); //this should never happen
+            }
+
+            component.DataContext = healthStatus;
+            if (healthStatus != null && healthStatus["MaxSeverity"] != null)
+            {
+                var maxSeverity_Name = (healthStatus["MaxSeverity"] as IDataItem)["Name"].ToString();
+                SetPerSeverity(component, severityIcon, maxSeverity_Name);
+                SetLastRunFriendly(healthStatus["LastRun"], lastRunFriendly);
+            }
+        }
+        private IDataItem GetHealthStatus_WForDW(string class_HealthStatus)
+        {
+            var mpClassId = (Guid)ConsoleContextHelper.Instance.GetClassType(class_HealthStatus)["Id"];
+            var healthStatus = ConsoleContextHelper.Instance.GetAllInstances(mpClassId).First();
+            return healthStatus;
+        }
         private void SetLastRunFriendly(object lastRunObj, TextBlock lastRunFriendly)
         {
             try
             {
                 DateTime lastRun = (DateTime)lastRunObj;
-                lastRunFriendly.Text = string.Format("({0})", Helpers.GetUserFriendlyDateTime(lastRun));
+                lastRunFriendly.Text = string.Format("({0})", Helpers.GetUserFriendlyTimeSpan(lastRun));
             }
-            catch
+            catch (Exception ex)
             {
-                return; //do nothing
+                Helpers.OnlyLogException(ex);
             }
         }
-
         private void SetPerSeverity(Border component, Image severityIcon, string maxSeverity_Name)
         {
             #region Set Severity Icon and Border color
@@ -216,12 +190,20 @@ namespace SCSM.Support.Tools.HealthStatus.Presentation
         {
             get
             {
-                string coreMpName = "SCSM.Support.Tools.HealthStatus.Core";
-                var mpCore = ConsoleContextHelper.Instance.GetManagementPack(Helpers.fn_MPId(coreMpName, MpKeyToken));
-                var version = new Version(mpCore["Version"].ToString());
-                return version.ToString();
+                var result = "";
+                try
+                {
+                    string coreMpName = "SCSM.Support.Tools.HealthStatus.Core";
+                    var mpCore = ConsoleContextHelper.Instance.GetManagementPack(Helpers.fn_MPId(coreMpName, MpKeyToken));
+                    var version = new Version(mpCore["Version"].ToString());
+                    result = version.ToString();
+                }
+                catch (Exception ex)
+                {
+                    Helpers.LogAndShowException(ex);
+                }
+                return result;
             }
         }
-
     }
 }
