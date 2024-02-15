@@ -21,18 +21,8 @@
         <Version>1.0.0.0</Version>
         <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
       </Reference>
-      <Reference Alias="Subscriptions">
-        <ID>Microsoft.SystemCenter.Subscriptions</ID>
-        <Version>1.0.0.0</Version>
-        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
-      </Reference>
-      <Reference Alias="AdminUI">
-        <ID>Microsoft.EnterpriseManagement.ServiceManager.UI.Administration</ID>
-        <Version>1.0.0.0</Version>
-        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
-      </Reference>
-      <Reference Alias="Notifications">
-        <ID>System.Notifications.Library</ID>
+	  <Reference Alias="CustomSCSM_Support_Tools_Main_Core">
+        <ID>SCSM.Support.Tools.Main.Core</ID>
         <Version>1.0.0.0</Version>
         <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
       </Reference>
