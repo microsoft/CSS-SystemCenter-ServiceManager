@@ -4,12 +4,9 @@
   <img src="/docs/SCSM.png" width="100" />
 </a>
 
-This repository is the home of several scripts for Microsoft System Center - Service Manager (SCSM).
-The scripts are intended for identifying and resolving a wide range of issues regarding SCSM.
+This repository is the home of several scripts & tools for Microsoft System Center - Service Manager (SCSM). They are intended for identifying and resolving a wide range of issues regarding SCSM.
 
-For more information, see the documentation of individual scripts: 
-
-https://microsoft.github.io/CSS-SystemCenter-ServiceManager/
+For more information, see the documentation of individual scripts & tools: https://aka.ms/scsm-support-tools
 
 # Contributing
 
