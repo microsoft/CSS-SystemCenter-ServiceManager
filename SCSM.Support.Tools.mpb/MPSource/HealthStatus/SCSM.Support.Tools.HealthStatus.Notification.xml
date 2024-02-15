@@ -31,11 +31,6 @@
         <Version>1.0.0.0</Version>
         <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
       </Reference>
-      <Reference Alias="SystemCenter1">
-        <ID>Microsoft.SystemCenter.Subscriptions</ID>
-        <Version>1.0.0.0</Version>
-        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
-      </Reference>
       <Reference Alias="EnterpriseManagement">
         <ID>Microsoft.EnterpriseManagement.ServiceManager.UI.Administration</ID>
         <Version>1.0.0.0</Version>

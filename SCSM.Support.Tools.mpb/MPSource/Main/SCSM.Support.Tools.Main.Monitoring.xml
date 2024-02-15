@@ -16,16 +16,6 @@
 				<Version>1.0.0.0</Version>
 				<PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
 			</Reference>
-			<Reference Alias="AdminUI">
-				<ID>Microsoft.EnterpriseManagement.ServiceManager.UI.Administration</ID>
-				<Version>1.0.0.0</Version>
-				<PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
-			</Reference>
-			<Reference Alias="AdminItem">
-				<ID>System.AdminItem.Library</ID>
-				<Version>1.0.0.0</Version>
-				<PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
-			</Reference>
 			<Reference Alias="LfxLibrary">
 				<ID>ServiceManager.LinkingFramework.Library</ID>
 				<Version>1.0.0.0</Version>
