@@ -3,7 +3,7 @@
 This site contains scripts & tools for supporting and troubleshooting Microsoft Service Manager (SCSM). They are intended for identifying and resolving a wide range of issues regarding SCSM.  
 
 > ##### Note:
-> These scripts & tools are developed and maintained by members of the Microsoft System Center technical support team in GitHub as an open-source project. They are NOT officially supported by Microsoft. Support Policy can be found [here](https://github.com/microsoft/CSS-SystemCenter-ServiceManager/blob/main/SUPPORT.md).  
+> These scripts & tools are developed and maintained by members of the Microsoft System Center technical support team as an open-source project in GitHub. They are NOT officially supported by Microsoft. The Support Policy can be found [here](https://github.com/microsoft/CSS-SystemCenter-ServiceManager/blob/main/SUPPORT.md).  
 
 We welcome contributions. Each script contains a link to GitHub for contributions.
 
