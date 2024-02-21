@@ -1,8 +1,8 @@
 ---
-name: Bug report
-about: Create a report to help us improve
-title: "[BUG]"
-labels: bug
+name: Bug report - SCSM Diagnostic Tool
+about: Create a report to help us improve the SCSM Diagnostic Tool.
+title: "[BUG - SCSM Diagnostic Tool]"
+labels: 1. SCSM Diagnostic Tool, bug
 assignees: khusmeno-MS
 
 ---
