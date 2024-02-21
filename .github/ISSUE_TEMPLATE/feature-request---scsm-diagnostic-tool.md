@@ -1,7 +1,7 @@
 ---
 name: Feature request - SCSM Diagnostic Tool
 about: Suggest an idea for the SCSM Diagnostic Tool
-title: "[NEW IDEA - SCSM Diagnostic Tool]"
+title: "[New IDEA - SCSM Diagnostic Tool]"
 labels: 1. SCSM Diagnostic Tool, enhancement
 assignees: khusmeno-MS
 
