@@ -39,7 +39,8 @@ namespace SCSM.Support.Tools.HealthStatus.Presentation
         {
             try
             {
-                (await InstanceAsync())
+                await
+                    (await InstanceAsync())
                     ._SendAsync(operationType, props);
             }
             catch (Exception ex)
@@ -51,7 +52,8 @@ namespace SCSM.Support.Tools.HealthStatus.Presentation
         {
             try
             {
-                (await InstanceAsync())
+                await
+                    (await InstanceAsync())
                     ._SetModuleSpecificInfoAsync(attribName, attribValue);
             }
             catch (Exception ex)
@@ -59,13 +61,13 @@ namespace SCSM.Support.Tools.HealthStatus.Presentation
                 Helpers.OnlyLogException(ex);
             }
         }
-        void _SendAsync(string operationType, Dictionary<string, string> props)
+        async Task _SendAsync(string operationType, Dictionary<string, string> props)
         {
-            base.SendAsync(operationType, props);
+            await base.SendAsync(operationType, props);
         }
-        void _SetModuleSpecificInfoAsync(string attribName, string attribValue)
+        async Task _SetModuleSpecificInfoAsync(string attribName, string attribValue)
         {
-            base.SetModuleSpecificInfoAsync(attribName, attribValue);
+            await base.SetModuleSpecificInfoAsync(attribName, attribValue);
         }
 
     }

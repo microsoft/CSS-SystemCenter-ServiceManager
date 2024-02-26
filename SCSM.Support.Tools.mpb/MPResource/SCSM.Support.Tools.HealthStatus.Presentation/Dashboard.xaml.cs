@@ -258,27 +258,33 @@ namespace SCSM.Support.Tools.HealthStatus.Presentation
         Stopwatch duration_View = Stopwatch.StartNew();
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            duration_View.Stop();
+            try
+            {
+                duration_View.Stop();
 
-            #region Telemetry
-            string MaxSeverity_WF = "";
-            var wfMaxSeverity = (Component_WF.DataContext as IDataItem)["MaxSeverity"];
-            if (wfMaxSeverity != null) { MaxSeverity_WF = wfMaxSeverity.ToString(); }
+                string MaxSeverity_WF = "";
+                var wfMaxSeverity = (Component_WF.DataContext as IDataItem)["MaxSeverity"];
+                if (wfMaxSeverity != null) { MaxSeverity_WF = wfMaxSeverity.ToString(); }
 
-            string MaxSeverity_DW = "";
-            var dwMaxSeverity = (Component_DW.DataContext as IDataItem)["MaxSeverity"];
-            if (dwMaxSeverity != null) { MaxSeverity_DW = dwMaxSeverity.ToString(); }
+                string MaxSeverity_DW = "";
+                var dwMaxSeverity = (Component_DW.DataContext as IDataItem)["MaxSeverity"];
+                if (dwMaxSeverity != null) { MaxSeverity_DW = dwMaxSeverity.ToString(); }
 
-            Telemetry.SendAsync(
-                operationType: "ViewOpened",
-                props: new Dictionary<string, string>() {
+                Telemetry.SendAsync(
+                    operationType: "ViewOpened",
+                    props: new Dictionary<string, string>() {
                     { "Name", "SCSM.Support.Tools.HealthStatus.Presentation.Dashboard" },
                     { "MaxSeverity_WF", MaxSeverity_WF },
                     { "MaxSeverity_DW",MaxSeverity_DW },
                     { "DurationMsecs", duration_View.ElapsedMilliseconds.ToString() }
-                }
-            );
-            #endregion
+                    }
+                );
+
+            }
+            catch (Exception ex)
+            {
+                Helpers.LogAndShowException(ex);
+            }
         }
     }
 }

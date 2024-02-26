@@ -23,12 +23,17 @@ namespace SCSM.Support.Tools.Main.Presentation
         {
             return lazyInstance.Value;
         }
-
+        protected override async Task InitializeAsync()
+        {
+            await base.InitializeAsync();
+            //todo: optional. if anything else needed to add to Main node initially this can be done here...
+        }
         public static new async void SendAsync(string operationType, Dictionary<string, string> props)
         {
             try
             {
-                (await InstanceAsync())
+                await
+                    (await InstanceAsync())
                     ._SendAsync(operationType, props);
             }
             catch (Exception ex)
@@ -40,7 +45,8 @@ namespace SCSM.Support.Tools.Main.Presentation
         {
             try
             {
-                (await InstanceAsync())
+                await 
+                    (await InstanceAsync())
                     ._SetModuleSpecificInfoAsync(attribName, attribValue);
             }
             catch (Exception ex)
@@ -48,13 +54,13 @@ namespace SCSM.Support.Tools.Main.Presentation
                 Helpers.OnlyLogException(ex);
             }
         }
-        void _SendAsync(string operationType, Dictionary<string, string> props)
+        async Task _SendAsync(string operationType, Dictionary<string, string> props)
         {
-            base.SendAsync(operationType, props);
+            await base.SendAsync(operationType, props);
         }
-        void _SetModuleSpecificInfoAsync(string attribName, string attribValue)
+        async Task _SetModuleSpecificInfoAsync(string attribName, string attribValue)
         {
-            base.SetModuleSpecificInfoAsync(attribName, attribValue);
+            await base.SetModuleSpecificInfoAsync(attribName, attribValue);
         }
     }
 }

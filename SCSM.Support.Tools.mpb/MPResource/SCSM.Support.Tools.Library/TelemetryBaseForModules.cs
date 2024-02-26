@@ -17,17 +17,17 @@ namespace SCSM.Support.Tools.Library
             var telemetryNode = xmlTelemetry.DocumentElement.AppendChild(xmlTelemetry.CreateNode(XmlNodeType.Element, ModuleName, null)) as XmlElement;
             telemetryNode.SetAttribute("PresentationVersion", Helpers.GetModuleVersion(string.Format("SCSM.Support.Tools.{0}.Presentation.dll", ModuleName)));
         }
-        protected virtual async void SendAsync(string operationType, Dictionary<string, string> props)
+        protected virtual async Task SendAsync(string operationType, Dictionary<string, string> props)
         {
-            (await Library.Telemetry.InstanceAsync())
+            await
+                (await Library.Telemetry.InstanceAsync())
                 .SendAsync(
-                          moduleName: ModuleName,
-                          operationType: operationType,
-                          props: props
-                 );
-
+                    moduleName: ModuleName,
+                    operationType: operationType,
+                    props: props
+                );
         }
-        protected virtual async void SetModuleSpecificInfoAsync(string attribName, string attribValue)
+        protected virtual async Task SetModuleSpecificInfoAsync(string attribName, string attribValue)
         {
             var xmlTelemetry = (await Library.Telemetry.InstanceAsync())
                                     .XmlTelemetry;

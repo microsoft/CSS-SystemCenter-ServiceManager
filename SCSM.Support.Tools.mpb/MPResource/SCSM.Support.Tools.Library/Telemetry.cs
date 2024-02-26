@@ -85,21 +85,23 @@ namespace SCSM.Support.Tools.Library
             });
         }
 
-        public async void SendAsync(string moduleName, string operationType, Dictionary<string, string> props)
-        {
-            try
-            {
+        public async Task SendAsync(string moduleName, string operationType, Dictionary<string, string> props)
+        {           
+            //try
+            //{                
                 (await InstanceAsync())
                     .SendTelemetry(moduleName, operationType, props);
-            }
-            catch (Exception ex)
-            {
-                Helpers.OnlyLogException(ex);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Helpers.OnlyLogException(ex);
+            //}
         }
 
         private void SendTelemetry(string moduleName, string operationType, Dictionary<string, string> props)
         {
+            throw new Exception("lib SendTelemetry");
+
             var telemetry = XmlTelemetry.Clone() as XmlDocument;
             var rootNode = telemetry.DocumentElement;
 
