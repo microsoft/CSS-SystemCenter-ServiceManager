@@ -98,12 +98,14 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="..\..\Output\Central.AssemblyInfo.cs">
+    <Compile Include="..\..\Output\Central.AssemblyInfo.cs">
       <Link>Properties\Central.AssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Dashboard.xaml.cs">
       <DependentUpon>Dashboard.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Info.cs" />
+    <Compile Include="Telemetry.cs" />
     <Page Include="Dashboard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

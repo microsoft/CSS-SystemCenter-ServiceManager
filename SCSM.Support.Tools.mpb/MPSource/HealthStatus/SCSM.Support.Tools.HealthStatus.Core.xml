@@ -47,7 +47,8 @@
         <ClassType ID="SCSM.Support.Tools.HealthStatus.DW" Accessibility="Public" Abstract="false" Base="SCSM.Support.Tools.HealthStatus.Common" Hosted="false" Singleton="true" Extension="false">
           <Property ID="Component" Type="enum" AutoIncrement="false" Key="false" CaseSensitive="false" MaxLength="256" MinLength="0" Required="false" Scale="0" EnumType="SCSM.Support.Tools.HealthStatus.Enum.Component" DefaultValue="SCSM.Support.Tools.HealthStatus.Enum.Component.DW" />
         </ClassType>
-      </ClassTypes>
+  
+	  </ClassTypes>
       <RelationshipTypes>
         <RelationshipType ID="SCSM.Support.Tools.HealthStatus.OverallToWF" Accessibility="Public" Abstract="false" Base="System!System.Reference">
           <Source ID="HealthStatusOverall" MinCardinality="0" MaxCardinality="1" Type="SCSM.Support.Tools.HealthStatus.Overall" />
@@ -57,7 +58,8 @@
           <Source ID="HealthStatusOverall" MinCardinality="0" MaxCardinality="1" Type="SCSM.Support.Tools.HealthStatus.Overall" />
           <Target ID="HealthStatusComponent" MinCardinality="0" MaxCardinality="2147483647" Type="SCSM.Support.Tools.HealthStatus.DW" /><!-- MaxCardinality should be actually 1 but this would cause double subscriptions due to ExcludedRelatedEntityChangeLog -->
         </RelationshipType>
-      </RelationshipTypes>
+      
+	  </RelationshipTypes>
       <EnumerationTypes>
         <EnumerationValue ID="SCSM.Support.Tools.HealthStatus.Enum.Component" Accessibility="Public" />
         <EnumerationValue ID="SCSM.Support.Tools.HealthStatus.Enum.Component.WF" Accessibility="Public" Parent="SCSM.Support.Tools.HealthStatus.Enum.Component" Ordinal="0" />

@@ -29,7 +29,7 @@
 				<ClassType ID="SCSM.Support.Tools.Main.Data" Accessibility="Public" Abstract="false" Base="AdminItem!System.AdminItem" Hosted="false" Singleton="true" Extension="false">
 					<Property ID="EulaApprovedAt" Type="datetime" AutoIncrement="false" Key="false" CaseSensitive="false" MaxLength="256" MinLength="0" Required="false" Scale="0" />
 					<Property ID="EulaApprovedBy" Type="string"   AutoIncrement="false" Key="false" CaseSensitive="false" MaxLength="256" MinLength="0" Required="false" Scale="0" />
-				</ClassType>
+				</ClassType>			
 			</ClassTypes>
 		</EntityTypes>
 	</TypeDefinitions>
@@ -47,4 +47,7 @@
 			</DisplayStrings>
 		</LanguagePack>
 	</LanguagePacks>
+	<Resources>
+		<Assembly ID="SCSM.Support.Tools.Library.Assembly" Accessibility="Public" QualifiedName="SCSM.Support.Tools.Library" FileName="SCSM.Support.Tools.Library.dll" />
+	</Resources>
 </ManagementPack>

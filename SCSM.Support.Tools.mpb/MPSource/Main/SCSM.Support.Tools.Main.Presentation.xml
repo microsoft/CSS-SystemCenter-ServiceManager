@@ -84,7 +84,6 @@
   </LanguagePacks>
   <Resources>
     <Assembly ID="SCSM.Support.Tools.Main.Presentation.Assembly" Accessibility="Public" QualifiedName="SCSM.Support.Tools.Main.Presentation" FileName="SCSM.Support.Tools.Main.Presentation.dll" />
-    <Assembly ID="SCSM.Support.Tools.Library.Assembly" Accessibility="Public" QualifiedName="SCSM.Support.Tools.Library" FileName="SCSM.Support.Tools.Library.dll" />
     <Image ID="SCSM.Support.Tools.Main.Presentation.Folder.Root.Image32" Accessibility="Public" FileName="i362_ClassID_MOMServerRole_32.png" />
   </Resources>
 </ManagementPack>

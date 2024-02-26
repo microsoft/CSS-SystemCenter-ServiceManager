@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.EnterpriseManagement.Configuration;
+using Microsoft.EnterpriseManagement.UI.DataModel;
 using Microsoft.EnterpriseManagement.UI.Extensions.Shared;
 
 
@@ -151,61 +152,5 @@ namespace SCSM.Support.Tools.Library
 
             return EULA.ShowDialog();
         }
-    }
-
-    public static class EulaStatus
-    {
-        private static string class_Main_Data = "SCSM.Support.Tools.Main.Data";
-        private static readonly object lockEulaRead = new object();
-        private static readonly object lockEulaWrite = new object();
-        private static bool wasEulaInfoQueriedFromSDK;
-        private static bool eulaAccepted;
-
-        public static bool EulaAccepted
-        {
-            get
-            {
-                if (!wasEulaInfoQueriedFromSDK)
-                {
-                    lock (lockEulaRead)
-                    {
-                        if (!wasEulaInfoQueriedFromSDK)
-                        {
-                            var mpClassId = (Guid)ConsoleContextHelper.Instance.GetClassType(class_Main_Data)["Id"];
-                            var mainData = ConsoleContextHelper.Instance.GetAllInstances(mpClassId).First();
-                            object eulaAcceptedInMainData = mainData["EulaApprovedAt"];
-
-                            bool eulaStatusFromSDK = false;
-                            if (eulaAcceptedInMainData != null && !(string.IsNullOrEmpty(eulaAcceptedInMainData.ToString().Trim())))
-                            {
-                                eulaStatusFromSDK = true;
-                            }
-
-                            wasEulaInfoQueriedFromSDK = true;
-                            eulaAccepted = eulaStatusFromSDK;
-                        }
-                    }
-                }
-
-                return eulaAccepted;
-            }
-            internal set
-            {
-                if (value != true) { return; };
-
-                lock (lockEulaWrite)
-                {
-                    var mpClassId = (Guid)ConsoleContextHelper.Instance.GetClassType(class_Main_Data)["Id"];
-                    var mainData = ConsoleContextHelper.Instance.GetAllInstances(mpClassId).First();
-                    mainData["EulaApprovedAt"] = DateTime.Now; //this will be converted to UTC by SDK automatically
-                    mainData["EulaApprovedBy"] = ConsoleContextHelper.Instance.CurrentUserName;
-                    ConsoleContextHelper.Instance.UpdateInstance(mainData);
-
-                    eulaAccepted = true;
-                    wasEulaInfoQueriedFromSDK = true;
-                }
-            }
-        }
-
     }
 }
