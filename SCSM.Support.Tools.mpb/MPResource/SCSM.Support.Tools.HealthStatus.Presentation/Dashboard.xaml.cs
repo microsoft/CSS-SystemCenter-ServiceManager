@@ -67,7 +67,7 @@ namespace SCSM.Support.Tools.HealthStatus.Presentation
                     var newMP = new ManagementPack(tmpFileFullPath);
                     Stopwatch duration_mpImport = Stopwatch.StartNew();
                     SM.Emg.ManagementPacks.ImportManagementPack(newMP);
-
+                    
                     Telemetry.SetModuleSpecificInfoAsync("SubscriptionMPCreatedAt", DateTime.Now.ToStringWithTz());
                     Telemetry.SendAsync(
                         operationType: "MPImported",

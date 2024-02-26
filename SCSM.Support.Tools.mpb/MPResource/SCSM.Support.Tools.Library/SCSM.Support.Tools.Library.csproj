@@ -85,6 +85,7 @@
     <Compile Include="SM.cs" />
     <Compile Include="StaticSmstInfo.cs" />
     <Compile Include="TelemetryBaseForModules.cs" />
+    <Compile Include="TelemetrySingletonBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Eula.xaml">

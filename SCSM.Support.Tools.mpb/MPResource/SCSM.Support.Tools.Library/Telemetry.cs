@@ -12,7 +12,6 @@ using System.Xml;
 
 namespace SCSM.Support.Tools.Library
 {
-    //https://medium.com/@KeyurRamoliya/c-asynchronous-initialization-of-singleton-pattern-42af297fb3da
     public class Telemetry
     {
         private static readonly Lazy<Task<Telemetry>> lazyInstance = new Lazy<Task<Telemetry>>(async () =>
@@ -25,9 +24,9 @@ namespace SCSM.Support.Tools.Library
         {
             // Private constructor to prevent direct instantiation. 
         }
-        public static Task<Telemetry> InstanceAsync()
+        public static Task<Telemetry> InstanceAsync
         {
-            return lazyInstance.Value;
+            get { return lazyInstance.Value; }
         }
 
         public XmlDocument XmlTelemetry { get; private set; }
@@ -86,22 +85,13 @@ namespace SCSM.Support.Tools.Library
         }
 
         public async Task SendAsync(string moduleName, string operationType, Dictionary<string, string> props)
-        {           
-            //try
-            //{                
-                (await InstanceAsync())
+        {
+                (await InstanceAsync)
                     .SendTelemetry(moduleName, operationType, props);
-            //}
-            //catch (Exception ex)
-            //{
-            //    Helpers.OnlyLogException(ex);
-            //}
         }
 
         private void SendTelemetry(string moduleName, string operationType, Dictionary<string, string> props)
         {
-            throw new Exception("lib SendTelemetry");
-
             var telemetry = XmlTelemetry.Clone() as XmlDocument;
             var rootNode = telemetry.DocumentElement;
 
