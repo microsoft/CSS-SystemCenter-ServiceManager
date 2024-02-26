@@ -7,12 +7,12 @@ using System.Xml;
 
 namespace SCSM.Support.Tools.Library
 {
-    public abstract class TelemetrySingletonBase<T> : TelemetryBaseForModules where T : TelemetrySingletonBase<T>
+    public abstract class TelemetrySingletonBase<T> : TelemetryBaseForModules where T : TelemetrySingletonBase<T>, new()
     {
         protected TelemetrySingletonBase() { }
         private static readonly Lazy<Task<T>> sInstance = new Lazy<Task<T>>(async () =>
         {
-            var instance = Activator.CreateInstance(typeof(Task<T>), true) as T;
+            var instance = new T();
             await instance.InitializeAsync();
             return instance;
         });

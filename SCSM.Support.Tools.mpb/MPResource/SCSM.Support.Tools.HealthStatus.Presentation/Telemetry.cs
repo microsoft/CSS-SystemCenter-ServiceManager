@@ -9,6 +9,7 @@ namespace SCSM.Support.Tools.HealthStatus.Presentation
 {
     class Telemetry : TelemetrySingletonBase<Telemetry>
     {
+       
         protected override string ModuleName { get { return "HealthStatus"; } }
 
         protected override async Task InitializeAsync()

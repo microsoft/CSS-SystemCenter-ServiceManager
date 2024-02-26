@@ -260,7 +260,7 @@ namespace SCSM.Support.Tools.HealthStatus.Presentation
         {
             try
             {
-                duration_View.Stop();
+                duration_View.Stop();                
 
                 string MaxSeverity_WF = "";
                 var wfMaxSeverity = (Component_WF.DataContext as IDataItem)["MaxSeverity"];
