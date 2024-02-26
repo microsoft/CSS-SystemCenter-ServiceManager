@@ -12,12 +12,13 @@ if ( (Split-Path -Path (Get-Location) -Leaf) -eq $folderName_Bundle ) {
 }
 
 $VSProjects = @()
-$VSProjects += "SCSM.Support.Tools.Library\SCSM.Support.Tools.Library.csproj"
-$VSProjects += "SCSM.Support.Tools.Main.Presentation\SCSM.Support.Tools.Main.Presentation.csproj"
-$VSProjects += "SCSM.Support.Tools.HealthStatus.Presentation\SCSM.Support.Tools.HealthStatus.Presentation.csproj"
+$VSProjects += "SCSM.Support.Tools.sln"
+#$VSProjects += "SCSM.Support.Tools.Library\SCSM.Support.Tools.Library.csproj"
+#$VSProjects += "SCSM.Support.Tools.Main.Presentation\SCSM.Support.Tools.Main.Presentation.csproj"
+#$VSProjects += "SCSM.Support.Tools.HealthStatus.Presentation\SCSM.Support.Tools.HealthStatus.Presentation.csproj"
 
 foreach($VSProject in $VSProjects) {
-    ."C:\Windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe" "$folderName_MPResource\$VSProject" -t:rebuild /p:Configuration=$Configuration    
+    ."C:\Windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe" "$folderName_MPResource\$VSProject" -t:clean,rebuild /p:Configuration=$Configuration    
 }
  
 # read-host " "
