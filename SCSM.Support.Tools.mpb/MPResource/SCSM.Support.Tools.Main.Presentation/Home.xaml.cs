@@ -42,7 +42,7 @@ namespace SCSM.Support.Tools.Main.Presentation
                     operationType: "LinkClicked",
                     props: new Dictionary<string, string>() {
                         { "InView", "SCSM.Support.Tools.Main.Presentation.Home" },
-                        { "LinkUrl", navigateUri}
+                        { "LinkUrl", navigateUri},
                     }
                 );
             }
@@ -108,7 +108,7 @@ namespace SCSM.Support.Tools.Main.Presentation
                 operationType: "ViewOpened",
                 props: new Dictionary<string, string>() {
                         { "Name", "SCSM.Support.Tools.Main.Presentation.Home" },
-                        { "DurationMsecs", duration_View.ElapsedMilliseconds.ToString() }
+                        { "DurationMsecs", duration_View.ElapsedMilliseconds.ToString() },
                 }
             );
         }
