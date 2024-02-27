@@ -32,13 +32,12 @@ namespace SCSM.Support.Tools.Library
         public XmlDocument XmlTelemetry { get; private set; }
         private async Task InitializeAsync()
         {
-            await Task.Run(() =>//this is needed in order to run this method (or actually the block) async! Otherwise it wil run sync, even async is in the method signature. Compiler warning CS1998 will appear!
+            await Task.Run(() =>//this is needed in order to run this method (or actually the block) async bcz no awaitable call can be made inside!
+                                //  Otherwise it wil run sync, even async is in the method signature and compiler warning CS1998 will appear!
                                 //Always surround in try/catch block otherwise an exception would crash the UI/App. The caller's try/catch block (if exists) does not have an effect.
             {
                 try
                 {
-                    //throw new Exception("in library telemeetry ctor");
-
                     XmlTelemetry = new XmlDocument();
                     XmlTelemetry.AppendChild(XmlTelemetry.CreateNode(XmlNodeType.Element, "SmstTelemetry", null)); //creates the root element
                     var rootNode = XmlTelemetry.DocumentElement;
@@ -46,6 +45,7 @@ namespace SCSM.Support.Tools.Library
                     #region Library=root node               
                     rootNode.SetAttribute("LibraryVersion", Helpers.GetLibraryVersion());
                     rootNode.SetAttribute("SessionId", Guid.NewGuid().ToString());
+                    rootNode.SetAttribute("SequenceId", "0");
                     //note that the below are actually from Main module, but we want them always in Telemetry, therefore set here.
                     rootNode.SetAttribute("FirstImportedAt", SMST.FirstImportedAt.ToStringWithTz());
                     rootNode.SetAttribute("LastImportedAt", SMST.LastImportedAt.ToStringWithTz());
@@ -84,14 +84,49 @@ namespace SCSM.Support.Tools.Library
             });
         }
 
-        public async Task SendAsync(string moduleName, string operationType, Dictionary<string, string> props)
+        #region static helper functions that hides the async/await stuff at caller side
+        public static void SendAsync(string operationType, Dictionary<string, string> props)
         {
-                (await InstanceAsync)
-                    .SendTelemetry(moduleName, operationType, props);
+            SendAsync("", operationType, props);
         }
+        public static async void SendAsync(string moduleName, string operationType, Dictionary<string, string> props)
+        {
+            try
+            {
+                (await InstanceAsync)
+                .SendTelemetry(moduleName, operationType, props);
+            }
+            catch (Exception ex)
+            {
+                Helpers.OnlyLogException(ex);
+            }
+        }
+
+        public static void SetInfoAsync(string attribName, string attribValue)
+        {
+            SetInfoAsync("", attribName, attribValue);
+        }
+        public static async void SetInfoAsync(string moduleName, string attribName, string attribValue)
+        {
+            try
+            {
+                (await InstanceAsync)
+                .SetInfo(moduleName, attribName, attribValue);
+            }
+            catch (Exception ex)
+            {
+                Helpers.OnlyLogException(ex);
+            }
+        }
+        #endregion        
 
         private void SendTelemetry(string moduleName, string operationType, Dictionary<string, string> props)
         {
+            int currSeq;
+            int.TryParse(GetInfo("", "SequenceId"), out currSeq);
+            currSeq++;
+            SetInfo("", "SequenceId", currSeq.ToString());
+
             var telemetry = XmlTelemetry.Clone() as XmlDocument;
             var rootNode = telemetry.DocumentElement;
 
@@ -157,7 +192,40 @@ namespace SCSM.Support.Tools.Library
             }
             catch { }
         }
+
+        private void SetInfo(string moduleName, string attribName, string attribValue)
+        {
+            var xmlTelemetry = XmlTelemetry;
+            XmlElement telemetryNode = xmlTelemetry.DocumentElement;
+            if (!string.IsNullOrEmpty(moduleName))
+            {
+                var moduleNode = xmlTelemetry.DocumentElement.GetElementsByTagName(moduleName);
+                if (moduleNode.Count > 0)
+                {
+                    telemetryNode = xmlTelemetry.DocumentElement.GetElementsByTagName(moduleName)[0] as XmlElement;
+                }
+            }
+            telemetryNode.SetAttribute(attribName, attribValue);
+        }
+        private string GetInfo(string moduleName, string attribName)
+        {
+            var xmlTelemetry = XmlTelemetry;
+            XmlElement telemetryNode = xmlTelemetry.DocumentElement;
+            if (!string.IsNullOrEmpty(moduleName))
+            {
+                var moduleNode = xmlTelemetry.DocumentElement.GetElementsByTagName(moduleName);
+                if (moduleNode.Count > 0)
+                {
+                    telemetryNode = xmlTelemetry.DocumentElement.GetElementsByTagName(moduleName)[0] as XmlElement;
+                }
+            }
+            XmlAttribute attribNode = telemetryNode.GetAttributeNode(attribName);
+            string result = "";
+            if (attribNode != null)
+            {
+                result = attribNode.Value;
+            }
+            return result;
+        }
     }
-
-
 }

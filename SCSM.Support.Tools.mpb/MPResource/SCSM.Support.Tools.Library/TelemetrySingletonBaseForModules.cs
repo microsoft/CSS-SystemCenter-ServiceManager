@@ -26,58 +26,29 @@ namespace SCSM.Support.Tools.Library
             telemetryNode.SetAttribute("PresentationVersion", Helpers.GetModuleVersion(string.Format("SCSM.Support.Tools.{0}.Presentation.dll", ModuleName)));
         }
 
+       #region static helper functions that hides the async/await stuff at caller side
         public static async void SendAsync(string operationType, Dictionary<string, string> props)
         {
             try
             {
-                await
-                    (await InstanceAsync)
-                    ._SendAsync(operationType, props);
+                Library.Telemetry.SendAsync((await InstanceAsync).ModuleName, operationType, props);
             }
             catch (Exception ex)
             {
                 Helpers.OnlyLogException(ex);
             }
         }
-        //async Task _SendAsync(string operationType, Dictionary<string, string> props)
-        //{
-        //    await base.SendAsync(operationType, props);
-        //}
-
-        public static async void SetModuleSpecificInfoAsync(string attribName, string attribValue)
+        public static async void SetInfoAsync(string attribName, string attribValue)
         {
             try
             {
-                await
-                    (await InstanceAsync)
-                    ._SetModuleSpecificInfoAsync(attribName, attribValue);
+                Library.Telemetry.SetInfoAsync((await InstanceAsync).ModuleName, attribName, attribValue);
             }
             catch (Exception ex)
             {
                 Helpers.OnlyLogException(ex);
             }
         }
-        //async Task _SetModuleSpecificInfoAsync(string attribName, string attribValue)
-        //{
-        //    await base.SetModuleSpecificInfoAsync(attribName, attribValue);
-        //}
-
-        protected virtual async Task _SendAsync(string operationType, Dictionary<string, string> props)
-        {
-            await
-                (await Library.Telemetry.InstanceAsync)
-                .SendAsync(
-                    moduleName: ModuleName,
-                    operationType: operationType,
-                    props: props
-                );
-        }
-        protected virtual async Task _SetModuleSpecificInfoAsync(string attribName, string attribValue)
-        {
-            var xmlTelemetry = (await Library.Telemetry.InstanceAsync)
-                                    .XmlTelemetry;
-            var telemetryNode = xmlTelemetry.DocumentElement.GetElementsByTagName(ModuleName)[0] as XmlElement;
-            telemetryNode.SetAttribute(attribName, attribValue);
-        }
+        #endregion       
     }
 }

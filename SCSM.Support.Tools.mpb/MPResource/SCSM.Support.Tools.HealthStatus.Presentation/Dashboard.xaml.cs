@@ -50,10 +50,6 @@ namespace SCSM.Support.Tools.HealthStatus.Presentation
         {
             try
             {
-                //IServiceContainer container = (IServiceContainer)FrameworkServices.GetService(typeof(IServiceContainer));
-                //IManagementGroupSession curSession = (IManagementGroupSession)container.GetService(typeof(IManagementGroupSession));
-                //EnterpriseManagementGroup Emg = curSession.ManagementGroup;
-
                 #region import unsealed Subscriptions MP if not exist    
                 var subscriptionMP = Info.GetSubscriptionMP();
                 if (subscriptionMP == null)
@@ -67,8 +63,9 @@ namespace SCSM.Support.Tools.HealthStatus.Presentation
                     var newMP = new ManagementPack(tmpFileFullPath);
                     Stopwatch duration_mpImport = Stopwatch.StartNew();
                     SM.Emg.ManagementPacks.ImportManagementPack(newMP);
-                    
-                    Telemetry.SetModuleSpecificInfoAsync("SubscriptionMPCreatedAt", DateTime.Now.ToStringWithTz());
+
+                    duration_mpImport.Stop();
+                    Telemetry.SetInfoAsync("SubscriptionMPCreatedAt", DateTime.Now.ToStringWithTz());
                     Telemetry.SendAsync(
                         operationType: "MPImported",
                         props: new Dictionary<string, string>() {
@@ -83,10 +80,10 @@ namespace SCSM.Support.Tools.HealthStatus.Presentation
                 #region As we have the MP, let's check if the subscription is still there.
                 var duration_getRule = Stopwatch.StartNew();
                 var subscription = Info.GetSubscription();
+
+                duration_getRule.Stop();
                 if (subscription == null)
                 {
-                    MessageBox.Show(string.Format("Looks like the Daily Subscription has been removed from the unsealed MP named '{0}'.\n\nIn order to re-create this daily subscription, this unsealed MP has to be deleted first.\nPlease ensure to export it before deleting.", subscriptionMpDisplayName), "SCSM Support Tools - Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
-
                     Telemetry.SendAsync(
                         operationType: "MessageBoxShown",
                         props: new Dictionary<string, string>() {
@@ -95,6 +92,8 @@ namespace SCSM.Support.Tools.HealthStatus.Presentation
                             { "DurationMsecs", duration_getRule.ElapsedMilliseconds.ToString() }
                         }
                     );
+
+                    MessageBox.Show(string.Format("Looks like the Subscription has been removed from the unsealed MP named '{0}'.\n\nIn order to re-create this subscription, this unsealed MP has to be deleted first.\nPlease ensure to export it before deleting.", subscriptionMpDisplayName), "SCSM Support Tools - Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
                 #endregion
@@ -104,7 +103,8 @@ namespace SCSM.Support.Tools.HealthStatus.Presentation
                 IDataItem subscriptionDataItem = ConsoleContextHelper.Instance.GetWorkflowSubscriptionRule(subscription.Id);
                 var commandHandler = new Microsoft.EnterpriseManagement.ServiceManager.UI.Administration.Notification.Subscription.SubscriptionCommandHandler();
                 var okClicked = commandHandler.EditSubscription(subscriptionDataItem, true);
-
+                
+                duration_EditSubscription.Stop();
                 Telemetry.SendAsync(
                     operationType: "LinkClicked",
                     props: new Dictionary<string, string>() {
@@ -146,8 +146,7 @@ namespace SCSM.Support.Tools.HealthStatus.Presentation
         }
 
         private void Component_WForDW_Initialized(object sender, EventArgs e)
-        {
-            Stopwatch duration_GetHealthStatus = Stopwatch.StartNew();
+        {            
             Border component = sender as Border;
             Image severityIcon = null;
             TextBlock lastRunFriendly = null;
@@ -204,8 +203,7 @@ namespace SCSM.Support.Tools.HealthStatus.Presentation
             }
         }
         private void SetPerSeverity(Border component, Image severityIcon, string maxSeverity_Name)
-        {
-            #region Set Severity Icon and Border color
+        {            
             string ImageSource_refix = "pack://application:,,,/";
             if (maxSeverity_Name == "SCSM.Support.Tools.HealthStatus.Enum.Severity.Critical")
             {
@@ -231,8 +229,7 @@ namespace SCSM.Support.Tools.HealthStatus.Presentation
             {
                 severityIcon.Source = new BitmapImage(new Uri(ImageSource_refix + "Microsoft.EnterpriseManagement.ServiceManager.Application.Common;component/commonactivitytab/images/cancelled_16.png"));
                 component.BorderBrush = Brushes.LightYellow;
-            }
-            #endregion
+            }            
         }
 
         public static string VersionOfCore
@@ -260,8 +257,6 @@ namespace SCSM.Support.Tools.HealthStatus.Presentation
         {
             try
             {
-                duration_View.Stop();                
-
                 string MaxSeverity_WF = "";
                 var wfMaxSeverity = (Component_WF.DataContext as IDataItem)["MaxSeverity"];
                 if (wfMaxSeverity != null) { MaxSeverity_WF = wfMaxSeverity.ToString(); }
@@ -270,6 +265,7 @@ namespace SCSM.Support.Tools.HealthStatus.Presentation
                 var dwMaxSeverity = (Component_DW.DataContext as IDataItem)["MaxSeverity"];
                 if (dwMaxSeverity != null) { MaxSeverity_DW = dwMaxSeverity.ToString(); }
 
+                duration_View.Stop();
                 Telemetry.SendAsync(
                     operationType: "ViewOpened",
                     props: new Dictionary<string, string>() {
@@ -279,7 +275,6 @@ namespace SCSM.Support.Tools.HealthStatus.Presentation
                     { "DurationMsecs", duration_View.ElapsedMilliseconds.ToString() }
                     }
                 );
-
             }
             catch (Exception ex)
             {
