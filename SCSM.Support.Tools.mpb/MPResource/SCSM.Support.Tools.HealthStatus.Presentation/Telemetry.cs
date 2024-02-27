@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SCSM.Support.Tools.HealthStatus.Presentation
 {
-    class Telemetry : TelemetrySingletonBase<Telemetry>
+    class Telemetry : TelemetrySingletonBaseForModules<Telemetry>
     {
        
         protected override string ModuleName { get { return "HealthStatus"; } }
