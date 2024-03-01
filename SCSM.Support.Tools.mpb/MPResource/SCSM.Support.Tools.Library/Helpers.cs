@@ -82,19 +82,28 @@ namespace SCSM.Support.Tools.Library
 
         private static void LogException(Exception ex, string additionalInfo = "")
         {
-            var currentModuleInfo = string.Format("{0} {1}", GetLibraryAssemblyModule().FullName, GetLibraryAssemblyModule().Location);
-
-            string event_message = string.Format("{0} \r\n------- \r\n{1} ", ex.ToString(), currentModuleInfo);
+            string event_message = ex.ToString();            
             if (!string.IsNullOrWhiteSpace(additionalInfo))
             {
                 event_message += string.Format("\r\n------ \r\nAdditional Info: {0}", additionalInfo);
             }
+            event_message += string.Format("\r\n------ \r\n{0}", GetLibraryAssemblyModule().FullName);;
 
+            //here send telemetry before adding PII
+            Telemetry.SendAsync(
+               moduleName: "",
+               operationType: "ExceptionLogged",
+               props: new Dictionary<string, string>() {
+                    { "event_message", event_message },
+               }
+           );
+
+            event_message += string.Format("\r\n------- \r\n{0} ", GetLibraryAssemblyModule().Location);
             using (EventLog eventLog = new EventLog(event_logName))
             {
                 eventLog.Source = event_Source;
                 eventLog.WriteEntry(event_message, event_type, event_ID, event_category);
-            }
+            }           
         }
 
         public static void OnlyLogException(Exception ex, string additionalInfo = "")
