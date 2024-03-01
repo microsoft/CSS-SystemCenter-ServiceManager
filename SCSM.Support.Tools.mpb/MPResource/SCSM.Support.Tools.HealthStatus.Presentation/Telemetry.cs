@@ -9,15 +9,15 @@ namespace SCSM.Support.Tools.HealthStatus.Presentation
 {
     class Telemetry : TelemetrySingletonBaseForModules<Telemetry>
     {
+        public Telemetry() { }
 
         protected override string ModuleName { get { return "HealthStatus"; } }
-
-        protected override async Task InitializeAsync()
+        protected override async Task InitializeModuleSpecificCommonTelemetryInfo()
         {
-            await base.InitializeAsync();
-            //todo: some other attribs could be set initially (= ONLY ONCE) like below. Then, if they change later then be set with SetInfoAsync() elsewhere
+            await base.InitializeModuleSpecificCommonTelemetryInfo();
 
-            Info.SetSubscriptionSpecificInfoIntoTelemetry();
+            Info.SetSubscriptionSpecificTelemetryInfoAsync();
         }
-    }
+       
+}
 }

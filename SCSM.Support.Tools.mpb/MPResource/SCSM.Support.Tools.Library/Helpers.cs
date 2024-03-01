@@ -261,9 +261,16 @@ namespace SCSM.Support.Tools.Library
         }
         public static bool IsConnectedToInternet()
         {
+            bool result = false;
             Uri uri = new Uri("https://forms.office.com/formapi/api");
-            var httpResult = GetHttpClient_WithProxy(uri, 60).GetAsync(uri).Result;
-            return httpResult.IsSuccessStatusCode;
+            HttpResponseMessage httpResult = new HttpResponseMessage();
+            try
+            {
+                httpResult = GetHttpClient_WithProxy(uri, 60).GetAsync(uri).Result;
+                result = true;
+            }
+            catch { }
+            return result;
         }
         public static bool IsWebProxyNeeded()
         {

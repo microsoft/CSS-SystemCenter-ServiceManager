@@ -45,7 +45,7 @@ namespace SCSM.Support.Tools.HealthStatus.Presentation
                 else
                 {
                     result = 0;
-                }                
+                }
             }
             return result;
         }
@@ -54,32 +54,38 @@ namespace SCSM.Support.Tools.HealthStatus.Presentation
             return subscription.Enabled;
         }
 
-        public static void SetSubscriptionSpecificInfoIntoTelemetry()
+        public static async void SetSubscriptionSpecificTelemetryInfoAsync()
         {
             try
             {
-                string subscriptionMPCreatedAt = "";
-                var subscriptionMP = Info.GetSubscriptionMP();
-                if (subscriptionMP != null)
+                await Task.Run(() =>
                 {
-                    subscriptionMPCreatedAt = subscriptionMP.TimeCreated.ToStringWithTz();
-                }
-                Telemetry.SetInfoAsync("SubscriptionMPCreatedAt", subscriptionMPCreatedAt);
+                    #region Unsealed subscription MP
+                    string subscriptionMPCreatedAt = "";
+                    var subscriptionMP = Info.GetSubscriptionMP();
+                    if (subscriptionMP != null)
+                    {
+                        subscriptionMPCreatedAt = subscriptionMP.TimeCreated.ToStringWithTz();
+                    }
+                    Telemetry.SetInfoAsync("SubscriptionMPCreatedAt", subscriptionMPCreatedAt);
+                    #endregion
 
-
-                var subscription = Info.GetSubscription();
-                if (subscription == null)
-                {
-                    Telemetry.SetInfoAsync("SubscriptionExists", false.ToString());
-                    Telemetry.SetInfoAsync("SubscriptionRecipientCount", "-1");
-                    Telemetry.SetInfoAsync("SubscriptionIsEnabled", "");
-                }
-                else
-                {
-                    Telemetry.SetInfoAsync("SubscriptionExists", true.ToString());
-                    Telemetry.SetInfoAsync("SubscriptionRecipientCount", Info.GetSubscriptionRecipientsCount(subscription).ToString());
-                    Telemetry.SetInfoAsync("SubscriptionIsEnabled", Info.IsSubscriptionEnabled(subscription).ToString());
-                }
+                    #region Subscription
+                    var subscription = Info.GetSubscription();
+                    if (subscription == null)
+                    {
+                        Telemetry.SetInfoAsync("SubscriptionExists", false.ToString());
+                        Telemetry.SetInfoAsync("SubscriptionRecipientCount", "-1");
+                        Telemetry.SetInfoAsync("SubscriptionIsEnabled", "");
+                    }
+                    else
+                    {
+                        Telemetry.SetInfoAsync("SubscriptionExists", true.ToString());
+                        Telemetry.SetInfoAsync("SubscriptionRecipientCount", Info.GetSubscriptionRecipientsCount(subscription).ToString());
+                        Telemetry.SetInfoAsync("SubscriptionIsEnabled", Info.IsSubscriptionEnabled(subscription).ToString());
+                    }
+                    #endregion
+                });
             }
             catch (Exception ex)
             {

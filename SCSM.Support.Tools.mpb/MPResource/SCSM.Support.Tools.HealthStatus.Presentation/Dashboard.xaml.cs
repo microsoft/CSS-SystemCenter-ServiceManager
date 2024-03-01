@@ -62,8 +62,8 @@ namespace SCSM.Support.Tools.HealthStatus.Presentation
                     Stopwatch duration_mpImport = Stopwatch.StartNew();
                     SM.Emg.ManagementPacks.ImportManagementPack(newMP);
                     duration_mpImport.Stop();
-
-                    Telemetry.SetInfoAsync("SubscriptionMPCreatedAt", DateTime.Now.ToStringWithTz());
+                    
+                    Info.SetSubscriptionSpecificTelemetryInfoAsync();
                     Telemetry.SendAsync(
                         operationType: "MPImported",
                         props: new Dictionary<string, string>() {
@@ -81,8 +81,8 @@ namespace SCSM.Support.Tools.HealthStatus.Presentation
                 duration_GetSubscriptionBeforeEdit.Stop();
 
                 if (subscription == null)
-                {
-                    Telemetry.SetInfoAsync("SubscriptionExists", false.ToString());
+                {                    
+                    Info.SetSubscriptionSpecificTelemetryInfoAsync();
                     Telemetry.SendAsync(
                         operationType: "MessageBoxShown",
                         props: new Dictionary<string, string>() {
@@ -97,7 +97,7 @@ namespace SCSM.Support.Tools.HealthStatus.Presentation
                 }
                 #endregion
 
-                Info.SetSubscriptionSpecificInfoIntoTelemetry();
+                Info.SetSubscriptionSpecificTelemetryInfoAsync();
 
                 #region Opening the subscription so that the Recipient can be set
 
@@ -119,7 +119,7 @@ namespace SCSM.Support.Tools.HealthStatus.Presentation
                 int subscriptionRecipientCountAfterEdit = Info.GetSubscriptionRecipientsCount(subscription);
                 duration_RecipientsCountAfterEdit.Stop();
 
-                Info.SetSubscriptionSpecificInfoIntoTelemetry();
+                Info.SetSubscriptionSpecificTelemetryInfoAsync();
 
                 Telemetry.SendAsync(
                     operationType: "LinkClicked",
@@ -278,10 +278,10 @@ namespace SCSM.Support.Tools.HealthStatus.Presentation
 
         Stopwatch duration_View = Stopwatch.StartNew();
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
+        {        
             try
             {
-                Info.SetSubscriptionSpecificInfoIntoTelemetry();
+                Info.SetSubscriptionSpecificTelemetryInfoAsync();
 
                 string MaxSeverity_WF = "";
                 var wfMaxSeverity = (Component_WF.DataContext as IDataItem)["MaxSeverity"];

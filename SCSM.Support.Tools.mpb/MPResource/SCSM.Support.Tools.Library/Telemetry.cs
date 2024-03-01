@@ -12,89 +12,113 @@ using System.Xml;
 
 namespace SCSM.Support.Tools.Library
 {
+    /// <summary>
+    /// this class is Singleton & with async initialization, that prevents blocking of caller UI thread. 
+    /// Because even UI calls "static async SendAsync" method (which would normally not block the UI), BUT before entering that method, 
+    /// first static fields (e.g. the "instance") are initialized and static ctor will be run BUT in caller's thread (= UI) and will block the UI.
+    /// Therefore async/await pattern also used in the "static" places. Using Task<Telemetry> as return type is your friend!
+    /// </summary>
     public class Telemetry
     {
-        private static readonly Lazy<Task<Telemetry>> lazyInstance = new Lazy<Task<Telemetry>>(async () =>
+        /// <summary>
+        /// static ctor. runs only once when a static member is refd. use this for setting common telemetry,but independent from Modules
+        /// </summary>
+        static Telemetry()
         {
-            var instance = new Telemetry();
-            await instance.InitializeAsync();
-            return instance;
-        });
+            instance = InitializeField_instance_Async();
+        }
+
+        /// <summary>
+        ///  instance ctor. runs only once when an instance member is refd. use for what?
+        /// </summary>
         private Telemetry()
         {
-            // Private constructor to prevent direct instantiation. 
-        }
-        public static Task<Telemetry> InstanceAsync
-        {
-            get { return lazyInstance.Value; }
+
         }
 
-        public XmlDocument XmlTelemetry { get; private set; }
-        private async Task InitializeAsync()
+        /// <summary>
+        /// could be here initialized as  =InitializeField_instance_Async();  but I prefer it to be done in static ctor.
+        /// </summary>
+        private static readonly Task<Telemetry> instance;
+
+        /// <summary>
+        /// here we use the chance to do the "initialization" stuff
+        /// </summary>
+        /// <returns></returns>
+        private static async Task<Telemetry> InitializeField_instance_Async()
         {
-            await Task.Run(() =>//this is needed in order to run this method (or actually the block) async bcz no awaitable call can be made inside!
-                                //  Otherwise it wil run sync, even async is in the method signature and compiler warning CS1998 will appear!
-                                //Always surround in try/catch block otherwise an exception would crash the UI/App. The caller's try/catch block (if exists) does not have an effect.
+            var instance = new Telemetry();
+            await instance.InitializeCommonTelemetryInfo();
+            return instance;
+        }
+
+        /// <summary>
+        /// Members should not be static and should be accessed over this static Instance, e.g. XmlTelemetry.
+        /// </summary>
+        public static Task<Telemetry> InstanceAsync { get { return instance; } }
+
+        /// <summary>
+        /// runs only once. use this for common telemetry, but independent from Modules. This is the part where static initialization goes to a separate thread!
+        /// </summary>
+        /// <returns></returns>
+        private async Task InitializeCommonTelemetryInfo()
+        {
+            await Task.Run(() =>
             {
-                try
-                {
-                    XmlTelemetry = new XmlDocument();
-                    XmlTelemetry.AppendChild(XmlTelemetry.CreateNode(XmlNodeType.Element, "SmstTelemetry", null)); //creates the root element
-                    var rootNode = XmlTelemetry.DocumentElement;
+                XmlTelemetry = new XmlDocument();
+                XmlTelemetry.AppendChild(XmlTelemetry.CreateNode(XmlNodeType.Element, "SmstTelemetry", null)); //creates the root element
+                var rootNode = XmlTelemetry.DocumentElement;
 
-                    #region Library=root node               
-                    rootNode.SetAttribute("LibraryVersion", Helpers.GetLibraryVersion());
-                    rootNode.SetAttribute("SessionId", Guid.NewGuid().ToString());
-                    rootNode.SetAttribute("SequenceId", "0");
-                    //note that the below are actually from Main module, but we want them always in Telemetry, therefore set here.
-                    rootNode.SetAttribute("FirstImportedAt", SMST.FirstImportedAt.ToStringWithTz());
-                    rootNode.SetAttribute("LastImportedAt", SMST.LastImportedAt.ToStringWithTz());
-                    rootNode.SetAttribute("EulaAcceptedAt", EulaStatus.EulaAccepted ? EulaStatus.EulaAcceptedAt.Value.ToStringWithTz() : "");
-                    #endregion
-                    #region SM node
-                    var smNode = rootNode.AppendChild(XmlTelemetry.CreateNode(XmlNodeType.Element, "SM", null)) as XmlElement;
-                    smNode.SetAttribute("SDKVersion", SM.Emg.Version.ToString());
-                    smNode.SetAttribute("ConsoleVersion", Application.ProductVersion);
-                    smNode.SetAttribute("OriginalCountryCode", SM.Emg.OriginalCountryCode);
-                    smNode.SetAttribute("CurrentCountryCode", SM.Emg.CurrentCountryCode);
-                    smNode.SetAttribute("IsThisMgmtServer", Helpers.IsSameAsHostname(SM.Emg.ConnectionSettings.ServerName).ToString());
-                    smNode.SetAttribute("MGId", SM.Emg.Id.ToString());
-                    smNode.SetAttribute("UserRoles", Helpers.MemberOfUserRoles(ConsoleContextHelper.Instance.UserRoleHelper));
-                    smNode.SetAttribute("DWMGId", SM.Emg.DataWarehouse.GetDataWarehouseConfiguration() == null ? "" : SM.Emg.DataWarehouse.GetDataWarehouseConfiguration().ManagementGroupId.ToString());
-                    #endregion
-                    #region OS node
-                    var osNode = rootNode.AppendChild(XmlTelemetry.CreateNode(XmlNodeType.Element, "OS", null)) as XmlElement;
-                    osNode.SetAttribute("Version", Helpers.GetOSVersionString());
-                    osNode.SetAttribute("Name", Helpers.GetOSName());
-                    osNode.SetAttribute("Locale", Thread.CurrentThread.CurrentUICulture.DisplayName);
-                    osNode.SetAttribute("InternetAvailable", Helpers.IsConnectedToInternet().ToString());
-                    osNode.SetAttribute("WebProxy", Helpers.IsWebProxyNeeded().ToString());
-                    osNode.SetAttribute("UserNameHash", Helpers.GetHashStringFromString(ConsoleContextHelper.Instance.CurrentUserName.ToLower()));
-                    osNode.SetAttribute("ComputerNameHash", Helpers.GetHashStringFromString(Environment.GetEnvironmentVariable("COMPUTERNAME").ToLower()));
-                    osNode.SetAttribute("DomainNameHash", Helpers.GetHashStringFromString(Environment.GetEnvironmentVariable("USERDNSDOMAIN").ToLower()));
-                    osNode.SetAttribute("IsRunningAs64bit", Helpers.IsRunningAs64bit().ToString());
-                    osNode.SetAttribute("DisplayScale", Helpers.GetWindowsScaling().ToString());
-                    osNode.SetAttribute("DisplayResolution", Helpers.GetDisplayResolution().ToString());
-                    #endregion
-                }
-                catch (Exception ex)
-                {
-                    Helpers.OnlyLogException(ex);
-                }
+                #region Library=root node               
+                rootNode.SetAttribute("LibraryVersion", Helpers.GetLibraryVersion());
+                rootNode.SetAttribute("SessionId", Guid.NewGuid().ToString());
+                rootNode.SetAttribute("SequenceId", "0");
+                //note that the below are actually from Main module, but we want them always in Telemetry, therefore set here.
+                rootNode.SetAttribute("FirstImportedAt", SMST.FirstImportedAt.ToStringWithTz());
+                rootNode.SetAttribute("LastImportedAt", SMST.LastImportedAt.ToStringWithTz());
+                rootNode.SetAttribute("EulaAcceptedAt", EulaStatus.EulaAccepted ? EulaStatus.EulaAcceptedAt.Value.ToStringWithTz() : "");
+                #endregion
+                #region SM node
+                var smNode = rootNode.AppendChild(XmlTelemetry.CreateNode(XmlNodeType.Element, "SM", null)) as XmlElement;
+                smNode.SetAttribute("SDKVersion", SM.Emg.Version.ToString());
+                smNode.SetAttribute("ConsoleVersion", Application.ProductVersion);
+                smNode.SetAttribute("OriginalCountryCode", SM.Emg.OriginalCountryCode);
+                smNode.SetAttribute("CurrentCountryCode", SM.Emg.CurrentCountryCode);
+                smNode.SetAttribute("IsThisMgmtServer", Helpers.IsSameAsHostname(SM.Emg.ConnectionSettings.ServerName).ToString());
+                smNode.SetAttribute("MGId", SM.Emg.Id.ToString());
+                smNode.SetAttribute("UserRoles", Helpers.MemberOfUserRoles(ConsoleContextHelper.Instance.UserRoleHelper));
+                smNode.SetAttribute("DWMGId", SM.Emg.DataWarehouse.GetDataWarehouseConfiguration() == null ? "" : SM.Emg.DataWarehouse.GetDataWarehouseConfiguration().ManagementGroupId.ToString());
+                #endregion
+                #region OS node
+                var osNode = rootNode.AppendChild(XmlTelemetry.CreateNode(XmlNodeType.Element, "OS", null)) as XmlElement;
+                osNode.SetAttribute("Version", Helpers.GetOSVersionString());
+                osNode.SetAttribute("Name", Helpers.GetOSName());
+                osNode.SetAttribute("Locale", Thread.CurrentThread.CurrentUICulture.DisplayName);
+                osNode.SetAttribute("InternetAvailable", Helpers.IsConnectedToInternet().ToString());
+                osNode.SetAttribute("WebProxy", Helpers.IsWebProxyNeeded().ToString());
+                osNode.SetAttribute("UserNameHash", Helpers.GetHashStringFromString(ConsoleContextHelper.Instance.CurrentUserName.ToLower()));
+                osNode.SetAttribute("ComputerNameHash", Helpers.GetHashStringFromString(Environment.GetEnvironmentVariable("COMPUTERNAME").ToLower()));
+                osNode.SetAttribute("DomainNameHash", Helpers.GetHashStringFromString(Environment.GetEnvironmentVariable("USERDNSDOMAIN").ToLower()));
+                osNode.SetAttribute("IsRunningAs64bit", Helpers.IsRunningAs64bit().ToString());
+                osNode.SetAttribute("DisplayScale", Helpers.GetWindowsScaling().ToString());
+                osNode.SetAttribute("DisplayResolution", Helpers.GetDisplayResolution().ToString());
+                #endregion
             });
         }
 
-        #region static helper functions that hides the async/await stuff at caller side
-        public static void SendAsync(string operationType, Dictionary<string, string> props)
+        public XmlDocument XmlTelemetry
         {
-            SendAsync("", operationType, props);
+            get;
+            private set;
         }
+
+        #region static helper functions
         public static async void SendAsync(string moduleName, string operationType, Dictionary<string, string> props)
         {
             try
             {
                 (await InstanceAsync)
-                .SendTelemetry(moduleName, operationType, props);
+                    .SendTelemetry(moduleName, operationType, props);
             }
             catch (Exception ex)
             {
@@ -102,16 +126,12 @@ namespace SCSM.Support.Tools.Library
             }
         }
 
-        public static void SetInfoAsync(string attribName, string attribValue)
-        {
-            SetInfoAsync("", attribName, attribValue);
-        }
         public static async void SetInfoAsync(string moduleName, string attribName, string attribValue)
         {
             try
-            {
+            {                
                 (await InstanceAsync)
-                .SetInfo(moduleName, attribName, attribValue);
+                    .SetTelemetryInfo(moduleName, attribName, attribValue);
             }
             catch (Exception ex)
             {
@@ -123,9 +143,9 @@ namespace SCSM.Support.Tools.Library
         private void SendTelemetry(string moduleName, string operationType, Dictionary<string, string> props)
         {
             int currSeq;
-            int.TryParse(GetInfo("", "SequenceId"), out currSeq);
+            int.TryParse(GetTelemetryInfo("", "SequenceId"), out currSeq);
             currSeq++;
-            SetInfo("", "SequenceId", currSeq.ToString());
+            SetTelemetryInfo("", "SequenceId", currSeq.ToString());
 
             var telemetry = XmlTelemetry.Clone() as XmlDocument;
             var rootNode = telemetry.DocumentElement;
@@ -193,7 +213,7 @@ namespace SCSM.Support.Tools.Library
             catch { }
         }
 
-        private void SetInfo(string moduleName, string attribName, string attribValue)
+        private void SetTelemetryInfo(string moduleName, string attribName, string attribValue)
         {
             var xmlTelemetry = XmlTelemetry;
             XmlElement telemetryNode = xmlTelemetry.DocumentElement;
@@ -207,7 +227,7 @@ namespace SCSM.Support.Tools.Library
             }
             telemetryNode.SetAttribute(attribName, attribValue);
         }
-        private string GetInfo(string moduleName, string attribName)
+        private string GetTelemetryInfo(string moduleName, string attribName)
         {
             var xmlTelemetry = XmlTelemetry;
             XmlElement telemetryNode = xmlTelemetry.DocumentElement;

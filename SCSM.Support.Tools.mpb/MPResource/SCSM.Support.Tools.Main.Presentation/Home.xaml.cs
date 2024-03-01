@@ -110,7 +110,7 @@ namespace SCSM.Support.Tools.Main.Presentation
                         { "Name", "SCSM.Support.Tools.Main.Presentation.Home" },
                         { "DurationMsecs", duration_View.ElapsedMilliseconds.ToString() },
                 }
-            );
+            );           
         }
     }
 }
