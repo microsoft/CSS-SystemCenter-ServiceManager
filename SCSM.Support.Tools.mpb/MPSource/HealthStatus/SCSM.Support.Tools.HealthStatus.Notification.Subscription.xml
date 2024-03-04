@@ -107,8 +107,8 @@
 					<Description>Contains subscription items for SCSM Support Tools - Health Status</Description>
 				</DisplayString>
 				<DisplayString ElementID="SCSM.Support.Tools.HealthStatus.Notification.ChangedSubscription">
-					<Name>SCSM Health Status of Management Servers - Daily subscription</Name>
-					<Description>Sends email with SCSM Health Status whenever the SCSM Diagnostic Tool (SMDT) runs. This happens automatically every midnight. The SMDT can also be started manually.</Description>
+					<Name>SCSM Health Status of Management Servers</Name>
+					<Description>Sends email with SCSM Health Status whenever the SCSM Diagnostic Tool (SMDT) runs. This happens automatically at 02:30. The SMDT can also be started manually.</Description>
 				</DisplayString>
 			</DisplayStrings>
 		</LanguagePack>
