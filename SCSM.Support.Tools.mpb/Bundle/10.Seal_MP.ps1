@@ -49,7 +49,11 @@ if ( (Split-Path -Path (Get-Location) -Leaf) -eq $folderName_Bundle ) {
 else {
     cd 'CSS-SystemCenter-ServiceManager\SCSM.Support.Tools.mpb'
 }
- 
+
+if (-not (Test-Path -PathType Container -Path $folderName_Output)) {
+    New-Item -Force -ItemType Directory -Path $folderName_Output
+}
+
 if (-not $BuildVersion) {
     $BuildVersion = (GetBuildVersion)
 }
