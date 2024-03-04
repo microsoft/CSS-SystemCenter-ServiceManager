@@ -91,12 +91,8 @@ $Resources += "$folderName_MPResource\SCSM213_Administration_16.png"
 
 #region copy to Output folder
 
-write-host "pwd: $pwd"
-write-host "mps to cpy..."
-write-host "$MpXmlsToSeal + $MpXmlsNotToSeal"
 #region copy MP XMLs
 foreach($MpXml in ($MpXmlsToSeal + $MpXmlsNotToSeal) ) {
-    write-host "coying xmpxml from" + "$folderName_MPSource\$MpXml"
     Copy-Item -Path "$folderName_MPSource\$MpXml" -Destination $folderName_Output -verbose
 }
 #endregion
@@ -107,9 +103,6 @@ foreach($Resource in $Resources) {
 #endregion 
 
 #endregion
-
-write-host "showing output before mpxmlbuild"
-dir D:\a\r1\a\CSS-SystemCenter-ServiceManager\SCSM.Support.Tools.mpb\Output\*.*
 
 #region Build - PreSeal
 foreach($MpXmlBuild in $MpXmlBuilds) {
