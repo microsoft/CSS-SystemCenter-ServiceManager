@@ -893,6 +893,7 @@ if ($TargetMS) {
         $HealthStatus_WForDW.ResultingZipFileAtFullPath = $resultingZipFile_FullPath.Replace( $inputPrefix, $inputPrefix + "_" + $script:RoleFoundAbbr )
         $HealthStatus_WForDW.LastRun = [datetime]::Now #(Get-Date)
         $HealthStatus_WForDW.TriggerMethod = if ($Script:MyInvocation.UnboundArguments.Contains("-startedByRule")) { $enumTriggerMethod_Schedule.Id } else { $enumTriggerMethod_Manual.Id }
+        $HealthStatus_WForDW.PatchedVersion = $SCSM_Version
         $HealthStatus_WForDW | Update-SCSMClassInstance
 
         $HealthStatus_Overall.LastChanged = [datetime]::Now

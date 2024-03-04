@@ -40,6 +40,7 @@
           <Property ID="TriggerMethod" Type="enum" AutoIncrement="false" Key="false" CaseSensitive="false" MaxLength="100" MinLength="0" Required="false" Scale="0" EnumType="SCSM.Support.Tools.HealthStatus.Enum.TriggerMethod" />
           <Property ID="LastRun" Type="datetime" AutoIncrement="false" Key="false" CaseSensitive="false" MaxLength="256" MinLength="0" Required="false" Scale="0" />
           <Property ID="ServerName" Type="string" AutoIncrement="false" Key="false" CaseSensitive="false" MaxLength="100" MinLength="0" Required="false" Scale="0" />
+		  <Property ID="PatchedVersion" Type="string" AutoIncrement="false" Key="false" CaseSensitive="false" MaxLength="100" MinLength="0" Required="false" Scale="0" /> <!-- Will be set by SMDT and will be used by Telemetry, because the SDK does only return the base RTM version  -->
         </ClassType>
         <ClassType ID="SCSM.Support.Tools.HealthStatus.WF" Accessibility="Public" Abstract="false" Base="SCSM.Support.Tools.HealthStatus.Common" Hosted="false" Singleton="true" Extension="false">
           <Property ID="Component" Type="enum" AutoIncrement="false" Key="false" CaseSensitive="false" MaxLength="256" MinLength="0" Required="false" Scale="0" EnumType="SCSM.Support.Tools.HealthStatus.Enum.Component" DefaultValue="SCSM.Support.Tools.HealthStatus.Enum.Component.WF" />

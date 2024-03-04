@@ -291,7 +291,21 @@ namespace SCSM.Support.Tools.HealthStatus.Presentation
                 var dwMaxSeverity = (Component_DW.DataContext as IDataItem)["MaxSeverity"];
                 if (dwMaxSeverity != null) { MaxSeverity_DW = dwMaxSeverity.ToString(); }
 
+                #region PatchedVersion
+                string PatchedVersion_WF = "";
+                var wfPatchedVersion = (Component_WF.DataContext as IDataItem)["PatchedVersion"];
+                if (wfPatchedVersion != null) { PatchedVersion_WF = wfPatchedVersion.ToString(); }
+
+                string PatchedVersion_DW = "";
+                var dwPatchedVersion = (Component_DW.DataContext as IDataItem)["PatchedVersion"];
+                if (dwPatchedVersion != null) { PatchedVersion_DW = dwPatchedVersion.ToString(); }
+
+                Library.Telemetry.SetInfoAsync("SM", "PatchedVersion_WF", PatchedVersion_WF);
+                Library.Telemetry.SetInfoAsync("SM", "PatchedVersion_DW", PatchedVersion_DW);
+                #endregion
+
                 duration_View.Stop();
+                Task.Delay(2000); // to give the above SetInfoAsync calls a bit time for saving into Telemetry xml before sending below. No worries, this is async. 
                 Telemetry.SendAsync(
                     operationType: "ViewOpened",
                     props: new Dictionary<string, string>() {
