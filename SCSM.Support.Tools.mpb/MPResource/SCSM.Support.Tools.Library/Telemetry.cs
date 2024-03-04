@@ -106,6 +106,9 @@ namespace SCSM.Support.Tools.Library
             });
         }
 
+        /// <summary>
+        /// Concurrency is ignored...
+        /// </summary>
         public XmlDocument XmlTelemetry
         {
             get;
