@@ -82,12 +82,12 @@ namespace SCSM.Support.Tools.Library
 
         private static void LogException(Exception ex, string additionalInfo = "")
         {
-            string event_message = ex.ToString();            
+            string event_message = ex.ToString();
             if (!string.IsNullOrWhiteSpace(additionalInfo))
             {
                 event_message += string.Format("\r\n------ \r\nAdditional Info: {0}", additionalInfo);
             }
-            event_message += string.Format("\r\n------ \r\n{0}", GetLibraryAssemblyModule().FullName);;
+            event_message += string.Format("\r\n------ \r\n{0}", GetLibraryAssemblyModule().FullName); ;
 
             //here send telemetry before adding PII
             Telemetry.SendAsync(
@@ -103,7 +103,7 @@ namespace SCSM.Support.Tools.Library
             {
                 eventLog.Source = event_Source;
                 eventLog.WriteEntry(event_message, event_type, event_ID, event_category);
-            }           
+            }
         }
 
         public static void OnlyLogException(Exception ex, string additionalInfo = "")
@@ -121,13 +121,14 @@ namespace SCSM.Support.Tools.Library
 
         #region Misc
         public const string PublicKeyToken = "31bf3856ad364e35";
+        public const string tuzcuk = ";kpzJ~d6I#8t2=emIIMfrbt0Ay6½NV@W7PRCsUA";
         public static string ToStringWithTz(this DateTime dateTime)
         {
             return dateTime.ToString("yyyy-MM-dd__HH:mm.ss.fff zzz");
         }
         public static byte[] GetHashBytesFromString(string s)
         {
-            return SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(s));
+            return SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(s + tuzcuk));
         }
         public static string GetHashStringFromString(string s)
         {

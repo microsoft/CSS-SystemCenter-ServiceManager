@@ -1,9 +1,11 @@
 ﻿using Microsoft.EnterpriseManagement.UI.Extensions.Shared;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -96,9 +98,8 @@ namespace SCSM.Support.Tools.Library
                 osNode.SetAttribute("Locale", Thread.CurrentThread.CurrentUICulture.DisplayName);
                 osNode.SetAttribute("InternetAvailable", Helpers.IsConnectedToInternet().ToString());
                 osNode.SetAttribute("WebProxy", Helpers.IsWebProxyNeeded().ToString());
-                osNode.SetAttribute("UserNameHash", Helpers.GetHashStringFromString(ConsoleContextHelper.Instance.CurrentUserName.ToLower()));
                 osNode.SetAttribute("ComputerNameHash", Helpers.GetHashStringFromString(Environment.GetEnvironmentVariable("COMPUTERNAME").ToLower()));
-                osNode.SetAttribute("DomainNameHash", Helpers.GetHashStringFromString(Environment.GetEnvironmentVariable("USERDNSDOMAIN").ToLower()));
+                osNode.SetAttribute("DomainUserNameHash", Helpers.GetHashStringFromString(ConsoleContextHelper.Instance.CurrentUserName.ToLower()));
                 osNode.SetAttribute("IsRunningAs64bit", Helpers.IsRunningAs64bit().ToString());
                 osNode.SetAttribute("DisplayScale", Helpers.GetWindowsScaling().ToString());
                 osNode.SetAttribute("DisplayResolution", Helpers.GetDisplayResolution().ToString());
@@ -132,7 +133,7 @@ namespace SCSM.Support.Tools.Library
         public static async void SetInfoAsync(string moduleName, string attribName, string attribValue)
         {
             try
-            {                
+            {
                 (await InstanceAsync)
                     .SetTelemetryInfo(moduleName, attribName, attribValue);
             }
