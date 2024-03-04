@@ -1,5 +1,5 @@
 ---
-name: Bug report - SCSM.Support.Tools.mpb
+name: 2. SCSM.Support.Tools.mpb - Bug report
 about: Create a report to help us improve the SCSM.Support.Tools.mpb
 title: "[BUG - SCSM.Support.Tools.mpb]"
 labels: 4. SCSM.Support.Tools.mpb, bug
