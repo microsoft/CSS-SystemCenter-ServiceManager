@@ -93,7 +93,7 @@ $Resources += "$folderName_MPResource\SCSM213_Administration_16.png"
 
 #region copy MP XMLs
 foreach($MpXml in ($MpXmlsToSeal + $MpXmlsNotToSeal) ) {
-    Copy-Item -Path "$folderName_MPSource\$MpXml" -Destination $folderName_Output -verbose
+    Copy-Item -Path "$folderName_MPSource\$MpXml" -Destination $folderName_Output
 }
 #endregion
 #region copy Resources to Output folder
