@@ -11,7 +11,7 @@ $mpSource_Monitoring = "Main\SCSM.Support.Tools.Main.Monitoring.xml"
 $ruleID_Monitoring =        "SCSM.Support.Tools.Main.Monitoring.Rule.Starter"
 
 write-host "pwd: $pwd"
-get-childitem D:\a\r1\a\CSS-SystemCenter-ServiceManager\SCSM.Support.Tools.mpb\Output
+dir Output\*.*
 
 $mpFullPath =  Resolve-Path ( "$folderName_Output\" + (Split-Path -Path "$mpSource_Monitoring" -Leaf) )
 $doc = [xml]::new()
