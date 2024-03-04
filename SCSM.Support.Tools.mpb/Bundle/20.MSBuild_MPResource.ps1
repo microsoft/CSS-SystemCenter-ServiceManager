@@ -10,6 +10,9 @@ $folderName_Misc     =   "Misc"
 if ( (Split-Path -Path (Get-Location) -Leaf) -eq $folderName_Bundle ) {
     cd ".."  # Set folder to root
 }
+else {
+    cd 'CSS-SystemCenter-ServiceManager\SCSM.Support.Tools.mpb'
+}
 
 $VSProjects = @()
 $VSProjects += "SCSM.Support.Tools.sln"
