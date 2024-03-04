@@ -46,6 +46,9 @@ $folderName_Misc     =   "Misc"
 if ( (Split-Path -Path (Get-Location) -Leaf) -eq $folderName_Bundle ) {
     cd ".."  # Set folder to root
 }
+else {
+    cd 'CSS-SystemCenter-ServiceManager\SCSM.Support.Tools.mpb'
+}
  
 if (-not $BuildVersion) {
     $BuildVersion = (GetBuildVersion)
@@ -83,7 +86,7 @@ $Resources += "$folderName_MPResource\SCSM213_Administration_16.png"
 #endregion 
 
 #region copy to Output folder
-write-host $pwd  #todo del
+
 #region copy MP XMLs
 foreach($MpXml in ($MpXmlsToSeal + $MpXmlsNotToSeal) ) {
     Copy-Item -Path "$folderName_MPSource\$MpXml" -Destination $folderName_Output
