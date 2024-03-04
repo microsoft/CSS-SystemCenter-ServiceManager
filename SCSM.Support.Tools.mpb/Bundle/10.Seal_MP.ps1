@@ -87,9 +87,13 @@ $Resources += "$folderName_MPResource\SCSM213_Administration_16.png"
 
 #region copy to Output folder
 
+write-host "pwd: $pwd"
+write-host "mps to cpy..."
+write-host "$MpXmlsToSeal + $MpXmlsNotToSeal"
 #region copy MP XMLs
 foreach($MpXml in ($MpXmlsToSeal + $MpXmlsNotToSeal) ) {
-    Copy-Item -Path "$folderName_MPSource\$MpXml" -Destination $folderName_Output
+    write-host "coying xmpxml from" + "$folderName_MPSource\$MpXml"
+    Copy-Item -Path "$folderName_MPSource\$MpXml" -Destination $folderName_Output -verbose
 }
 #endregion
 #region copy Resources to Output folder
