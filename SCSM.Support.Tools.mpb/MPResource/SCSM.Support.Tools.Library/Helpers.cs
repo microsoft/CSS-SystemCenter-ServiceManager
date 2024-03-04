@@ -1,15 +1,25 @@
 ﻿using Microsoft.EnterpriseManagement.UI.Extensions.Shared;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Forms;
+using System.Xml;
 
 namespace SCSM.Support.Tools.Library
 {
-    public class Helpers
+    public static class Helpers
     {
         #region Calculation of MP element Guid
         // equivalent of SQL:    select cast( HashBytes('SHA1', N'AstringHere') AS uniqueidentifier)
@@ -72,30 +82,28 @@ namespace SCSM.Support.Tools.Library
 
         private static void LogException(Exception ex, string additionalInfo = "")
         {
-            #region Module Info           
-            string currentModuleInfo = "";
-            var modules = System.AppDomain.CurrentDomain.GetAssemblies();
-            foreach (var module in modules)
-            {
-                if (module.ManifestModule.Name == "SCSM.Support.Tools.Library.dll")
-                {
-                    currentModuleInfo = string.Format("{0} {1}", module.FullName, module.Location);
-                    break;
-                }
-            }
-            #endregion
-            #region The message            
-            string event_message = string.Format("{0} \r\n------- \r\n{1} ", ex.ToString(), currentModuleInfo);
+            string event_message = ex.ToString();            
             if (!string.IsNullOrWhiteSpace(additionalInfo))
             {
                 event_message += string.Format("\r\n------ \r\nAdditional Info: {0}", additionalInfo);
             }
-            #endregion
+            event_message += string.Format("\r\n------ \r\n{0}", GetLibraryAssemblyModule().FullName);;
+
+            //here send telemetry before adding PII
+            Telemetry.SendAsync(
+               moduleName: "",
+               operationType: "ExceptionLogged",
+               props: new Dictionary<string, string>() {
+                    { "event_message", event_message },
+               }
+           );
+
+            event_message += string.Format("\r\n------- \r\n{0} ", GetLibraryAssemblyModule().Location);
             using (EventLog eventLog = new EventLog(event_logName))
             {
                 eventLog.Source = event_Source;
                 eventLog.WriteEntry(event_message, event_type, event_ID, event_category);
-            }
+            }           
         }
 
         public static void OnlyLogException(Exception ex, string additionalInfo = "")
@@ -112,6 +120,25 @@ namespace SCSM.Support.Tools.Library
         #endregion
 
         #region Misc
+        public const string PublicKeyToken = "31bf3856ad364e35";
+        public static string ToStringWithTz(this DateTime dateTime)
+        {
+            return dateTime.ToString("yyyy-MM-dd__HH:mm.ss.fff zzz");
+        }
+        public static byte[] GetHashBytesFromString(string s)
+        {
+            return SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(s));
+        }
+        public static string GetHashStringFromString(string s)
+        {
+            var hash = GetHashBytesFromString(s);
+            var sb = new StringBuilder(hash.Length * 2);
+            foreach (byte b in hash)
+            {
+                sb.Append(b.ToString("X2"));
+            }
+            return sb.ToString();
+        }
         public static string GetUserFriendlyTimeSpan(DateTime dateTime)
         {
             string result = "";
@@ -136,6 +163,176 @@ namespace SCSM.Support.Tools.Library
 
             return result;
         }
+        //public static bool IsUserMemberOfLocalAdminsGroup()
+        //{
+        //    var identity = System.Security.Principal.WindowsIdentity.GetCurrent();
+        //    var principal = new System.Security.Principal.WindowsPrincipal(identity);
+        //    return principal.IsInRole(System.Security.Principal.WindowsBuiltInRole.Administrator);
+        //}
+        [DllImport("shell32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool IsUserAnAdmin();
+
+        public static bool IsRunningAs64bit()
+        {
+            return Environment.Is64BitOperatingSystem;
+        }
+        public static int GetWindowsScaling()
+        {
+            return (int)(100 * Screen.PrimaryScreen.Bounds.Width / SystemParameters.PrimaryScreenWidth);
+        }
+        public static string GetDisplayResolution()
+        {
+            return string.Format("{0}x{1}", Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
+            //float dpiX, dpiY;
+            //Graphics graphics = this.CreateGraphics();
+            //dpiX = graphics.DpiX;
+            //dpiY = graphics.DpiY;
+        }
+        private static Assembly libraryAssemblyModule;
+        public static Assembly GetSmConsoleAssembly()
+        {
+            return Assembly.GetExecutingAssembly();
+        }
+
+        public static Assembly GetAssemblyModule(string moduleNameWithExtension)
+        {
+            var modules = System.AppDomain.CurrentDomain.GetAssemblies();
+            foreach (var module in modules)
+            {
+                if (module.ManifestModule.Name == moduleNameWithExtension)
+                {
+                    return module;
+                }
+            }
+            return null;
+        }
+        public static string GetModuleVersion(string moduleNameWithExtension)
+        {
+            var location = GetAssemblyModule(moduleNameWithExtension).Location;
+            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(location);
+            return fvi.FileVersion;
+        }
+        public static string GetModuleVersion(Assembly module)
+        {
+            var location = module.Location;
+            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(location);
+            return fvi.FileVersion;
+        }
+
+        public static Assembly GetLibraryAssemblyModule()
+        {
+            if (libraryAssemblyModule == null)
+            {
+                libraryAssemblyModule = GetAssemblyModule("SCSM.Support.Tools.Library.dll");
+            }
+            return libraryAssemblyModule;
+        }
+        public static string GetLibraryVersion()
+        {
+            return GetModuleVersion(GetLibraryAssemblyModule());
+        }
+
+        public static string MemberOfUserRoles(UserRoleHelper userRoleHelper)
+        {
+            if (userRoleHelper.IsUserAdministrator) { return "Administrator"; }
+
+            string result = string.Empty;
+            if (userRoleHelper.IsUserAdvancedOperator) { result += ",AdvancedOperator"; }
+            if (userRoleHelper.IsUserAuthor) { result += ",Author"; }
+            if (userRoleHelper.IsUserChangeManager) { result += ",ChangeManager"; }
+            if (userRoleHelper.IsUserReleaseManager) { result += ",ReleaseManager"; }
+            return result.Substring(1);
+        }
+        public static string GetOSVersionString()
+        {
+            var registryKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion");
+            return string.Format("{0}.{1}.{2}.{3}", registryKey.GetValue("CurrentMajorVersionNumber"), registryKey.GetValue("CurrentMinorVersionNumber"), registryKey.GetValue("CurrentBuild"), registryKey.GetValue("UBR"));
+        }
+        public static string GetOSName()
+        {
+            var registryKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion");
+            return registryKey.GetValue("ProductName").ToString();
+        }
+        public static bool IsSameAsHostname(string givenString)
+        {
+            bool result = false;
+            givenString = givenString.Trim();
+            string envCOMPUTERNAME = Environment.GetEnvironmentVariable("COMPUTERNAME");
+            if (givenString == envCOMPUTERNAME) { return true; }
+            if (givenString == System.Net.Dns.GetHostEntry(givenString).HostName) { return true; }
+            var parts = givenString.Split('.');
+            if (parts.Length > 0)
+            {
+                if (givenString == parts[0]) { return true; }
+            }
+            return result;
+        }
+        public static bool IsConnectedToInternet()
+        {
+            bool result = false;
+            Uri uri = new Uri("https://forms.office.com/formapi/api");
+            HttpResponseMessage httpResult = new HttpResponseMessage();
+            try
+            {
+                httpResult = GetHttpClient_WithProxy(uri, 60).GetAsync(uri).Result;
+                result = true;
+            }
+            catch { }
+            return result;
+        }
+        public static bool IsWebProxyNeeded()
+        {
+            Uri uri = new Uri("https://forms.office.com/formapi/api");
+            Uri webProxyServer = null;
+            var proxyUseDefaultCredentials = true;
+            GetProxy(uri, ref webProxyServer, ref proxyUseDefaultCredentials);
+            return (webProxyServer != null);
+        }
+        public static HttpClient GetHttpClient_WithProxy(Uri uri, int timeoutSec = 0)
+        {
+            System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
+            Uri webProxyServer = null;
+            var proxyUseDefaultCredentials = true;
+            GetProxy(uri, ref webProxyServer, ref proxyUseDefaultCredentials);
+            var proxyHttpClientHandler = new HttpClientHandler
+            {
+                AllowAutoRedirect = false
+            };
+            if (webProxyServer != null && proxyUseDefaultCredentials)
+            {
+                var webProxy = new WebProxy(webProxyServer);
+                webProxy.UseDefaultCredentials = proxyUseDefaultCredentials;
+                proxyHttpClientHandler.Proxy = webProxy;
+                proxyHttpClientHandler.UseProxy = true;
+            }
+
+            var httpClient = new HttpClient(proxyHttpClientHandler);
+            httpClient.Timeout = new TimeSpan(0, 0, timeoutSec);
+            return httpClient;
+        }
+
+        private static void GetProxy(Uri uri, ref Uri webProxyServer, ref bool proxyUseDefaultCredentials)
+        { //https://learn.microsoft.com/en-us/dotnet/api/system.net.iwebproxy.getproxy?view=netframework-4.8.1#examples
+            var wpi = System.Net.WebRequest.GetSystemWebProxy();
+            wpi.Credentials = System.Net.CredentialCache.DefaultNetworkCredentials;
+
+            webProxyServer = null;
+
+            if (!wpi.IsBypassed(uri))
+            {
+                webProxyServer = wpi.GetProxy(uri);
+
+                if (webProxyServer != null && webProxyServer == uri)
+                {
+                    webProxyServer = null;
+                }
+            }
+            proxyUseDefaultCredentials = (webProxyServer != null);
+        }
         #endregion
     }
+
+
 }
+

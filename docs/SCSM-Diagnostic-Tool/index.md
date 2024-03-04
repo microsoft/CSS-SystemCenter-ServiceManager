@@ -39,8 +39,7 @@ If you want to review the `Findings`:
 
 ## Notes:
 
-- The script won't make any change in the SCSM environment.
-- The script can be also used as a Health Checker. 
+- In order to use the script as a nightly running Health Checker, we strongly recommend to import the [SCSM.Support.Tools.mpb](https://aka.ms/SCSM.Support.Tools.mpb) 
 
 ## Do you want to contribute to this tool?
 

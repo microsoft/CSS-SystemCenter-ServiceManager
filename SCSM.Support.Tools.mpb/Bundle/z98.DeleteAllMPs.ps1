@@ -2,4 +2,5 @@ if (-not (Get-Module -name System.Center.Service.Manager)) { Import-Module ((Get
 
 Write-Host "Deleting MPs ..."
 
-Get-SCSMManagementPack -Name SCSM.Support.Tools.* | Remove-SCSMManagementPack
+Get-SCSMManagementPack -Name SCSM.Support.Tools.* | % { write-host $_.Name; Remove-SCSMManagementPack -ManagementPack $_ }  
+

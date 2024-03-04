@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml;
 
 namespace SCSM.Support.Tools.Main.Presentation
 {
@@ -36,12 +37,20 @@ namespace SCSM.Support.Tools.Main.Presentation
                 Hyperlink hl = (Hyperlink)sender;
                 string navigateUri = hl.NavigateUri.ToString();
                 Process.Start(new ProcessStartInfo(navigateUri));
-                e.Handled = true;
+
+                Telemetry.SendAsync(
+                    operationType: "LinkClicked",
+                    props: new Dictionary<string, string>() {
+                        { "InView", "SCSM.Support.Tools.Main.Presentation.Home" },
+                        { "LinkUrl", navigateUri},
+                    }
+                );
             }
             catch (Exception ex)
             {
                 Helpers.LogAndShowException(ex);
             }
+            e.Handled = true;
         }
 
         private static string MpKeyToken = "31bf3856ad364e35";
@@ -88,6 +97,20 @@ namespace SCSM.Support.Tools.Main.Presentation
                 }
                 return result;
             }
+        }
+
+        Stopwatch duration_View = Stopwatch.StartNew();
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            duration_View.Stop();
+
+            Telemetry.SendAsync(
+                operationType: "ViewOpened",
+                props: new Dictionary<string, string>() {
+                        { "Name", "SCSM.Support.Tools.Main.Presentation.Home" },
+                        { "DurationMsecs", duration_View.ElapsedMilliseconds.ToString() },
+                }
+            );           
         }
     }
 }

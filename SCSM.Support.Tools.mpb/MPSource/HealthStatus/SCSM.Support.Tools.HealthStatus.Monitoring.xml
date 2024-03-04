@@ -33,11 +33,9 @@
 					<DataSource ID="Scheduler" TypeID="System!System.Scheduler">
 						<Scheduler>
 							<SimpleReccuringSchedule>
-								<Interval Unit="Minutes">15</Interval>
-								<!-- 
-				<Interval Unit="Days">1</Interval>
-				<SyncTime>02:30</SyncTime> 
-				-->
+								<!-- <Interval Unit="Minutes">15</Interval> -->
+								<Interval Unit="Days">1</Interval>
+								<SyncTime>02:30</SyncTime> 
 							</SimpleReccuringSchedule>
 							<ExcludeDates />
 						</Scheduler>
