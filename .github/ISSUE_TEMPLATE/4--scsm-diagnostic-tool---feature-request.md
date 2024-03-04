@@ -1,5 +1,5 @@
 ---
-name: Feature request - SCSM Diagnostic Tool
+name: 4. SCSM Diagnostic Tool - Feature request
 about: Suggest an idea for the SCSM Diagnostic Tool
 title: "[New IDEA - SCSM Diagnostic Tool]"
 labels: 1. SCSM Diagnostic Tool, enhancement

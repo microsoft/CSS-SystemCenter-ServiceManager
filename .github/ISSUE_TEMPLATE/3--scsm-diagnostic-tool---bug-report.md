@@ -1,5 +1,5 @@
 ---
-name: Bug report - SCSM Diagnostic Tool
+name: 3. SCSM Diagnostic Tool - Bug report
 about: Create a report to help us improve the SCSM Diagnostic Tool.
 title: "[BUG - SCSM Diagnostic Tool]"
 labels: 1. SCSM Diagnostic Tool, bug
