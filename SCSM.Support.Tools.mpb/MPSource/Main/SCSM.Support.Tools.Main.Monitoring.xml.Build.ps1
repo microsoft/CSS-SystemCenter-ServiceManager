@@ -10,9 +10,6 @@ if ( (Split-Path -Path (Get-Location) -Leaf) -eq $folderName_Bundle ) {
 $mpSource_Monitoring = "Main\SCSM.Support.Tools.Main.Monitoring.xml"
 $ruleID_Monitoring =        "SCSM.Support.Tools.Main.Monitoring.Rule.Starter"
 
-write-host "pwd: $pwd"
-dir Output\*.*
-
 $mpFullPath =  Resolve-Path ( "$folderName_Output\" + (Split-Path -Path "$mpSource_Monitoring" -Leaf) )
 $doc = [xml]::new()
 $doc.Load($mpFullPath)
