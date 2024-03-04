@@ -1,5 +1,5 @@
 ---
-name: Feature request - SCSM.Support.Tools.mpb
+name: SCSM.Support.Tools.mpb - Feature request
 about: Suggest an idea for the SCSM.Support.Tools.mpb
 title: "[New Idea - SCSM.Support.Tools.mpb]"
 labels: 4. SCSM.Support.Tools.mpb, enhancement
