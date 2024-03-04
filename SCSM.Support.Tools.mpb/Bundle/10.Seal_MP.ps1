@@ -50,6 +50,9 @@ if ( (Split-Path -Path (Get-Location) -Leaf) -eq $folderName_Bundle ) {
 if (-not $BuildVersion) {
     $BuildVersion = (GetBuildVersion)
 }
+else {
+     $BuildVersion =  $BuildVersion.Substring(1)  # if version is given in ADO, then it has a v character at the beginning, drop it
+}
 
 $MpXmlsToSeal = @()
 $MpXmlBuilds = @() #PreSeal

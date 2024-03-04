@@ -33,11 +33,9 @@
 					<DataSource ID="Scheduler" TypeID="System!System.Scheduler">
 						<Scheduler>
 							<SimpleReccuringSchedule>
-								<Interval Unit="Minutes">15</Interval>
-								<!-- 
-				<Interval Unit="Days">1</Interval>
-				<SyncTime>02:00</SyncTime> 
-				-->
+								<!-- <Interval Unit="Minutes">15</Interval> -->								
+								<Interval Unit="Days">1</Interval>
+								<SyncTime>02:00</SyncTime> 
 							</SimpleReccuringSchedule>
 							<ExcludeDates />
 						</Scheduler>
@@ -52,11 +50,13 @@
 						<RequireOutput>false</RequireOutput>
 						<Files>
 							<File>
-								<Name>SCSM.Support.Tools.RunScriptFromResource.ps1</Name><!--the Contents element of this File node will be written (in output folder) by related Build.ps1 with content of Misc\SCSM.Support.Tools.GenericScriptStarterFromResource.ps1 -->
+								<Name>SCSM.Support.Tools.RunScriptFromResource.ps1</Name>
+								<!--the Contents element of this File node will be written (in output folder) by related Build.ps1 with content of Misc\SCSM.Support.Tools.GenericScriptStarterFromResource.ps1 -->
 								<Contents />
 							</File>
 							<File>
-								<Name>SCSM.Support.Tools.RunScriptFromResource.Params.ps1</Name><!-- set the variables here accordingly -->
+								<Name>SCSM.Support.Tools.RunScriptFromResource.Params.ps1</Name>
+								<!-- set the variables here accordingly -->
 								<Contents>
 $scriptMPName =      'SCSM.Support.Tools.Main.Monitoring'
 $scriptResource_ID = 'SCSM.Support.Tools.Main.Monitoring.MpbUpdater.ScriptResource'
