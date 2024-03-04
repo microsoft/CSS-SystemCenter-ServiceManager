@@ -100,6 +100,9 @@ foreach($Resource in $Resources) {
 
 #endregion
 
+write-host "showing output before mpxmlbuild"
+dir D:\a\r1\a\CSS-SystemCenter-ServiceManager\SCSM.Support.Tools.mpb\Output\*.*
+
 #region Build - PreSeal
 foreach($MpXmlBuild in $MpXmlBuilds) {
     & "$folderName_MPSource\$MpXmlBuild"
