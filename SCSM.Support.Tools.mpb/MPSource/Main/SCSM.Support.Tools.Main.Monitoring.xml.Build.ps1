@@ -6,9 +6,6 @@ $folderName_Misc     =   "Misc"
 if ( (Split-Path -Path (Get-Location) -Leaf) -eq $folderName_Bundle ) {
     cd ".."  # Set folder to root
 }
-else {
-    cd 'CSS-SystemCenter-ServiceManager\SCSM.Support.Tools.mpb'
-}
 
 $mpSource_Monitoring = "Main\SCSM.Support.Tools.Main.Monitoring.xml"
 $ruleID_Monitoring =        "SCSM.Support.Tools.Main.Monitoring.Rule.Starter"
