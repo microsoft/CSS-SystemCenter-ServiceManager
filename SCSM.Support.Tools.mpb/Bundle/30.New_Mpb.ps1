@@ -7,6 +7,9 @@ $folderName_ScsmDLLs =   "ScsmDLLs"
 if ( (Split-Path -Path (Get-Location) -Leaf) -eq $folderName_Bundle ) {
     cd ".."  # Set folder to root
 }
+else {
+    cd 'CSS-SystemCenter-ServiceManager\SCSM.Support.Tools.mpb'
+}
 
 #if (-not (Get-Module -name System.Center.Service.Manager)) { Import-Module ((Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\System Center\2010\Service Manager\Setup').InstallDirectory +'PowerShell\' +'System.Center.Service.Manager.psd1') -Force }
 
