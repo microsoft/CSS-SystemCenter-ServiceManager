@@ -50,9 +50,6 @@ if ( (Split-Path -Path (Get-Location) -Leaf) -eq $folderName_Bundle ) {
 if (-not $BuildVersion) {
     $BuildVersion = (GetBuildVersion)
 }
-else {
-     $BuildVersion =  $BuildVersion.Substring(1)  # if version is given in ADO, then it has a v character at the beginning, drop it
-}
 
 $MpXmlsToSeal = @()
 $MpXmlBuilds = @() #PreSeal
@@ -86,7 +83,7 @@ $Resources += "$folderName_MPResource\SCSM213_Administration_16.png"
 #endregion 
 
 #region copy to Output folder
-
+write-host $pwd  #todo del
 #region copy MP XMLs
 foreach($MpXml in ($MpXmlsToSeal + $MpXmlsNotToSeal) ) {
     Copy-Item -Path "$folderName_MPSource\$MpXml" -Destination $folderName_Output
