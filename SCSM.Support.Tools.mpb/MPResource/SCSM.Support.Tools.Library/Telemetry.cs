@@ -98,8 +98,8 @@ namespace SCSM.Support.Tools.Library
                 osNode.SetAttribute("Locale", Thread.CurrentThread.CurrentUICulture.DisplayName);
                 osNode.SetAttribute("InternetAvailable", Helpers.IsConnectedToInternet().ToString());
                 osNode.SetAttribute("WebProxy", Helpers.IsWebProxyNeeded().ToString());
-                osNode.SetAttribute("ComputerNameHash", Helpers.GetHashStringFromString(Environment.GetEnvironmentVariable("COMPUTERNAME").ToLower()));
-                osNode.SetAttribute("DomainUserNameHash", Helpers.GetHashStringFromString(ConsoleContextHelper.Instance.CurrentUserName.ToLower()));
+                osNode.SetAttribute("ComputerNameGuidHash", Helpers.GetHashStringFromString(Helpers.GetCurrentComputerGuidFromAd().ToString().ToLower()));
+                osNode.SetAttribute("DomainUserNameGuidHash", Helpers.GetHashStringFromString(Helpers.GetCurrentUserGuidFromAd().ToString().ToLower()));
                 osNode.SetAttribute("IsRunningAs64bit", Helpers.IsRunningAs64bit().ToString());
                 osNode.SetAttribute("DisplayScale", Helpers.GetWindowsScaling().ToString());
                 osNode.SetAttribute("DisplayResolution", Helpers.GetDisplayResolution().ToString());

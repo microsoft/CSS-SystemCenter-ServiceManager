@@ -3,6 +3,7 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.DirectoryServices;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -173,6 +174,32 @@ namespace SCSM.Support.Tools.Library
         [DllImport("shell32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool IsUserAnAdmin();
+
+        public static Guid GetCurrentUserGuidFromAd()
+        {
+            return System.DirectoryServices.AccountManagement.UserPrincipal.Current.Guid.GetValueOrDefault();
+        }
+        public static Guid GetCurrentComputerGuidFromAd()
+        {
+            string currentComputerName = Environment.GetEnvironmentVariable("COMPUTERNAME");
+            var searcher = new DirectorySearcher()
+            {
+                Filter = string.Format("(&(objectClass=computer)(cn={0}))", currentComputerName),
+                SizeLimit = 1
+            };
+            searcher.PropertiesToLoad.Add("objectGuid");
+            using (var resultCollection = searcher.FindAll())
+            {
+                if (resultCollection.Count == 1)
+                {
+                    return new Guid((byte[])resultCollection[0].Properties["objectGuid"][0]);
+                }
+                else
+                {
+                    return Guid.Empty;
+                }
+            }
+        }
 
         public static bool IsRunningAs64bit()
         {
