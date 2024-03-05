@@ -819,7 +819,7 @@ $script:SQLResultSetCounter = $null
 AddTimingsToStatInfo
 (GetStatInfoRoot).SetAttribute("SmdtResultZipName", [System.IO.Path]::GetFileName($resultingZipFile_FullPath).Replace( $inputPrefix, $inputPrefix + "_" + $script:RoleFoundAbbr ) )
 (GetStatInfoRoot).SetAttribute("SmdtRanAsSigned", (AmIRunningAsSigned) )
-(GetStatInfoRoot).SetAttribute("SmdtRunDomainHash", (GetHashOfString ([System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().Name.ToLower()) ) )
+(GetStatInfoRoot).SetAttribute("SmdtRunDomainHash", (GetHashOfString (GetComputerDomainObjectGuid).ToString().ToLower()) )
 
 #region Setting SCSM Health Status but only if SMST Eula is accepted
 if ((IsSourceScsmWfMgmtServer)) {
