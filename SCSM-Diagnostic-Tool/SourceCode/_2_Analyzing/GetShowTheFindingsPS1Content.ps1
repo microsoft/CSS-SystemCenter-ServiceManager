@@ -50,6 +50,7 @@ LogStatInfo $statInfoXml "Open"
 $findingsPS1_Content += GetFunctionDeclaration GetProxy
 $findingsPS1_Content += GetFunctionDeclaration InvokeWebRequest_WithProxy
 $findingsPS1_Content += GetFunctionDeclaration IsInternetAvailable
+$findingsPS1_Content += GetFunctionDeclaration GetComputerDomainObjectGuid
 
 $findingsPS1_Content += @"
 
