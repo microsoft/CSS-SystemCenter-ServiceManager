@@ -5,10 +5,11 @@ This site contains scripts & tools for supporting and troubleshooting Microsoft 
 > ##### Note:
 > These scripts & tools are developed and maintained by members of the Microsoft System Center technical support team as an open-source project in [GitHub](https://github.com/microsoft/CSS-SystemCenter-ServiceManager). They are NOT officially supported by Microsoft. The Support Policy can be found [here](https://github.com/microsoft/CSS-SystemCenter-ServiceManager/blob/main/SUPPORT.md).  
 
-We welcome contributions. Each script contains a link to GitHub for contributions.
+We welcome contributions. Each script & tool contains a link to GitHub for contributions.
 
 | Support Scripts & Tools |   
 | :------------------------ | 
+| [SCSM Support Tools in the SCSM Console (MPB)](SCSM.Support.Tools.mpb) |
 | [SCSM Diagnostic Tool](SCSM-Diagnostic-Tool) |
 | [Verify SSRS installation](Verify_SSRS_for_SCSM)  | 
 | [Trace-SM](Trace-SM)  | 
