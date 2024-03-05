@@ -1,10 +1,10 @@
 Below you find some info how to contribute to this script.
 
-###### You landed here by mistake? Here is the [documentation](https://microsoft.github.io/CSS-SystemCenter-ServiceManager/SCSM-Diagnostic-Tool/) of this script.
+###### You landed here by mistake? Here is the [documentation](https://aka.ms/SCSM-Diagnostic-Tool) of this script.
 
 ## How to contribute?
 
-- Small changes in the UI: 
+- Small changes in the GitHub UI: 
   - Directly edit a file. 
   - A fork will be created (if not already). 
   - Send your changes with a pull request.
