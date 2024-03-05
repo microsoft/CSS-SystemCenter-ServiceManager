@@ -1,4 +1,4 @@
-[Do you want more tools in your SM Console?](https://github.com/microsoft/CSS-SystemCenter-ServiceManager/issues/new?assignees=khusmeno-MS&labels=4.+SCSM.Support.Tools.mpb%2C+enhancement&projects=&template=1--scsm-support-tools-mpb---feature-request.md&title=%5BNew+Idea+-+SCSM.Support.Tools.mpb%5D)
+[Please tell us if you want to see more tools in your SM Console?](https://github.com/microsoft/CSS-SystemCenter-ServiceManager/issues/new?assignees=khusmeno-MS&labels=4.+SCSM.Support.Tools.mpb%2C+enhancement&projects=&template=1--scsm-support-tools-mpb---feature-request.md&title=%5BNew+Idea+-+SCSM.Support.Tools.mpb%5D)
 # SCSM Support Tools in the SCSM Console (MPB)
 
 Download the latest MPB:  [SCSM.Support.Tools.mpb]({{ site.latestDownloadLink }}/SCSM.Support.Tools.mpb)
@@ -29,4 +29,5 @@ We strongly believe that this MPB contains useful tools, however in case you wan
 
 ## Do you want to contribute to this tool?
 
-[Here]({{ site.GitHubRepoLink }}/SCSM.Support.Tools.mpb/) is the GitHub repo.
+[Here]({{ site.GitHubRepoLink }}/SCSM.Support.Tools.mpb/) is the GitHub repo. 
+[Please tell us if you want to see more tools in your SM Console?](https://github.com/microsoft/CSS-SystemCenter-ServiceManager/issues/new?assignees=khusmeno-MS&labels=4.+SCSM.Support.Tools.mpb%2C+enhancement&projects=&template=1--scsm-support-tools-mpb---feature-request.md&title=%5BNew+Idea+-+SCSM.Support.Tools.mpb%5D)
