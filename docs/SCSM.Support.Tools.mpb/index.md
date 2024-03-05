@@ -7,6 +7,7 @@ Download the [latest SCSM.Support.Tools.mpb]({{ site.latestDownloadLink }}/SCSM.
 > <img width="221" alt="image" src="https://github.com/microsoft/CSS-SystemCenter-ServiceManager/assets/99029864/0f12e4c7-da7e-4d0b-807a-421d4b3ff738">  
 
 > <img width="300" alt="image" src="https://github.com/microsoft/CSS-SystemCenter-ServiceManager/assets/99029864/43116768-0fc4-4113-9245-851d973cfd47"> 
+
 Then restart the SM Console.
 
 ## Description
