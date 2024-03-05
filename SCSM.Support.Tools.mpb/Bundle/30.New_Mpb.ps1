@@ -1,3 +1,5 @@
+Set-Location $PSScriptRoot 
+
 $folderName_Bundle =     "Bundle"  
 $folderName_MPSource =   "MPSource"  
 $folderName_MPResource = "MPResource"  
@@ -7,11 +9,6 @@ $folderName_ScsmDLLs =   "ScsmDLLs"
 if ( (Split-Path -Path (Get-Location) -Leaf) -eq $folderName_Bundle ) {
     cd ".."  # Set folder to root
 }
-else {
-    cd 'CSS-SystemCenter-ServiceManager\SCSM.Support.Tools.mpb'
-}
-
-#if (-not (Get-Module -name System.Center.Service.Manager)) { Import-Module ((Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\System Center\2010\Service Manager\Setup').InstallDirectory +'PowerShell\' +'System.Center.Service.Manager.psd1') -Force }
 
 #MPB generation needs to run in the Output folder, therefore all MPs and MPResources needs to be present in current = output folder
 Set-Location "$folderName_Output"

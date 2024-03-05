@@ -53,7 +53,7 @@ namespace SCSM.Support.Tools.Main.Presentation
             e.Handled = true;
         }
 
-        private static string MpKeyToken = "31bf3856ad364e35";
+        private static string MpKeyToken = Helpers.PublicKeyToken;
 
         public static string VersionOfCore
         {
