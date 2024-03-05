@@ -100,6 +100,7 @@ namespace SCSM.Support.Tools.Library
                 osNode.SetAttribute("WebProxy", Helpers.IsWebProxyNeeded().ToString());
                 osNode.SetAttribute("ComputerNameGuidHash", Helpers.GetHashStringFromString(Helpers.GetCurrentComputerGuidFromAd().ToString().ToLower()));
                 osNode.SetAttribute("DomainUserNameGuidHash", Helpers.GetHashStringFromString(Helpers.GetCurrentUserGuidFromAd().ToString().ToLower()));
+                osNode.SetAttribute("DomainGuidHash", Helpers.GetHashStringFromString(Helpers.GetComputerDomainGuid().ToString().ToLower()));
                 osNode.SetAttribute("IsRunningAs64bit", Helpers.IsRunningAs64bit().ToString());
                 osNode.SetAttribute("DisplayScale", Helpers.GetWindowsScaling().ToString());
                 osNode.SetAttribute("DisplayResolution", Helpers.GetDisplayResolution().ToString());

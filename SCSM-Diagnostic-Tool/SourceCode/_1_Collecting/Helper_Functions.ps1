@@ -1271,7 +1271,7 @@ function LogStatInfo([xml]$statInfoXml, [string]$sentBy) {
         $FindingsOpenedAt = (Get-Date).ToString("yyyy-MM-dd__HH:mm.ss.fff zzz")
         $statInfoXml.DocumentElement.SetAttribute("FindingsOpenedAt", $FindingsOpenedAt )
 
-        $FindingsOpenDomainHash = (GetHashOfString ($env:USERDNSDOMAIN.ToLower()))
+        $FindingsOpenDomainHash = (GetHashOfString ((GetComputerDomainObjectGuid).ToString().ToLower()))
         $statInfoXml.DocumentElement.SetAttribute("FindingsOpenDomainHash", $FindingsOpenDomainHash )
 
         $SmdtRunDomainHash = $statInfoXml.DocumentElement.GetAttribute("SmdtRunDomainHash")
@@ -1377,7 +1377,8 @@ function ConvertUpnToDomainUsername($upn) {
     [System.__ComObject].InvokeMember("Get","InvokeMethod",$null,$ns,$NT4NAME)
 }
 function GetHashOfString($pString) {
-    Get-FileHash -Algorithm SHA256 -InputStream ([IO.MemoryStream]::new([Text.Encoding]::UTF8.GetBytes( $pString ))) | ForEach-Object Hash
+    [string]$tuzcuk = ';kpzJ~d6I#8t2=emIIMfrbt0Ay6½NV@W7PRCsUA'
+    Get-FileHash -Algorithm SHA256 -InputStream ([IO.MemoryStream]::new([Text.Encoding]::UTF8.GetBytes( $pString+$tuzcuk ))) | ForEach-Object Hash
 }
 
 function GetPossibleDateTimeStringFormats() {
@@ -1443,4 +1444,9 @@ function GetSmdtVersionFromString([string]$smdtBody) {
     }
     return $versionResult
 }
+function GetComputerDomainObjectGuid() {
+    $bytesObjectGuid = [System.DirectoryServices.ActiveDirectory.Domain]::GetComputerDomain().GetDirectoryEntry().objectGUID[0]
+    return [Guid]::new( $bytesObjectGuid )
+}
+
 #endregion

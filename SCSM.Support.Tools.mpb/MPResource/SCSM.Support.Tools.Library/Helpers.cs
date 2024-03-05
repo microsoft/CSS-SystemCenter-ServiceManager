@@ -177,30 +177,54 @@ namespace SCSM.Support.Tools.Library
 
         public static Guid GetCurrentUserGuidFromAd()
         {
-            return System.DirectoryServices.AccountManagement.UserPrincipal.Current.Guid.GetValueOrDefault();
+            try
+            {
+                return System.DirectoryServices.AccountManagement.UserPrincipal.Current.Guid.GetValueOrDefault();
+            }
+            catch
+            {
+                return Guid.Empty;
+            }
         }
         public static Guid GetCurrentComputerGuidFromAd()
         {
-            string currentComputerName = Environment.GetEnvironmentVariable("COMPUTERNAME");
-            var searcher = new DirectorySearcher()
+            try
             {
-                Filter = string.Format("(&(objectClass=computer)(cn={0}))", currentComputerName),
-                SizeLimit = 1
-            };
-            searcher.PropertiesToLoad.Add("objectGuid");
-            using (var resultCollection = searcher.FindAll())
-            {
-                if (resultCollection.Count == 1)
+                string currentComputerName = Environment.GetEnvironmentVariable("COMPUTERNAME");
+                var searcher = new DirectorySearcher()
                 {
-                    return new Guid((byte[])resultCollection[0].Properties["objectGuid"][0]);
-                }
-                else
+                    Filter = string.Format("(&(objectClass=computer)(cn={0}))", currentComputerName),
+                    SizeLimit = 1
+                };
+                searcher.PropertiesToLoad.Add("objectGuid");
+                using (var resultCollection = searcher.FindAll())
                 {
-                    return Guid.Empty;
+                    if (resultCollection.Count == 1)
+                    {
+                        return new Guid((byte[])resultCollection[0].Properties["objectGuid"][0]);
+                    }
+                    else
+                    {
+                        return Guid.Empty;
+                    }
                 }
             }
+            catch
+            {
+                return Guid.Empty;
+            }
         }
-
+        public static Guid GetComputerDomainGuid()
+        {
+            try
+            {
+                return System.DirectoryServices.ActiveDirectory.Domain.GetComputerDomain().GetDirectoryEntry().Guid;  //.Properties["objectGuid"][0]);
+            }
+            catch
+            {
+                return Guid.Empty;
+            }
+        }
         public static bool IsRunningAs64bit()
         {
             return Environment.Is64BitOperatingSystem;
