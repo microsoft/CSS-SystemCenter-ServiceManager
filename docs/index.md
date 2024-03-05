@@ -9,7 +9,7 @@ We welcome contributions. Each script & tool contains a link to GitHub for contr
 
 | Support Scripts & Tools |   
 | :------------------------ | 
-| [SCSM Support Tools in the SCSM Console (MPB)](SCSM.Support.Tools.mpb) |
+| [SCSM Support Tools inside the SCSM Console (MPB)](SCSM.Support.Tools.mpb) |
 | [SCSM Diagnostic Tool](SCSM-Diagnostic-Tool) |
 | [Verify SSRS installation](Verify_SSRS_for_SCSM)  | 
 | [Trace-SM](Trace-SM)  | 
