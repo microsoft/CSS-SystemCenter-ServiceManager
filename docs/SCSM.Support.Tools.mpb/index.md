@@ -7,7 +7,7 @@ The *SCSM.Support.Tools.mpb* has been developed to bring useful tools into the S
 
 > <img width="550" alt="SCSM Support Tools when imported into the SM Console" src="https://github.com/microsoft/CSS-SystemCenter-ServiceManager/assets/99029864/ec2bfe03-47f7-4009-b37e-e9d2b4190106">
 
-As an example, you can view the Health Status of your Management Servers. (After importing of this MPB, the _SCSM Diagnostic Tool_ will run *automatically* on your Management Servers at 02:30 AM to determine their Health Status.)
+As an example, you can view the Health Status of your Management Servers. (After importing this MPB, the _SCSM Diagnostic Tool_ will run *automatically* on your Management Servers at 02:30 AM to determine their Health Status.)
 > <img width="584" alt="Health Status of your Management Servers" src="https://github.com/microsoft/CSS-SystemCenter-ServiceManager/assets/99029864/6d15d1af-2675-41b5-9f59-fbbc2b5d9287">
 
 You can also configure to send emails whenever the SCSM Diagnostic Tool runs on your Management Servers.
