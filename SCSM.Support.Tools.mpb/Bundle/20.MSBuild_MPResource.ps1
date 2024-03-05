@@ -2,6 +2,8 @@ param(
     [string]$Configuration = "Debug" # or Release
 )
 
+Set-Location $PSScriptRoot 
+
 $folderName_Bundle =     "Bundle"  
 $folderName_MPSource =   "MPSource"  
 $folderName_MPResource = "MPResource"  
@@ -9,9 +11,6 @@ $folderName_Output   =   "Output"
 $folderName_Misc     =   "Misc"      
 if ( (Split-Path -Path (Get-Location) -Leaf) -eq $folderName_Bundle ) {
     cd ".."  # Set folder to root
-}
-else {
-    cd 'CSS-SystemCenter-ServiceManager\SCSM.Support.Tools.mpb'
 }
 
 $VSProjects = @()

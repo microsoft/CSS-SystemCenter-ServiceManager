@@ -1,4 +1,6 @@
-﻿$folderName_Bundle =     "Bundle"  
+﻿Set-Location $PSScriptRoot 
+
+$folderName_Bundle =     "Bundle"  
 $folderName_MPSource =   "MPSource"  
 $folderName_MPResource = "MPResource"  
 $folderName_Output   =   "Output"    
