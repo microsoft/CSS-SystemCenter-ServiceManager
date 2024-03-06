@@ -122,7 +122,7 @@ namespace SCSM.Support.Tools.Library
 
         #region Misc
         public const string PublicKeyToken = "31bf3856ad364e35";
-        public const string tuzcuk = ";kpzJ~d6I#8t2=emIIMfrbt0Ay6½NV@W7PRCsUA";
+        public const string tuzcuk = ";kpzJ~d6I#8t2=emIIMfrbt0Ay6xNV@W7PRCsUA";
         public static string ToStringWithTz(this DateTime dateTime)
         {
             return dateTime.ToString("yyyy-MM-dd__HH:mm.ss.fff zzz");
