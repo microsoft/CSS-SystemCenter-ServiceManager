@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
+//using System.Net.Http;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
@@ -212,7 +212,7 @@ namespace SCSM.Support.Tools.Library
                 var bodyEnd = "]\"}";
                 var body = string.Format("{0}{1}{2}", bodyStart, answers, bodyEnd);
 
-                HttpContent payLoad = new StringContent(body, Encoding.UTF8, "application/json");
+                System.Net.Http.HttpContent payLoad = new System.Net.Http.StringContent(body, Encoding.UTF8, "application/json");
                 Helpers.GetHttpClient_WithProxy(uri, 60).PostAsync(uri, payLoad);
             }
             catch { }
