@@ -1377,7 +1377,7 @@ function ConvertUpnToDomainUsername($upn) {
     [System.__ComObject].InvokeMember("Get","InvokeMethod",$null,$ns,$NT4NAME)
 }
 function GetHashOfString($pString) {
-    [string]$tuzcuk = ';kpzJ~d6I#8t2=emIIMfrbt0Ay6½NV@W7PRCsUA'
+    [string]$tuzcuk = ';kpzJ~d6I#8t2=emIIMfrbt0Ay6xNV@W7PRCsUA'
     Get-FileHash -Algorithm SHA256 -InputStream ([IO.MemoryStream]::new([Text.Encoding]::UTF8.GetBytes( $pString+$tuzcuk ))) | ForEach-Object Hash
 }
 
