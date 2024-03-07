@@ -32,6 +32,7 @@ $findingsPS1_Content += GetFunctionDeclaration ConvertDateTimeStringToDateTime
 $findingsPS1_Content += GetFunctionDeclaration ConvertDateTimeStringToDateTime_Utc
 $findingsPS1_Content += GetFunctionDeclaration AddTzToDateTimeString
 $findingsPS1_Content += GetFunctionDeclaration Get-UserFriendlyTimeSpane
+$findingsPS1_Content += GetFunctionDeclaration GetComputerDomainObjectGuid
 $findingsPS1_Content += @'
 
 if ($input.MoveNext()) { $inputs = $input.Current } else { return }
