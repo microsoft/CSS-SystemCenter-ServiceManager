@@ -935,12 +935,15 @@ $ShowTheFindingsPS1Content = $ShowTheFindingsPS1Content.Replace("# SMDTSIGN ends
 Set-Content -Path (Join-Path -Path (Split-Path $resultFolder -Parent) -ChildPath $findingsPS1_FileName ) -Value $ShowTheFindingsPS1Content
 DeleteFileInTargetFolder $findingsHtml_FileName
 
-#WriteTelemetry
-AppendOutputToFileInTargetFolder (GetStatInfo).OuterXml StatInfo.xml
 $sentByForStatInfo = "Run"
 if ( $Script:MyInvocation.UnboundArguments.Contains("-startedByRule") ) { 
     $sentByForStatInfo = "Rule" 
 } 
+(GetStatInfoRoot).SetAttribute("SmdtRunType", $sentByForStatInfo)
+
+#WriteTelemetry
+AppendOutputToFileInTargetFolder (GetStatInfo).OuterXml StatInfo.xml
+
 LogStatInfo (GetStatInfo) $sentByForStatInfo
 
 #$ProgressPreference = 'Continue'
