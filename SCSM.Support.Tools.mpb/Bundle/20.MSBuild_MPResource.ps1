@@ -51,7 +51,7 @@ $slnName = "SCSM.Support.Tools.sln"
                         #good, that is what we want, continue...
                     }
                     else {
-                        Write-Error "System.Net.Http has been found as a Reference in $csproj but no HintPath found that points to the GAC for v4.0.0.0. This eventually will compile with v4.2.0.0 but may crash the console at customers with older version (but still .NET FW 4.7.2)"
+                        Write-Error "System.Net.Http has been found as a Reference in $csprojPath but no HintPath found that points to the GAC for v4.0.0.0. This eventually will compile with v4.2.0.0 but may crash the console at customers with older version (but still .NET FW 4.7.2)"
                         return #actually the above Write-Error will cause ADO to break but good to have a return                    
                     }
                 }
