@@ -7,17 +7,18 @@ This site contains scripts & tools for supporting and troubleshooting Microsoft 
 
 We welcome contributions. Each script & tool contains a link to GitHub for contributions.
 
-| Console Tools |   
-| :------------------------ | 
-| [Support Tools for the SCSM Console](SCSM.Support.Tools.mpb) |
+  
+| Console Tools   | | 
+| :------- | -------| 
+| [Support Tools for the SCSM Console](SCSM.Support.Tools.mpb) | Proactive tools for SCSM Administrators |
 
 <br />
 
-| Troubleshooting Scripts |   
-| :------------------------ | 
-| [SCSM Diagnostic Tool](SCSM-Diagnostic-Tool) |
-| [Verify SSRS installation](Verify_SSRS_for_SCSM)  | 
-| [Trace-SM](Trace-SM)  | 
+| Troubleshooting Scripts | | 
+| :---------- |  -------| 
+| [SCSM Diagnostic Tool](SCSM-Diagnostic-Tool) | Mostly asked by Microsoft Support to run. Generates a report regarding known issues |
+| [Verify SSRS installation](Verify_SSRS_for_SCSM)  | Checks if Reporting Services is configured properly to be used with the Data Warehouse  |
+| [Trace-SM](Trace-SM)  | Mostly asked by Microsoft Support to collect trace files in order to be used with troubleshooting  |
 
 <!-- | [Correct Fact Problems](CorrectFactProblems)  | [CorrectFactProblemsV7.3.sql](https://github.com/microsoft/CSS-SystemCenter-ServiceManager/releases/latest/download/CorrectFactProblemsV7.3.sql) |  -->
 
