@@ -11,4 +11,4 @@ You can also configure to send emails whenever the SCSM Diagnostic Tool runs on 
 The configured Recipients will get an email similar to this:
 > <img width="900" alt="A sample email sent to configured Recipients" src="https://github.com/microsoft/CSS-SystemCenter-ServiceManager/assets/99029864/7fd47300-ab2f-4e8f-96d8-8e15abb3e34b">
 
-Click [here](https://aka.ms/scsm.support.tools.mpb) to see all Support tools in the Console.
+Click [here](https://aka.ms/scsm.support.tools.mpb/#list-of-tools) to see all Support tools in the Console.
