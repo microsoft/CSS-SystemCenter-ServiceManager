@@ -17,9 +17,9 @@ The *SCSM.Support.Tools.mpb* has been developed to bring useful tools into the S
 
 ## List of Tools
 
-|||
-|--|--|
-[Health Status](HealthStatus)  | Get informed about the Health Status of your Management Servers |
+> |||
+> |--|--|
+> [Health Status](HealthStatus)  | Get informed about the Health Status of your Management Servers |
 
 
 ## How to get new tools?
