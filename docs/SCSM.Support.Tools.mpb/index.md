@@ -16,9 +16,11 @@ The *SCSM.Support.Tools.mpb* has been developed to bring useful tools into the S
 > <img width="750" alt="SCSM Support Tools when imported into the SM Console" src="https://github.com/microsoft/CSS-SystemCenter-ServiceManager/assets/99029864/ec2bfe03-47f7-4009-b37e-e9d2b4190106">
 
 ## List of Tools
+
 |||
 |--|--|
 [Health Status](HealthStatus)  | Get informed about the Health Status of your Management Servers |
+
 
 ## How to get new tools?
 A "rule" contained in the MPB will update itself at 02:00 AM if the Management Servers can reach GitHub. If not, the latest MPB can be downloaded and imported manually.
