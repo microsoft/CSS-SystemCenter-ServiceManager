@@ -396,13 +396,15 @@ function GetRuleFromArray([string]$ruleName, [cData[]]$dataRows) {
     return $null;
 }
 
+function GetRuleFromAllRules([string]$ruleName) {
+    GetRuleFromArray $ruleName ($Result_OKs+$Result_Problems)
+}
 function GetRuleFromPassedRules([string]$ruleName) {
     GetRuleFromArray $ruleName $Result_OKs
 }
 function GetRuleFromFailedRules([string]$ruleName) {
     GetRuleFromArray $ruleName $Result_Problems
 }
-
 function RulePassed([string]$ruleName) {
     if ( (GetRuleFromPassedRules $ruleName) ) {
         return $true

@@ -10,7 +10,7 @@ if (-not (IsSourceScsmMgmtServer) ) {
  #Note: Despite that a secondary MS does not run the WFs, as WF related info was collected (from db) we are analyzing them here (as much as we can), too.
 
     Check_ECLRowCount
-    Check_CustomRelationshipTypes
+    Check_CustomRelationshipTypes # must run after Check_ECLRowCount because it depends on its result
     Check_WorkflowsMinutesBehind
     Check_ConnectorStatus
     Check_GroomingAndPurging
