@@ -610,9 +610,29 @@ order by 5 desc
 '@
 
    $SQL_SCSM_MS['SQL_ObjectTemplates_WithMissingLocalizations']=@'
---show Templates which do not have any localized string which would cause Connector (e.g. Exchange Connector) Wizard to crash (Bug 936430)
-select * from ObjectTemplate ot
-where not exists (select * from LocalizedText lt where ot.ObjectTemplateId = lt.LTStringId and LTStringType=1)
+--show IR,SR Templates which do not have any localized string and would therefore cause the Exchange Connector Wizard to crash (Bug 936430)
+select
+ObjectTemplateName as "Template Name to be edited"
+, ltMT.LTValue as BasedOnClass_DisplayName_ENU, ot.ManagementPackId
+from ObjectTemplate ot
+left join TypeProjection tp on  ot.ObjectTemplateTypeId=tp.TypeProjectionId
+left join ManagedType mt on TypeProjectionSeed=mt.ManagedTypeId
+left join LocalizedText lt on ot.ObjectTemplateId = lt.LTStringId and lt.LTStringType=1 and lt.LanguageCode='ENU'
+left join LocalizedText ltMT on mt.ManagedTypeId = ltMT.LTStringId and ltMT.LTStringType=1 and ltMT.LanguageCode='ENU'
+left join LocalizedText ltTP on tp.TypeProjectionId = ltTP.LTStringId and ltTP.LTStringType=1 and ltTP.LanguageCode='ENU'
+where lt.ltvalue is null
+and  mt.TypeName in ('System.WorkItem.Incident','System.WorkItem.ServiceRequest')
+union all
+select
+ObjectTemplateName as Template_Name, ltMT.LTValue as BasedOnClass_DisplayName_ENU, ot.ManagementPackId
+from ObjectTemplate ot
+inner join ManagedType mt on  ot.ObjectTemplateTypeId=mt.ManagedTypeId
+left join LocalizedText lt on ot.ObjectTemplateId = lt.LTStringId and lt.LTStringType=1 and lt.LanguageCode='ENU'
+left join LocalizedText ltMT on mt.ManagedTypeId = ltMT.LTStringId and ltMT.LTStringType=1 and ltMT.LanguageCode='ENU'
+where ot.ObjectTemplateTypeId != '0814D9A7-8332-A5DF-2EC8-34D07F3D40DB'  -- != System.Notification.Template.SMTP
+and lt.ltvalue is null
+and  mt.TypeName in ('System.WorkItem.Incident','System.WorkItem.ServiceRequest')
+order by 1
 '@
 
    $SQL_SCSM_MS['SQL_fn_GetEntityChangeLogGroomingWatermark']=@'
