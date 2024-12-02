@@ -22,7 +22,7 @@ CopyFileToTargetFolder $scriptFilePath
 #region copy smdt.ps1 to windows Temp folder, if newer
 $smdtPS1SavedToWindirTemp = $false
 $windirTempFolder = [IO.Path]::Combine($env:windir, "Temp", "SCSM.Support.Tools")
-New-Item -Path $windirTempFolder -ItemType Directory -ErrorAction SilentlyContinue
+New-Item -Path $windirTempFolder -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
 $smdtPs1TargetFileName = "SCSM-Diagnostic-Tool.ps1"
 $smdtPs1TargetFullPath = [IO.Path]::Combine($windirTempFolder, $smdtPs1TargetFileName)
 $smdtVersionInTarget = New-Object Version
