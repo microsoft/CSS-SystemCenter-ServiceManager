@@ -6,7 +6,7 @@ During the upgrade of the DW management server from version 2019 to 2022, the fi
 - build_scdm_db.sql
 - build_scdw_db.sql
 
-This files are then used by SCSM 2022 UR2.
+These files are then used by SCSM 2022 UR2, however as they are missing, UR2 fails.
 
 # Resolution
 - Download the files from ...
