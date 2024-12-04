@@ -9,7 +9,7 @@ During the upgrade of the DW management server from version 2019 to 2022, the fi
 These files are then used by SCSM 2022 UR2, however as they are missing, UR2 fails.
 
 # Solution
-- Download the 2 files from ...
+- Download the 2 SQL files from https://github.com/microsoft/CSS-SystemCenter-ServiceManager/tree/main/Misc/FixForBug30409283
 - On the DW management server, copy these 2 files into the folder `C:\Program Files\Microsoft System Center\Service Manager\DW`
 - On the DW management server, restart the [Update Rollup 2 for SCSM 2022](https://support.microsoft.com/en-us/topic/update-rollup-2-for-system-center-2022-service-manager-631042ca-f36d-4716-898c-6a4d4856f353)
 
