@@ -202,6 +202,7 @@ $smEnv_SQLSM = $smEnv.AppendChild(   (CreateElementForStatInfo SQLSM)   )
 #region Get SM version
 #region Populate some known SM versions
 $SCSM_Versions = @{}
+$SCSM_Versions.Add("10.22.1858.0","2022 UR3")
 $SCSM_Versions.Add("10.25.1523.0","2025 RTM")
 $SCSM_Versions.Add("10.22.1313.0","2022 UR2")
 $SCSM_Versions.Add("10.22.1219.0","2022 RTM + Hotfix")
