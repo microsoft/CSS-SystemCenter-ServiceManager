@@ -58,6 +58,7 @@ $ssrsVersionDisplayName = switch ($ssrsMajorVersion)
     13 {"2016"}
     14 {"2017"}
     15 {"2019"}
+    16 {"2022"}
     default {""}
 }
 if ($ssrsVersionDisplayName -eq "") {
@@ -137,41 +138,73 @@ Write-Host ""
 #endregion
 
 #region Checking rsreportserver.config
-$rsreportserver_configIsCorrect = $false
-$rsreportserver_configFileName = "rsreportserver.config"
-$rsreportserver_configFilePath = Join-Path $ssrsReportServerFolder $rsreportserver_configFileName
-$rsreportserver_configFileExists = (Test-Path -Path $rsreportserver_configFilePath)
-if (-not $rsreportserver_configFileExists) {
-    Write-Host "$rsreportserver_configFileName does *NOT* exist in $ssrsReportServerFolder" -ForegroundColor Yellow
-}
-if ($rsreportserver_configFileExists) {
-     
-    [xml]$xml = Get-Content $rsreportserver_configFilePath
-    
+function Check_rsreportserver_config() { 
+
+    $rsreportserver_configFileName = "rsreportserver.config"
+    $rsreportserver_configFilePath = Join-Path $ssrsReportServerFolder $rsreportserver_configFileName
+
+    if (-not (Test-Path -Path $rsreportserver_configFilePath)) {
+        Write-Host "ERROR: "  -ForegroundColor Yellow -NoNewline
+        Write-Host "$rsreportserver_configFileName does *NOT* exist in $ssrsReportServerFolder"
+        return
+    }
+
+    $Error.Clear()
+    [xml]$xml = Get-Content $rsreportserver_configFilePath -Raw -ErrorAction SilentlyContinue
+    if ($Error) {
+        Write-Host "ERROR: "  -ForegroundColor Yellow -NoNewline
+        Write-Host "The file '$rsreportserver_configFileName' in '$ssrsReportServerFolder' is not a valid XML file. Please check the error message."
+        return 
+    }
+
     $tagNameToFind = "Extension"
     $attributeNameToFind = "Name"
     $attributeValueToFind = "SCDWMultiMartDataProcessor"
-    $nodeToFind = Select-Xml -XPath "//$tagNameToFind[@$attributeNameToFind='$attributeValueToFind']" -Xml $xml
+    $nodeToFind = Select-Xml -XPath "/Configuration/Extensions/Data/$tagNameToFind[@$attributeNameToFind='$attributeValueToFind']" -Xml $xml
 
     if ($nodeToFind -eq $null) {
         Write-Host "ERROR: "  -ForegroundColor Yellow -NoNewline
         Write-Host "The file '$rsreportserver_configFileName' in '$ssrsReportServerFolder' does *NOT* contain the correct <$tagNameToFind> node."
-    }
-    else {
-
-        $Extension_NodeToVerify = [System.Xml.XmlNode]$nodeToFind.Node
-        $rsreportserver_configIsCorrect =  ( $Extension_NodeToVerify.Type.Replace(" ","") -eq "Microsoft.EnterpriseManagement.Reporting.MultiMartConnection, Microsoft.EnterpriseManagement.Reporting.Code".Replace(" ","") ) 
-
-        if (-not $rsreportserver_configIsCorrect) {
-            Write-Host "ERROR: "  -ForegroundColor Yellow -NoNewline
-            Write-Host "The <$tagNameToFind> node in '$rsreportserver_configFileName' in '$ssrsReportServerFolder' does exists but its content is *NOT* correct." 
-        }
-        else {
-            Write-Host " Pass: The content of '$rsreportserver_configFileName' in '$ssrsReportServerFolder' is correct."             
-        }
+        return
     }
 
+    if ($nodeToFind.Count -ne 1) {
+        Write-Host "ERROR: "  -ForegroundColor Yellow -NoNewline
+        Write-Host "The file '$rsreportserver_configFileName' in '$ssrsReportServerFolder' does contain the correct <$tagNameToFind> node *BUT* in more than 1 location."
+        return
+    }
+
+    $Extension_NodeToVerify = [System.Xml.XmlNode]$nodeToFind.Node
+    $Extension_Type_Value = $Extension_NodeToVerify.GetAttribute("Type")
+    if (-not $Extension_Type_Value) {
+        Write-Host "ERROR: "  -ForegroundColor Yellow -NoNewline
+        Write-Host "The file '$rsreportserver_configFileName' in '$ssrsReportServerFolder' does contain the correct <$tagNameToFind> node *BUT* has no attribute 'Type'."
+        return
+    }
+               
+    $parts = $Extension_Type_Value.Split(',')
+    if ($parts.Count -ne 2) {
+        Write-Host "ERROR: "  -ForegroundColor Yellow -NoNewline
+        Write-Host "The file '$rsreportserver_configFileName' in '$ssrsReportServerFolder' does contain the correct <$tagNameToFind> node *BUT* the value of its attribute 'Type' is not correct."
+        return
+    }
+
+    if (-not (
+        $parts[0].Trim() -ceq 'Microsoft.EnterpriseManagement.Reporting.MultiMartConnection' -and
+        $parts[1].Trim() -ceq 'Microsoft.EnterpriseManagement.Reporting.Code' 
+        ))
+    {
+        Write-Host "ERROR: "  -ForegroundColor Yellow -NoNewline
+        Write-Host "The file '$rsreportserver_configFileName' in '$ssrsReportServerFolder' does contain the correct <$tagNameToFind> node *BUT* the value of its attribute 'Type' is not correct."
+        return
+    }
+
+    Write-Host " Pass: The content of '$rsreportserver_configFileName' in '$ssrsReportServerFolder' is correct."  
+    return $true  
 }
+$rsreportserver_configIsCorrect = $false
+$rsreportserver_configIsCorrect = Check_rsreportserver_config
+
 Write-Host ""
 #endregion
 
@@ -180,11 +213,12 @@ Write-Host ""
 Write-Host "Conclusion:" -ForegroundColor Cyan
 Write-Host "==========="
 if ($scsmDllFileExists -and $rsreportserver_configIsCorrect -and $rssrvpolicy_configIsCorrect) {
-    Write-Host "The selected SSRS instance is configured correctly."
+    Write-Host "The selected SSRS instance is configured correctly." -ForegroundColor Green
 }
 else {
     Write-Host "The selected SSRS instance is " -NoNewline
-    Write-Host "*NOT* configured correctly." -ForegroundColor Yellow
+    Write-Host "*NOT*" -ForegroundColor Yellow -NoNewline
+    Write-Host " configured correctly."
     Write-Host "Please follow the steps at  " -NoNewline
     Write-Host "https://learn.microsoft.com/en-us/system-center/scsm/config-remote-ssrs" -ForegroundColor Yellow
 }
