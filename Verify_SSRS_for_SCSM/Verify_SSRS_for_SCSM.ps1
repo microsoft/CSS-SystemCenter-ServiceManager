@@ -73,7 +73,58 @@ if ($ssrsMajorVersion -ge 14) {
 }
 [string]$ssrsReportServerFolder = $ssrsReportServerFolder.FullName 
 [string]$ssrsReportServerBinFolder = Join-Path $ssrsReportServerFolder "bin"
+
+$rsreportserver_configFileName = "rsreportserver.config"
+$rsreportserver_configFilePath = Join-Path $ssrsReportServerFolder $rsreportserver_configFileName
 #endregion
+
+
+#region checking rsreportserver_configFile existence and xml validity
+function check_rsreportserver_configFile_existence_xml_validity() {
+    if (-not (Test-Path -Path $rsreportserver_configFilePath)) {
+        Write-Host "ERROR: "  -ForegroundColor Yellow -NoNewline
+        Write-Host "$rsreportserver_configFileName does *NOT* exist in $ssrsReportServerFolder"
+        return $false
+    }
+
+    $Error.Clear()
+    [xml]$xml = Get-Content $rsreportserver_configFilePath -Raw -ErrorAction SilentlyContinue
+    if ($Error) {
+        Write-Host "ERROR: "  -ForegroundColor Yellow -NoNewline
+        Write-Host "The file '$rsreportserver_configFileName' in '$ssrsReportServerFolder' is not a valid XML file. Please check the error message."
+        return $false
+    }
+
+    Write-Host " Pass: The file '$rsreportserver_configFileName' in '$ssrsReportServerFolder' is a valid XML file."  
+    return $true
+}
+$rsreportserver_configFile_existsAndValid = $false
+$rsreportserver_configFile_existsAndValid = check_rsreportserver_configFile_existence_xml_validity
+
+Write-Host ""
+#endregion
+
+#region Checking SSRS Mode
+function Check_SSRS_Mode() {
+
+    [xml]$xml = Get-Content $rsreportserver_configFilePath -Raw
+
+    #must be Native Mode ( != SharePointIntegrated mode which is not more available starting with 2017)
+    $isSharePointIntegrated = $xml.SelectSingleNode("//IsSharePointIntegrated")
+    if ($isSharePointIntegrated -ne $null -and $isSharePointIntegrated.InnerText.ToLower() -eq "true") {       
+        Write-Host "ERROR: "  -ForegroundColor Yellow -NoNewline
+        Write-Host "SSRS is running in SharePoint Integrated mode. This is NOT supported. SSRS must run in Native mode."
+        return $false
+    }
+    
+    Write-Host " Pass: SSRS is running in Native mode."  
+    return $true
+}
+$rsreportserver_runningInNativeMode = $false
+$rsreportserver_runningInNativeMode = Check_SSRS_Mode
+
+Write-Host ""
+#endregion 
 
 #region Checking DLL
 $scsmDllFileExists = $false
@@ -139,23 +190,8 @@ Write-Host ""
 
 #region Checking rsreportserver.config
 function Check_rsreportserver_config() {
-
-    $rsreportserver_configFileName = "rsreportserver.config"
-    $rsreportserver_configFilePath = Join-Path $ssrsReportServerFolder $rsreportserver_configFileName
-
-    if (-not (Test-Path -Path $rsreportserver_configFilePath)) {
-        Write-Host "ERROR: "  -ForegroundColor Yellow -NoNewline
-        Write-Host "$rsreportserver_configFileName does *NOT* exist in $ssrsReportServerFolder"
-        return
-    }
-
-    $Error.Clear()
-    [xml]$xml = Get-Content $rsreportserver_configFilePath -Raw -ErrorAction SilentlyContinue
-    if ($Error) {
-        Write-Host "ERROR: "  -ForegroundColor Yellow -NoNewline
-        Write-Host "The file '$rsreportserver_configFileName' in '$ssrsReportServerFolder' is not a valid XML file. Please check the error message."
-        return 
-    }
+    
+    [xml]$xml = Get-Content $rsreportserver_configFilePath -Raw   
 
     $tagNameToFind = "Extension"
     $attributeNameToFind = "Name"
@@ -208,35 +244,16 @@ $rsreportserver_configIsCorrect = Check_rsreportserver_config
 Write-Host ""
 #endregion
 
-#region Checking SSRS Mode
-function Check_SSRS_Mode() {
-    # no need to make file existence and xml validation checks, because already done in Check_rsreportserver_config()
-    $rsreportserver_configFileName = "rsreportserver.config"
-    $rsreportserver_configFilePath = Join-Path $ssrsReportServerFolder $rsreportserver_configFileName
-    [xml]$xml = Get-Content $rsreportserver_configFilePath -Raw -ErrorAction SilentlyContinue
-
-    #must be Native Mode ( != SharePointIntegrated mode which is not more available starting with 2017)
-    $isSharePointIntegrated = $xml.SelectSingleNode("//IsSharePointIntegrated")
-    if ($isSharePointIntegrated -ne $null -and $isSharePointIntegrated.InnerText.ToLower() -eq "true") {       
-        Write-Host "ERROR: "  -ForegroundColor Yellow -NoNewline
-        Write-Host "SSRS is running in SharePoint Integrated mode. This is NOT supported. SSRS must run in Native mode."
-        return $false
-    }
-    
-    Write-Host " Pass: SSRS running in Native mode."  
-    return $true
-}
-$rsreportserver_runningInNativeMode = $false
-$rsreportserver_runningInNativeMode = Check_SSRS_Mode
-
-Write-Host ""
-#endregion 
-
 #region Conclusion
 ""
 Write-Host "Conclusion:" -ForegroundColor Cyan
 Write-Host "==========="
-if ($scsmDllFileExists -and $rsreportserver_configIsCorrect -and $rssrvpolicy_configIsCorrect -and $rsreportserver_runningInNativeMode) {
+if ($scsmDllFileExists -and 
+    $rsreportserver_configIsCorrect -and 
+    $rssrvpolicy_configIsCorrect -and 
+    $rsreportserver_runningInNativeMode -and
+    $rsreportserver_configFile_existsAndValid
+    ) {
     Write-Host "The selected SSRS instance is configured correctly." -ForegroundColor Green
 }
 else {
