@@ -138,7 +138,7 @@ Write-Host ""
 #endregion
 
 #region Checking rsreportserver.config
-function Check_rsreportserver_config() { 
+function Check_rsreportserver_config() {
 
     $rsreportserver_configFileName = "rsreportserver.config"
     $rsreportserver_configFilePath = Join-Path $ssrsReportServerFolder $rsreportserver_configFileName
@@ -208,11 +208,35 @@ $rsreportserver_configIsCorrect = Check_rsreportserver_config
 Write-Host ""
 #endregion
 
+#region Checking SSRS Mode
+function Check_SSRS_Mode() {
+    # no need to make file existence and xml validation checks, because already done in Check_rsreportserver_config()
+    $rsreportserver_configFileName = "rsreportserver.config"
+    $rsreportserver_configFilePath = Join-Path $ssrsReportServerFolder $rsreportserver_configFileName
+    [xml]$xml = Get-Content $rsreportserver_configFilePath -Raw -ErrorAction SilentlyContinue
+
+    #must be Native Mode ( != SharePointIntegrated mode which is not more available starting with 2017)
+    $isSharePointIntegrated = $xml.SelectSingleNode("//IsSharePointIntegrated")
+    if ($isSharePointIntegrated -ne $null -and $isSharePointIntegrated.InnerText.ToLower() -eq "true") {       
+        Write-Host "ERROR: "  -ForegroundColor Yellow -NoNewline
+        Write-Host "SSRS is running in SharePoint Integrated mode. This is NOT supported. SSRS must run in Native mode."
+        return $false
+    }
+    
+    Write-Host " Pass: SSRS running in Native mode."  
+    return $true
+}
+$rsreportserver_runningInNativeMode = $false
+$rsreportserver_runningInNativeMode = Check_SSRS_Mode
+
+Write-Host ""
+#endregion 
+
 #region Conclusion
 ""
 Write-Host "Conclusion:" -ForegroundColor Cyan
 Write-Host "==========="
-if ($scsmDllFileExists -and $rsreportserver_configIsCorrect -and $rssrvpolicy_configIsCorrect) {
+if ($scsmDllFileExists -and $rsreportserver_configIsCorrect -and $rssrvpolicy_configIsCorrect -and $rsreportserver_runningInNativeMode) {
     Write-Host "The selected SSRS instance is configured correctly." -ForegroundColor Green
 }
 else {
@@ -221,6 +245,10 @@ else {
     Write-Host " configured correctly."
     Write-Host "Please follow the steps at  " -NoNewline
     Write-Host "https://learn.microsoft.com/en-us/system-center/scsm/config-remote-ssrs" -ForegroundColor Yellow
+    if (-not $rsreportserver_runningInNativeMode) {
+        Write-Host "Important: " -ForegroundColor Yellow -NoNewline
+        Write-Host "SSRS must run in Native mode."
+    }
 }
 EndScriptExecution
 #endregion
