@@ -907,6 +907,12 @@ if ($TargetMS) {
 }
 #endregion
 
+#region Adding more telemetry
+AddToStatInfo_SmEnv_SM
+AddToStatInfo_SmEnv_OS
+AddToStatInfo_SmEnv_SQLSM
+#endregion
+
 Stop-Transcript | out-null
 
 #Check AnalyzerIssues
