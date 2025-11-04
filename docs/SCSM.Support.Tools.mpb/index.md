@@ -13,7 +13,7 @@ Then restart the SM Console.
 ## Usage
 The *SCSM.Support.Tools.mpb* has been developed to bring useful tools into the SM Console. When this Management Pack Bundle (MPB) is imported, tools will appear under the "Administration" tree on the left.
 
-> [!IMPORTANT]
+> **IMPORTANT**  
 If prompted, accept the End User License Agreement.
 > <img width="904" height="491" alt="image" src="https://github.com/user-attachments/assets/f4f09c0d-e816-4d44-8a26-9789753e4c73" />
 
