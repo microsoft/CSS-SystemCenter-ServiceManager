@@ -10,9 +10,14 @@ Download the [latest SCSM.Support.Tools.mpb]({{ site.latestDownloadLink }}/SCSM.
 
 Then restart the SM Console.
 
-## Description
+## Usage
 The *SCSM.Support.Tools.mpb* has been developed to bring useful tools into the SM Console. When this Management Pack Bundle (MPB) is imported, tools will appear under the "Administration" tree on the left.
 
+> [!IMPORTANT]
+If prompted, accept the End User License Agreement.
+> <img width="904" height="491" alt="image" src="https://github.com/user-attachments/assets/f4f09c0d-e816-4d44-8a26-9789753e4c73" />
+
+After the End User License Agreement has been accepted, you will see the Welcome page with a list of available tools.
 > <img width="750" alt="SCSM Support Tools when imported into the SM Console" src="https://github.com/microsoft/CSS-SystemCenter-ServiceManager/assets/99029864/ec2bfe03-47f7-4009-b37e-e9d2b4190106">
 
 ## List of Tools
