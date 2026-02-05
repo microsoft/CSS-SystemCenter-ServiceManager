@@ -26,7 +26,7 @@ namespace SCSM.Support.Tools.Library
         // equivalent of SQL:    select cast( HashBytes('SHA1', N'AstringHere') AS uniqueidentifier)
         private static Guid SMSpecific_ConvertStringToGuid(string s)
         {
-            var sha1 = System.Security.Cryptography.SHA1.Create();
+            var sha1 = System.Security.Cryptography.SHA1.Create();    // CodeQL [SM02196] We can't use a stronger algorithm because we have to match the one which is currently used by SCSM's SQL engine
             byte[] hashBytes = sha1.ComputeHash(System.Text.Encoding.Unicode.GetBytes(s));
             byte[] bytesResult = Array.CreateInstance(typeof(byte), 16) as byte[];
             Array.Copy(hashBytes, 0, bytesResult, 0, 16);
